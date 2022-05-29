@@ -3,6 +3,6 @@
 
     <string name="text_tab_house">صفحه اصلی</string>
     <string name="text_tab_category">دسته بندی</string>
-    <string name="text_tab_bag">سبذ خرید</string>
+    <string name="text_tab_bag">سبد خرید</string>
     <string name="text_tab_user">پنل کاربری</string>
 </resources>

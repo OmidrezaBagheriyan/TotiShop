@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/graph_app.xml"
+    app:startDestination="@id/houseFragment">
+
+    <fragment
+        tools:layout="@layout/fragment_house"
+        android:id="@+id/houseFragment"
+        android:name="com.omidrezabagherian.totishop.ui.house.HouseFragment"
+        android:label="HouseFragment" />
+
+    <fragment
+        tools:layout="@layout/fragment_category"
+        android:id="@+id/categoryFragment"
+        android:name="com.omidrezabagherian.totishop.ui.category.CategoryFragment"
+        android:label="CategoryFragment" />
+
+    <fragment
+        tools:layout="@layout/fragment_bag"
+        android:id="@+id/bagFragment"
+        android:name="com.omidrezabagherian.totishop.ui.bag.BagFragment"
+        android:label="BagFragment" />
+
+    <fragment
+        tools:layout="@layout/fragment_user"
+        android:id="@+id/userFragment"
+        android:name="com.omidrezabagherian.totishop.ui.user.UserFragment"
+        android:label="UserFragment" />
+
+</navigation>
