@@ -3,6 +3,8 @@ package com.omidrezabagherian.totishop.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.databinding.ActivityMainBinding
@@ -10,12 +12,21 @@ import com.omidrezabagherian.totishop.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mainBinding: ActivityMainBinding
+    private lateinit var mainViewModel: MainViewModel
     private val navController by lazy {
         findNavController(R.id.fragmentContainerViewMain)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+
+        installSplashScreen().apply {
+            setKeepOnScreenCondition{
+                mainViewModel.isLoading.value
+            }
+        }
 
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
 
