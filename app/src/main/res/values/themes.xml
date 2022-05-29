@@ -20,4 +20,40 @@
         <item name="windowSplashScreenAnimationDuration">1000</item>
         <item name="postSplashScreenTheme">@style/Theme.TotiShop</item>
     </style>
+
+    <style name="TextViewBlackCustom" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/vazirmatn_black</item>
+    </style>
+
+    <style name="TextViewBoldCustom" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/vazirmatn_bold</item>
+    </style>
+
+    <style name="TextViewExtraBoldCustom" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/vazirmatn_extra_bold</item>
+    </style>
+
+    <style name="TextViewExtraLightCustom" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/vazirmatn_extra_light</item>
+    </style>
+
+    <style name="TextViewLightCustom" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/vazirmatn_light</item>
+    </style>
+
+    <style name="TextViewMediumCustom" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/vazirmatn_medium</item>
+    </style>
+
+    <style name="TextViewRegularCustom" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/vazirmatn_regular</item>
+    </style>
+
+    <style name="TextViewSemiBoldCustom" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/vazirmatn_semi_bold</item>
+    </style>
+
+    <style name="TextViewThinCustom" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/vazirmatn_thin</item>
+    </style>
 </resources>
