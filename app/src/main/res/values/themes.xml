@@ -14,7 +14,7 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme.SplashScreenTheme" parent="Theme.SplashScreen">
+    <style name="Theme.StartApplication" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/white</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_toti_shop</item>
         <item name="windowSplashScreenAnimationDuration">1000</item>

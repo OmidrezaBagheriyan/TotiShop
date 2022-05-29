@@ -5,4 +5,6 @@
     <string name="text_tab_category">دسته بندی</string>
     <string name="text_tab_bag">سبد خرید</string>
     <string name="text_tab_user">پنل کاربری</string>
+
+    <string name="text_setting_theme">تم برنامه</string>
 </resources>

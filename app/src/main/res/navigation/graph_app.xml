@@ -27,6 +27,15 @@
         tools:layout="@layout/fragment_user"
         android:id="@+id/userFragment"
         android:name="com.omidrezabagherian.totishop.ui.user.UserFragment"
-        android:label="UserFragment" />
+        android:label="UserFragment" >
+        <action
+            android:id="@+id/action_userFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+    </fragment>
+    <fragment
+        tools:layout="@layout/fragment_setting"
+        android:id="@+id/settingFragment"
+        android:name="com.omidrezabagherian.totishop.ui.setting.SettingFragment"
+        android:label="SettingFragment" />
 
 </navigation>
