@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.databinding.FragmentUserBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class UserFragment : Fragment(R.layout.fragment_user) {
 
     private lateinit var userBinding: FragmentUserBinding

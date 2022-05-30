@@ -8,7 +8,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mainBinding: ActivityMainBinding
