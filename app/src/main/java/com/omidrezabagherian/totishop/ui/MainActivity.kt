@@ -3,6 +3,7 @@ package com.omidrezabagherian.totishop.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -14,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mainBinding: ActivityMainBinding
-    private lateinit var mainViewModel: MainViewModel
+    private val mainViewModel: MainViewModel by viewModels()
     private val navController by lazy {
         findNavController(R.id.fragmentContainerViewMain)
     }
@@ -22,16 +23,24 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-
-        installSplashScreen().apply {
-            setKeepOnScreenCondition{
-                mainViewModel.isLoading.value
-            }
-        }
+        initSplashScreen()
 
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
 
+        initBottomNavigation()
+
+        setContentView(mainBinding.root)
+    }
+
+    private fun initSplashScreen() {
+        installSplashScreen().apply {
+            setKeepOnScreenCondition {
+                mainViewModel.isLoading.value
+            }
+        }
+    }
+
+    private fun initBottomNavigation(){
         mainBinding.bottomNavigationViewMain.setOnItemSelectedListener { tab ->
             when (tab.itemId) {
                 R.id.houseTab -> {
@@ -49,7 +58,6 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-
-        setContentView(mainBinding.root)
     }
+
 }

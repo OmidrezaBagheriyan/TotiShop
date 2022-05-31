@@ -3,12 +3,15 @@ package com.omidrezabagherian.totishop.ui.house
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.databinding.FragmentHouseBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HouseFragment : Fragment(R.layout.fragment_house) {
@@ -21,30 +24,80 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
 
         houseBinding = FragmentHouseBinding.bind(view)
 
-        val productsMap1 = HashMap<String, String>().apply {
-            put("orderby", "date")
-        }
-        val productsMap2 = HashMap<String, String>().apply {
-            put("orderby", "popularity")
-        }
-        val productsMap3 = HashMap<String, String>().apply {
+        val productsRatingMap = HashMap<String, String>().apply {
             put("orderby", "rating")
         }
 
-        houseViewModel.getProductList(productsMap1)
+        productDateList()
+        productRatingList()
+        productPopularityList()
 
-        houseViewModel.productList.observe(viewLifecycleOwner) {
-            Log.i("Log1", it.toString())
+    }
+
+    private fun productDateList() {
+        val houseAdapter = HouseAdapter(details = { product ->
+            Toast.makeText(requireContext(), product.id.toString(), Toast.LENGTH_SHORT).show()
+        })
+
+        val productsDateMap = HashMap<String, String>().apply {
+            put("orderby", "date")
         }
 
-        houseViewModel.getProductList(productsMap2)
-        houseViewModel.productList.observe(viewLifecycleOwner) {
-            Log.i("Log2", it.toString())
+        houseBinding.recyclerViewHouseDateProduct.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+        houseViewModel.getProductDateList(productsDateMap)
+
+        lifecycleScope.launch {
+            houseViewModel.productDateList.collect {
+                houseAdapter.submitList(it)
+                houseBinding.recyclerViewHouseDateProduct.adapter = houseAdapter
+            }
         }
 
-        houseViewModel.getProductList(productsMap3)
-        houseViewModel.productList.observe(viewLifecycleOwner) {
-            Log.i("Log3", it.toString())
+    }
+
+    private fun productRatingList() {
+        val houseAdapter = HouseAdapter(details = { product ->
+            Toast.makeText(requireContext(), product.id.toString(), Toast.LENGTH_SHORT).show()
+        })
+
+        val productsRatingMap = HashMap<String, String>().apply {
+            put("orderby", "rating")
+        }
+
+        houseBinding.recyclerViewHouseRateProduct.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+        houseViewModel.getProductRatingList(productsRatingMap)
+
+        lifecycleScope.launch {
+            houseViewModel.productRatingList.collect {
+                houseAdapter.submitList(it)
+                houseBinding.recyclerViewHouseRateProduct.adapter = houseAdapter
+            }
+        }
+    }
+
+    private fun productPopularityList() {
+        val houseAdapter = HouseAdapter(details = { product ->
+            Toast.makeText(requireContext(), product.id.toString(), Toast.LENGTH_SHORT).show()
+        })
+
+        val productsPopularityMap = HashMap<String, String>().apply {
+            put("orderby", "popularity")
+        }
+
+        houseBinding.recyclerViewHousePopularityProduct.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+        houseViewModel.getProductPopularityList(productsPopularityMap)
+
+        lifecycleScope.launch {
+            houseViewModel.productPopularityList.collect {
+                houseAdapter.submitList(it)
+                houseBinding.recyclerViewHousePopularityProduct.adapter = houseAdapter
+            }
         }
 
     }

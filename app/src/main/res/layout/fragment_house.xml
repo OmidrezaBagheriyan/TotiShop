@@ -3,12 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layoutDirection="ltr">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewHouse"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layoutDirection="ltr"
         app:cardBackgroundColor="@color/green_application"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +49,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textViewHouseLatestProduct"
+                android:id="@+id/textViewHouseDateProduct"
                 style="@style/TextViewMediumCustom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -57,26 +59,27 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textViewHouseLatestProductMore"
+                android:id="@+id/textViewHouseDateProductMore"
                 style="@style/TextViewMediumCustom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="@string/text_house_more_products"
-                app:layout_constraintBottom_toBottomOf="@+id/textViewHouseLatestProduct"
-                app:layout_constraintStart_toStartOf="@+id/recyclerViewHouseLatestProduct"
-                app:layout_constraintTop_toTopOf="@+id/textViewHouseLatestProduct" />
+                app:layout_constraintBottom_toBottomOf="@+id/textViewHouseDateProduct"
+                app:layout_constraintStart_toStartOf="@+id/recyclerViewHouseDateProduct"
+                app:layout_constraintTop_toTopOf="@+id/textViewHouseDateProduct" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewHouseLatestProduct"
+                android:id="@+id/recyclerViewHouseDateProduct"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:layoutDirection="rtl"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewHouseLatestProduct"
+                app:layout_constraintTop_toBottomOf="@+id/textViewHouseDateProduct"
                 tools:itemCount="1"
-                tools:listitem="@layout/item_commodity_ordinary" />
+                tools:listitem="@layout/item_product" />
 
             <TextView
                 android:id="@+id/textViewHouseRateProduct"
@@ -86,7 +89,7 @@
                 android:layout_margin="8dp"
                 android:text="@string/text_house_rate_product"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerViewHouseLatestProduct" />
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewHouseDateProduct" />
 
             <TextView
                 android:id="@+id/textViewHouseRateProductMore"
@@ -104,11 +107,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:layoutDirection="rtl"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewHouseRateProduct"
                 tools:itemCount="1"
-                tools:listitem="@layout/item_commodity_ordinary" />
+                tools:listitem="@layout/item_product" />
 
             <TextView
                 android:id="@+id/textViewHousePopularityProduct"
@@ -136,11 +140,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:layoutDirection="rtl"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewHousePopularityProduct"
                 tools:itemCount="1"
-                tools:listitem="@layout/item_commodity_ordinary" />
+                tools:listitem="@layout/item_product" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -9,10 +9,7 @@ import com.omidrezabagherian.totishop.data.remote.ShopService
 import com.omidrezabagherian.totishop.domain.model.Product
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -20,20 +17,52 @@ import javax.inject.Inject
 @HiltViewModel
 class HouseViewModel @Inject constructor(private val shopRepository: ShopRepository) : ViewModel() {
 
-    private val _productList = MutableLiveData<List<Product>>()
-    val productList: LiveData<List<Product>> = _productList
+    private val _productDateList = MutableStateFlow<List<Product>>(emptyList())
+    val productDateList: StateFlow<List<Product>> = _productDateList
 
-    private val _productError = MutableLiveData(false)
-    val productError: LiveData<Boolean> = _productError
+    private val _productPopularityList = MutableStateFlow<List<Product>>(emptyList())
+    val productPopularityList: StateFlow<List<Product>> = _productPopularityList
 
-    fun getProductList(filter: Map<String, String>) {
+    private val _productRatingList = MutableStateFlow<List<Product>>(emptyList())
+    val productRatingList: StateFlow<List<Product>> = _productRatingList
+
+    private val _productError = MutableStateFlow(false)
+    val productError: StateFlow<Boolean> = _productError
+
+    fun getProductDateList(filter: Map<String, String>) {
         viewModelScope.launch {
-            val responseProductList = shopRepository.getProductList(1, 1, filter)
+            val responseProductList = shopRepository.getProductList(1, 10, filter)
             withContext(Dispatchers.Main) {
                 if (responseProductList.isSuccessful) {
-                    _productList.postValue(responseProductList.body()!!)
+                    _productDateList.emit(responseProductList.body()!!)
                 } else {
-                    _productError.postValue(true)
+                    _productError.emit(true)
+                }
+            }
+        }
+    }
+
+    fun getProductPopularityList(filter: Map<String, String>) {
+        viewModelScope.launch {
+            val responseProductList = shopRepository.getProductList(1, 10, filter)
+            withContext(Dispatchers.Main) {
+                if (responseProductList.isSuccessful) {
+                    _productPopularityList.emit(responseProductList.body()!!)
+                } else {
+                    _productError.emit(true)
+                }
+            }
+        }
+    }
+
+    fun getProductRatingList(filter: Map<String, String>) {
+        viewModelScope.launch {
+            val responseProductList = shopRepository.getProductList(1, 10, filter)
+            withContext(Dispatchers.Main) {
+                if (responseProductList.isSuccessful) {
+                    _productRatingList.emit(responseProductList.body()!!)
+                } else {
+                    _productError.emit(true)
                 }
             }
         }
