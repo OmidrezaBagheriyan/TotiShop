@@ -8,4 +8,12 @@
     <string name="text_tab_setting">تنظیمات</string>
 
     <string name="text_setting_theme">تم برنامه</string>
+
+    <string name="text_house_latest_product">جدیدترین محصولات</string>
+    <string name="text_house_rate_product">پریازدیدترین محصولات</string>
+    <string name="text_house_popularity_product">محبوبیت محصولات</string>
+    <string name="text_house_more_products">بیشتر</string>
+
+
+
 </resources>

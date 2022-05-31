@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -32,5 +33,117 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardViewHouse">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textViewHouseLatestProduct"
+                style="@style/TextViewMediumCustom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/text_house_latest_product"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewHouseLatestProductMore"
+                style="@style/TextViewMediumCustom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/text_house_more_products"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewHouseLatestProduct"
+                app:layout_constraintStart_toStartOf="@+id/recyclerViewHouseLatestProduct"
+                app:layout_constraintTop_toTopOf="@+id/textViewHouseLatestProduct" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewHouseLatestProduct"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewHouseLatestProduct"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_commodity_ordinary" />
+
+            <TextView
+                android:id="@+id/textViewHouseRateProduct"
+                style="@style/TextViewMediumCustom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/text_house_rate_product"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewHouseLatestProduct" />
+
+            <TextView
+                android:id="@+id/textViewHouseRateProductMore"
+                style="@style/TextViewMediumCustom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/text_house_more_products"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewHouseRateProduct"
+                app:layout_constraintStart_toStartOf="@+id/recyclerViewHouseRateProduct"
+                app:layout_constraintTop_toTopOf="@+id/textViewHouseRateProduct" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewHouseRateProduct"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewHouseRateProduct"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_commodity_ordinary" />
+
+            <TextView
+                android:id="@+id/textViewHousePopularityProduct"
+                style="@style/TextViewMediumCustom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/text_house_popularity_product"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewHouseRateProduct" />
+
+            <TextView
+                android:id="@+id/textViewHousePopularityProductMore"
+                style="@style/TextViewMediumCustom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/text_house_more_products"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewHousePopularityProduct"
+                app:layout_constraintStart_toStartOf="@+id/recyclerViewHousePopularityProduct"
+                app:layout_constraintTop_toTopOf="@+id/textViewHousePopularityProduct" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewHousePopularityProduct"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewHousePopularityProduct"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_commodity_ordinary" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
