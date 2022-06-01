@@ -1,4 +1,4 @@
-package com.omidrezabagherian.totishop.domain.model
+package com.omidrezabagherian.totishop.domain.model.category
 
 data class Image(
     val alt: String,

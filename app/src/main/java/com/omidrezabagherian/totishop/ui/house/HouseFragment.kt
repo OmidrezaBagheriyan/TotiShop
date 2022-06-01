@@ -24,10 +24,6 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
 
         houseBinding = FragmentHouseBinding.bind(view)
 
-        val productsRatingMap = HashMap<String, String>().apply {
-            put("orderby", "rating")
-        }
-
         productDateList()
         productRatingList()
         productPopularityList()

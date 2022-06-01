@@ -1,4 +1,4 @@
-package com.omidrezabagherian.totishop.domain.model
+package com.omidrezabagherian.totishop.domain.model.product
 
 data class Product(
     val _links: Links,

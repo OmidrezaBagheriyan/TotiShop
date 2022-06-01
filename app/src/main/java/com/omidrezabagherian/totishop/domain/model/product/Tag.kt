@@ -1,4 +1,4 @@
-package com.omidrezabagherian.totishop.domain.model
+package com.omidrezabagherian.totishop.domain.model.product
 
 data class Tag(
     val id: Int,

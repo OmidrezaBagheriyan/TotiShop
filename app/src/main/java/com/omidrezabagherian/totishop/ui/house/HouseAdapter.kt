@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.omidrezabagherian.totishop.databinding.ItemProductBinding
-import com.omidrezabagherian.totishop.domain.model.Product
+import com.omidrezabagherian.totishop.domain.model.product.Product
 
 class HouseAdapter(private val details: (Product) -> Unit) :
-    ListAdapter<Product, HouseAdapter.DateViewHolder>(HouseDiffCall()) {
+    ListAdapter<Product, HouseAdapter.HouseViewHolder>(HouseDiffCall()) {
 
-    class DateViewHolder(
+    class HouseViewHolder(
         private val itemProductBinding: ItemProductBinding,
         private val details: (Product) -> Unit
     ) : RecyclerView.ViewHolder(itemProductBinding.root) {
@@ -42,8 +42,8 @@ class HouseAdapter(private val details: (Product) -> Unit) :
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DateViewHolder {
-        return DateViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HouseViewHolder {
+        return HouseViewHolder(
             ItemProductBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -52,7 +52,7 @@ class HouseAdapter(private val details: (Product) -> Unit) :
         )
     }
 
-    override fun onBindViewHolder(holder: DateViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: HouseViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 

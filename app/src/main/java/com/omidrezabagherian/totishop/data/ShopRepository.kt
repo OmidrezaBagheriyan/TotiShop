@@ -7,4 +7,7 @@ class ShopRepository(
 ) {
     suspend fun getProductList(page: Int, perPage: Int, filter: Map<String, String>) =
         remoteDataSource.getProductList(page, perPage, filter)
+
+    suspend fun getCategoryList(page: Int, perPage: Int) =
+        remoteDataSource.getCategoryList(page, perPage)
 }
