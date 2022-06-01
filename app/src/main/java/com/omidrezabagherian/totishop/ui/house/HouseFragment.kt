@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.databinding.FragmentHouseBinding
@@ -18,6 +19,9 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
 
     private lateinit var houseBinding: FragmentHouseBinding
     private val houseViewModel: HouseViewModel by viewModels()
+    private val navController by lazy {
+        findNavController()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,7 +36,7 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
 
     private fun productDateList() {
         val houseAdapter = HouseAdapter(details = { product ->
-            Toast.makeText(requireContext(), product.id.toString(), Toast.LENGTH_SHORT).show()
+            navController.navigate(HouseFragmentDirections.actionHouseFragmentToDetailFragment(product.id))
         })
 
         val productsDateMap = HashMap<String, String>().apply {
