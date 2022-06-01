@@ -1,7 +1,6 @@
 package com.omidrezabagherian.totishop.ui.category
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -11,9 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.databinding.FragmentCategoryBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class CategoryFragment : Fragment(R.layout.fragment_category) {
