@@ -20,7 +20,7 @@ class CategoryAdapter(private val details: (Category) -> Unit) :
                 details(category)
             }
 
-            Glide.with(itemCategoryBinding.root).load(category.image.src).fitCenter()
+            Glide.with(itemCategoryBinding.root).load(category.image.src).centerInside()
                 .into(itemCategoryBinding.imageViewCategoryIcon)
 
             itemCategoryBinding.textViewCategoryTitle.text = category.name
