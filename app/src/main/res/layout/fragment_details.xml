@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layoutDirection="ltr"
     android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
@@ -27,6 +28,7 @@
 
             <TextView
                 android:id="@+id/textViewDetailName"
+                style="@style/TextViewBoldCustom"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
@@ -40,6 +42,7 @@
 
             <TextView
                 android:id="@+id/textViewDetailNumberRate"
+                style="@style/TextViewMediumCustom"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
@@ -50,25 +53,47 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewDetailName" />
 
+            <TextView
+                android:id="@+id/textViewDetailRecyclerViewCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="دسته بندی: "
+                android:textSize="18sp"
+                android:layout_margin="8dp"
+                style="@style/TextViewRegularCustom"
+                app:layout_constraintBottom_toBottomOf="@+id/recyclerViewDetailCategories"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/recyclerViewDetailCategories" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewDetailCategories"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:layoutDirection="rtl"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textViewDetailRecyclerViewCategory"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewDetailNumberRate"
                 tools:itemCount="1"
                 tools:listitem="@layout/item_detail_category" />
+
+            <TextView
+                android:id="@+id/textViewDetailRecyclerViewTag"
+                style="@style/TextViewRegularCustom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="تگ: "
+                android:layout_margin="8dp"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/recyclerViewDetailTags"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/recyclerViewDetailTags" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewDetailTags"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:layoutDirection="rtl"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textViewDetailRecyclerViewTag"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recyclerViewDetailCategories"
                 tools:itemCount="1"
@@ -76,9 +101,11 @@
 
             <TextView
                 android:id="@+id/textViewDetailDescription"
+                style="@style/TextViewRegularCustom"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
+                android:gravity="right"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -103,22 +130,25 @@
             android:layout_margin="8dp">
 
             <TextView
+                android:id="@+id/textViewDetailPrice"
+                style="@style/TextViewMediumCustom"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
                 android:gravity="center"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/button"
+                app:layout_constraintEnd_toStartOf="@+id/buttonDetailAddToBag"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:text="@string/text_detail_add_product"
-                android:id="@+id/button"
+                android:id="@+id/buttonDetailAddToBag"
+                style="@style/TextViewRegularCustom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
+                android:text="@string/text_detail_add_product"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

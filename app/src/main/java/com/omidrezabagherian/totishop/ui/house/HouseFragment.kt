@@ -59,7 +59,7 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
 
     private fun productRatingList() {
         val houseAdapter = HouseAdapter(details = { product ->
-            Toast.makeText(requireContext(), product.id.toString(), Toast.LENGTH_SHORT).show()
+            navController.navigate(HouseFragmentDirections.actionHouseFragmentToDetailFragment(product.id))
         })
 
         val productsRatingMap = HashMap<String, String>().apply {
@@ -81,7 +81,7 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
 
     private fun productPopularityList() {
         val houseAdapter = HouseAdapter(details = { product ->
-            Toast.makeText(requireContext(), product.id.toString(), Toast.LENGTH_SHORT).show()
+            navController.navigate(HouseFragmentDirections.actionHouseFragmentToDetailFragment(product.id))
         })
 
         val productsPopularityMap = HashMap<String, String>().apply {
