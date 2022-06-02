@@ -43,6 +43,8 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
 
         lifecycleScope.launch {
             detailViewModel.productValues.collect { product ->
+                val imageAdapter = ImageAdapter(requireContext(), product.images)
+                detailsBinding.viewPagerDetailsImages.adapter = imageAdapter
                 detailsBinding.textViewDetailName.text = product.name
                 detailsBinding.textViewDetailNumberRate.text =
                     "امتیاز این محصول: ${product.rating_count}"
