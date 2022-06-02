@@ -9,7 +9,6 @@ import android.content.IntentFilter
 import android.net.*
 import android.os.Build
 import androidx.lifecycle.LiveData
-import kotlinx.coroutines.flow.StateFlow
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 class NetworkManager(private val context: Context) : LiveData<Boolean>() {
