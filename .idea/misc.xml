@@ -13,6 +13,7 @@
         <entry key="..\:/Users/Omidreza Bagherian/AndroidStudioProjects/TotiShop/app/src/main/res/layout/fragment_category.xml" value="0.15" />
         <entry key="..\:/Users/Omidreza Bagherian/AndroidStudioProjects/TotiShop/app/src/main/res/layout/fragment_details.xml" value="0.16" />
         <entry key="..\:/Users/Omidreza Bagherian/AndroidStudioProjects/TotiShop/app/src/main/res/layout/fragment_house.xml" value="0.25" />
+        <entry key="..\:/Users/Omidreza Bagherian/AndroidStudioProjects/TotiShop/app/src/main/res/layout/fragment_list_category.xml" value="0.22" />
         <entry key="..\:/Users/Omidreza Bagherian/AndroidStudioProjects/TotiShop/app/src/main/res/layout/fragment_setting.xml" value="0.2907608695652174" />
         <entry key="..\:/Users/Omidreza Bagherian/AndroidStudioProjects/TotiShop/app/src/main/res/layout/fragment_user.xml" value="0.33" />
         <entry key="..\:/Users/Omidreza Bagherian/AndroidStudioProjects/TotiShop/app/src/main/res/layout/item_category.xml" value="0.33" />
@@ -20,7 +21,8 @@
         <entry key="..\:/Users/Omidreza Bagherian/AndroidStudioProjects/TotiShop/app/src/main/res/layout/item_detail_category.xml" value="0.115861479264643" />
         <entry key="..\:/Users/Omidreza Bagherian/AndroidStudioProjects/TotiShop/app/src/main/res/layout/item_detail_tag.xml" value="0.115861479264643" />
         <entry key="..\:/Users/Omidreza Bagherian/AndroidStudioProjects/TotiShop/app/src/main/res/layout/item_image.xml" value="0.27233860624198375" />
-        <entry key="..\:/Users/Omidreza Bagherian/AndroidStudioProjects/TotiShop/app/src/main/res/layout/item_product.xml" value="0.1" />
+        <entry key="..\:/Users/Omidreza Bagherian/AndroidStudioProjects/TotiShop/app/src/main/res/layout/item_list_product.xml" value="0.33" />
+        <entry key="..\:/Users/Omidreza Bagherian/AndroidStudioProjects/TotiShop/app/src/main/res/layout/item_product.xml" value="0.18" />
       </map>
     </option>
   </component>

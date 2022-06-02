@@ -12,4 +12,11 @@ class ShopRepository(
         remoteDataSource.getCategoryList(page, perPage)
 
     suspend fun getProduct(id: Int) = remoteDataSource.getProduct(id)
+
+    suspend fun getProductCategoryList(page: Int, perPage: Int, category: Int) =
+        remoteDataSource.getProductCategoryList(
+            page,
+            perPage,
+            category
+        )
 }

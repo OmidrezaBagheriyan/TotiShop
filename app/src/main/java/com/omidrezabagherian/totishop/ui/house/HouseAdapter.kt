@@ -25,16 +25,18 @@ class HouseAdapter(private val details: (Product) -> Unit) :
             Glide.with(itemProductBinding.root).load(product.images[0].src).fitCenter()
                 .into(itemProductBinding.imageViewProductOrdinary)
 
+            itemProductBinding.textViewProductName.text = product.name
+
             itemProductBinding.textViewProductOrdinary.text = "${product.price} تومان"
 
             if (product.regular_price == product.price) {
-                itemProductBinding.cardViewProductPacent.visibility = View.GONE
-                itemProductBinding.textViewProductPacent.visibility = View.GONE
+                itemProductBinding.cardViewProductPercent.visibility = View.GONE
+                itemProductBinding.textViewProductPercent.visibility = View.GONE
                 itemProductBinding.textViewProductOffer.visibility = View.GONE
             } else {
                 val numPercent =
                     ((product.regular_price.toInt() - product.sale_price.toInt()) / (product.regular_price.toInt() / 100)).toString()
-                itemProductBinding.textViewProductPacent.text = "$numPercent%"
+                itemProductBinding.textViewProductPercent.text = "$numPercent%"
                 itemProductBinding.textViewProductOffer.text = "${product.regular_price} تومان"
                 itemProductBinding.textViewProductOffer.paintFlags =
                     itemProductBinding.textViewProductOffer.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG

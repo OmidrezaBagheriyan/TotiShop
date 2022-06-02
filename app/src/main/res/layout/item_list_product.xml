@@ -1,73 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:layoutDirection="ltr"
     app:cardCornerRadius="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="200dp"
-        android:layout_height="300dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="8dp">
 
         <ImageView
-            android:id="@+id/imageViewProductOrdinary"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
+            android:id="@+id/imageViewListProduct"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:src="@drawable/ic_toti_shop"
-            app:layout_constraintBottom_toTopOf="@+id/textViewProductName"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textViewProductName"
-            style="@style/TextViewMediumCustom"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="4dp"
-            android:gravity="center"
-            android:text="15000000 تومان"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/textViewProductOrdinary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/textViewProductOrdinary"
+            android:id="@+id/textViewListProductOrdinary"
             style="@style/TextViewRegularCustom"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="4dp"
+            android:layout_margin="8dp"
             android:gravity="end"
             android:text="15000000 تومان"
             android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@+id/textViewProductOffer"
-            app:layout_constraintEnd_toStartOf="@+id/cardViewProductPercent"
+            app:layout_constraintBottom_toTopOf="@+id/textViewListProductOffer"
+            app:layout_constraintEnd_toStartOf="@+id/cardViewListProductPercent"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <TextView
+            android:id="@+id/textViewListProductName"
+            style="@style/TextViewBoldCustom"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:text="15000000 تومان"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/textViewListProductOrdinary"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewListProduct"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardViewProductPercent"
+            android:layout_margin="8dp"
+            android:id="@+id/cardViewListProductPercent"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             app:cardBackgroundColor="@color/red_application"
             app:cardCornerRadius="12dp"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewProductOrdinary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textViewProductOrdinary">
+            app:layout_constraintBottom_toBottomOf="@+id/textViewListProductOrdinary"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewListProduct"
+            app:layout_constraintTop_toTopOf="@+id/textViewListProductOrdinary">
 
             <TextView
-                android:id="@+id/textViewProductPercent"
+                android:id="@+id/textViewListProductPercent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
@@ -78,16 +72,17 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/textViewProductOffer"
+            android:id="@+id/textViewListProductOffer"
             style="@style/TextViewLightCustom"
             android:layout_width="0dp"
-            android:gravity="end"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:layout_marginStart="8dp"
+            android:gravity="end"
             android:text="12000000 تومان"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/textViewProductOrdinary"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewListProduct"
             app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

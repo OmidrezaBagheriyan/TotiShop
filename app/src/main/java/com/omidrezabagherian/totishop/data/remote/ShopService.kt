@@ -29,4 +29,13 @@ interface ShopService {
         @Query("page") page: Int,
         @Query("per_page") perPage: Int
     ): Response<List<Category>>
+
+    @GET("products")
+    suspend fun getProductCategoryList(
+        @Query("consumer_key") consumerKey: String,
+        @Query("consumer_secret") consumerSecret: String,
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int,
+        @Query("category") category: Int
+    ): Response<List<Product>>
 }

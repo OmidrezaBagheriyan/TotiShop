@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.databinding.FragmentCategoryBinding
@@ -17,12 +18,20 @@ class CategoryFragment : Fragment(R.layout.fragment_category) {
 
     private lateinit var categoryBinding: FragmentCategoryBinding
     private val categoryViewModel: CategoryViewModel by viewModels()
+    private val navController by lazy {
+        findNavController()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val categoryAdapter = CategoryAdapter(details = { category ->
-            Toast.makeText(requireContext(), category.name, Toast.LENGTH_SHORT).show()
+            navController.navigate(
+                CategoryFragmentDirections.actionCategoryFragmentToListCategoryFragment(
+                    category.name,
+                    category.id
+                )
+            )
         })
 
         categoryBinding = FragmentCategoryBinding.bind(view)
