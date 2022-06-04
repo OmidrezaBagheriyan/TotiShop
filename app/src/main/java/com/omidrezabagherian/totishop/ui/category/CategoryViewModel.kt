@@ -16,6 +16,10 @@ import javax.inject.Inject
 class CategoryViewModel @Inject constructor(private val showRepository: ShopRepository) :
     ViewModel() {
 
+    init {
+        getCategoryList()
+    }
+
     private val _categoryList = MutableStateFlow<List<Category>>(emptyList())
     val categoryList: StateFlow<List<Category>> = _categoryList
 

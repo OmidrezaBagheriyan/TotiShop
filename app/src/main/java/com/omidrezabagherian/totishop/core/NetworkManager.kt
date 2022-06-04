@@ -32,22 +32,26 @@ class NetworkManager(private val context: Context) : LiveData<Boolean>() {
     override fun onActive() {
         super.onActive()
         checkConnection()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            connectionManger.registerDefaultNetworkCallback(networkCallback())
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val requestBuilder = NetworkRequest.Builder()
-                .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
-                .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-                .addTransportType(NetworkCapabilities.TRANSPORT_ETHERNET)
-            connectionManger.registerNetworkCallback(
-                requestBuilder.build(),
-                networkCallback()
-            )
-        } else {
-            context.registerReceiver(
-                networkReceiver(),
-                IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
-            )
+        when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> {
+                connectionManger.registerDefaultNetworkCallback(networkCallback())
+            }
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP -> {
+                val requestBuilder = NetworkRequest.Builder()
+                    .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+                    .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+                    .addTransportType(NetworkCapabilities.TRANSPORT_ETHERNET)
+                connectionManger.registerNetworkCallback(
+                    requestBuilder.build(),
+                    networkCallback()
+                )
+            }
+            else -> {
+                context.registerReceiver(
+                    networkReceiver(),
+                    IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+                )
+            }
         }
     }
 

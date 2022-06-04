@@ -1,6 +1,7 @@
 package com.omidrezabagherian.totishop.ui.category
 
 import android.app.AlertDialog
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -72,10 +73,13 @@ class CategoryFragment : Fragment(R.layout.fragment_category) {
             )
         })
 
-        categoryBinding.recyclerViewCategory.layoutManager =
-            GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
-
-        categoryViewModel.getCategoryList()
+        if(requireActivity().resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
+            categoryBinding.recyclerViewCategory.layoutManager =
+                GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
+        }else{
+            categoryBinding.recyclerViewCategory.layoutManager =
+                GridLayoutManager(requireContext(), 4, GridLayoutManager.VERTICAL, false)
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
