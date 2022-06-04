@@ -2,6 +2,7 @@ package com.omidrezabagherian.totishop.ui.details
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.omidrezabagherian.totishop.databinding.ItemDetailCategoryBinding
@@ -34,5 +35,17 @@ class CategoryDetailAdapter(private val details: (Category) -> Unit) :
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
         holder.bind(getItem(position))
+    }
+
+
+}
+
+class CategoryDetailDiffCall : DiffUtil.ItemCallback<Category>() {
+    override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: Category, newItem: Category): Boolean {
+        return oldItem == newItem
     }
 }

@@ -10,7 +10,6 @@
         android:id="@+id/cardViewHouse"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layoutDirection="ltr"
         app:cardBackgroundColor="@color/green_application"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,10 +1,13 @@
 package com.omidrezabagherian.totishop.ui.category
 
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.databinding.ItemCategoryBinding
 import com.omidrezabagherian.totishop.domain.model.category.Category
 

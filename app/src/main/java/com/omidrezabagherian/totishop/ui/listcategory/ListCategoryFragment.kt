@@ -5,7 +5,9 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -52,11 +54,13 @@ class ListCategoryFragment : Fragment(R.layout.fragment_list_category) {
 
         listCategoryViewModel.getProductCategoryList(listCategoryArgs.id)
 
-        lifecycleScope.launch {
-            listCategoryViewModel.productCategoryList.collect {
-                listCategoryAdapter.submitList(it)
-                Log.i("error", it.toString())
-                listCategoryBinding.recyclerViewListCategory.adapter = listCategoryAdapter
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                listCategoryViewModel.productCategoryList.collect {
+                    listCategoryAdapter.submitList(it)
+                    Log.i("error", it.toString())
+                    listCategoryBinding.recyclerViewListCategory.adapter = listCategoryAdapter
+                }
             }
         }
 

@@ -1,11 +1,16 @@
 package com.omidrezabagherian.totishop.ui.details
 
+import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.omidrezabagherian.totishop.R
@@ -20,6 +25,7 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
     private val detailViewModel: DetailViewModel by viewModels()
     private val detailArgs: DetailFragmentArgs by navArgs()
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -41,19 +47,23 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
         detailsBinding.recyclerViewDetailTags.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-        lifecycleScope.launch {
-            detailViewModel.productValues.collect { product ->
-                val imageAdapter = ImageAdapter(requireContext(), product.images)
-                detailsBinding.viewPagerDetailsImages.adapter = imageAdapter
-                detailsBinding.textViewDetailName.text = product.name
-                detailsBinding.textViewDetailNumberRate.text =
-                    "امتیاز این محصول: ${product.rating_count}"
-                categoryAdapter.submitList(product.categories)
-                detailsBinding.recyclerViewDetailCategories.adapter = categoryAdapter
-                tagAdapter.submitList(product.tags)
-                detailsBinding.recyclerViewDetailTags.adapter = tagAdapter
-                detailsBinding.textViewDetailPrice.text = "${product.price} تومان"
-                detailsBinding.textViewDetailDescription.text = product.description
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                detailViewModel.productValues.collect { product ->
+                    val imageAdapter = ImageAdapter(requireContext(), product.images)
+                    detailsBinding.viewPagerDetailsImages.adapter = imageAdapter
+                    detailsBinding.textViewDetailName.text = product.name
+                    detailsBinding.textViewDetailNumberRate.text =
+                        " ${product.rating_count} امتیاز /"
+                    detailsBinding.ratingDetailNumberRate.rating = product.rating_count.toFloat()
+                    categoryAdapter.submitList(product.categories)
+                    detailsBinding.recyclerViewDetailCategories.adapter = categoryAdapter
+                    tagAdapter.submitList(product.tags)
+                    detailsBinding.recyclerViewDetailTags.adapter = tagAdapter
+                    detailsBinding.textViewDetailPrice.text = "${product.price} تومان"
+                    detailsBinding.textViewDetailDescription.text =
+                        Html.fromHtml(product.description, 0)
+                }
             }
         }
 

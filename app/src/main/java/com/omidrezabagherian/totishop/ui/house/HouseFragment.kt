@@ -6,7 +6,9 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.omidrezabagherian.totishop.R
@@ -36,7 +38,11 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
 
     private fun productDateList() {
         val houseAdapter = HouseAdapter(details = { product ->
-            navController.navigate(HouseFragmentDirections.actionHouseFragmentToDetailFragment(product.id))
+            navController.navigate(
+                HouseFragmentDirections.actionHouseFragmentToDetailFragment(
+                    product.id
+                )
+            )
         })
 
         val productsDateMap = HashMap<String, String>().apply {
@@ -48,10 +54,12 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
 
         houseViewModel.getProductDateList(productsDateMap)
 
-        lifecycleScope.launch {
-            houseViewModel.productDateList.collect {
-                houseAdapter.submitList(it)
-                houseBinding.recyclerViewHouseDateProduct.adapter = houseAdapter
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                houseViewModel.productDateList.collect {
+                    houseAdapter.submitList(it)
+                    houseBinding.recyclerViewHouseDateProduct.adapter = houseAdapter
+                }
             }
         }
 
@@ -59,7 +67,11 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
 
     private fun productRatingList() {
         val houseAdapter = HouseAdapter(details = { product ->
-            navController.navigate(HouseFragmentDirections.actionHouseFragmentToDetailFragment(product.id))
+            navController.navigate(
+                HouseFragmentDirections.actionHouseFragmentToDetailFragment(
+                    product.id
+                )
+            )
         })
 
         val productsRatingMap = HashMap<String, String>().apply {
@@ -71,17 +83,24 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
 
         houseViewModel.getProductRatingList(productsRatingMap)
 
-        lifecycleScope.launch {
-            houseViewModel.productRatingList.collect {
-                houseAdapter.submitList(it)
-                houseBinding.recyclerViewHouseRateProduct.adapter = houseAdapter
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                houseViewModel.productRatingList.collect {
+                    houseAdapter.submitList(it)
+                    houseBinding.recyclerViewHouseRateProduct.adapter = houseAdapter
+                }
             }
         }
+
     }
 
     private fun productPopularityList() {
         val houseAdapter = HouseAdapter(details = { product ->
-            navController.navigate(HouseFragmentDirections.actionHouseFragmentToDetailFragment(product.id))
+            navController.navigate(
+                HouseFragmentDirections.actionHouseFragmentToDetailFragment(
+                    product.id
+                )
+            )
         })
 
         val productsPopularityMap = HashMap<String, String>().apply {
@@ -93,10 +112,12 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
 
         houseViewModel.getProductPopularityList(productsPopularityMap)
 
-        lifecycleScope.launch {
-            houseViewModel.productPopularityList.collect {
-                houseAdapter.submitList(it)
-                houseBinding.recyclerViewHousePopularityProduct.adapter = houseAdapter
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                houseViewModel.productPopularityList.collect {
+                    houseAdapter.submitList(it)
+                    houseBinding.recyclerViewHousePopularityProduct.adapter = houseAdapter
+                }
             }
         }
 

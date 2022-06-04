@@ -6,7 +6,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.cardview.widget.CardView
-        android:layoutDirection="ltr"
         android:id="@+id/cardViewCategory"
         android:layout_width="match_parent"
         android:layout_height="40dp"

@@ -2,6 +2,7 @@ package com.omidrezabagherian.totishop.ui.details
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.omidrezabagherian.totishop.databinding.ItemDetailTagBinding
@@ -36,5 +37,14 @@ class TagDetailAdapter(private val details: (Tag) -> Unit) :
         holder.bind(getItem(position))
     }
 
+}
 
+class TagDetailDiffCall : DiffUtil.ItemCallback<Tag>() {
+    override fun areItemsTheSame(oldItem: Tag, newItem: Tag): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: Tag, newItem: Tag): Boolean {
+        return oldItem == newItem
+    }
 }
