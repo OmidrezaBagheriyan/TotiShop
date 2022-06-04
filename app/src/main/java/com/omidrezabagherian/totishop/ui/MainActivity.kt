@@ -1,14 +1,11 @@
 package com.omidrezabagherian.totishop.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.omidrezabagherian.totishop.R
-import com.omidrezabagherian.totishop.core.NetworkManager
 import com.omidrezabagherian.totishop.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,24 +23,11 @@ class MainActivity : AppCompatActivity() {
 
         initSplashScreen()
 
-        checkConnect()
-
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
 
         initBottomNavigation()
 
         setContentView(mainBinding.root)
-    }
-
-    private fun checkConnect() {
-        val networkConnection = NetworkManager(applicationContext)
-        networkConnection.observe(this) { isConnected ->
-            if (isConnected) {
-                Toast.makeText(applicationContext, "Connect internet", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(applicationContext, "No connect internet", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
     private fun initSplashScreen() {

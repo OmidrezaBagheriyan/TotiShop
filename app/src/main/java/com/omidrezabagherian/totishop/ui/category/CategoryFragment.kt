@@ -1,7 +1,9 @@
 package com.omidrezabagherian.totishop.ui.category
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -11,6 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.omidrezabagherian.totishop.R
+import com.omidrezabagherian.totishop.core.NetworkManager
 import com.omidrezabagherian.totishop.databinding.FragmentCategoryBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -27,6 +30,39 @@ class CategoryFragment : Fragment(R.layout.fragment_category) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        categoryBinding = FragmentCategoryBinding.bind(view)
+
+        checkInternet()
+
+    }
+
+    private fun dialogCheckInternet() {
+        val dialog = AlertDialog.Builder(requireContext())
+        val dialogView = layoutInflater.inflate(R.layout.dialog_check_internet, null)
+        val buttonCheckInternet: Button = dialogView.findViewById(R.id.buttonCheckInternet)
+        dialog.setView(dialogView)
+        dialog.setCancelable(false)
+        val customDialog = dialog.create()
+        customDialog.show()
+
+        buttonCheckInternet.setOnClickListener {
+            customDialog.dismiss()
+            checkInternet()
+        }
+    }
+
+    private fun checkInternet() {
+        val networkConnection = NetworkManager(requireContext())
+        networkConnection.observe(viewLifecycleOwner) { isConnect ->
+            if (isConnect) {
+                checkCategory()
+            } else {
+                dialogCheckInternet()
+            }
+        }
+    }
+
+    private fun checkCategory(){
         val categoryAdapter = CategoryAdapter(details = { category ->
             navController.navigate(
                 CategoryFragmentDirections.actionCategoryFragmentToListCategoryFragment(
@@ -35,8 +71,6 @@ class CategoryFragment : Fragment(R.layout.fragment_category) {
                 )
             )
         })
-
-        categoryBinding = FragmentCategoryBinding.bind(view)
 
         categoryBinding.recyclerViewCategory.layoutManager =
             GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
@@ -51,6 +85,5 @@ class CategoryFragment : Fragment(R.layout.fragment_category) {
                 }
             }
         }
-
     }
 }

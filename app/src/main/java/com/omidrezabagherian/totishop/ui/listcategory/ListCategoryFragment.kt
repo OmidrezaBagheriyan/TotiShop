@@ -1,8 +1,11 @@
 package com.omidrezabagherian.totishop.ui.listcategory
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -12,9 +15,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.omidrezabagherian.totishop.R
+import com.omidrezabagherian.totishop.core.NetworkManager
 import com.omidrezabagherian.totishop.databinding.FragmentListCategoryBinding
-import com.omidrezabagherian.totishop.ui.house.HouseAdapter
-import com.omidrezabagherian.totishop.ui.house.HouseFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -33,14 +35,38 @@ class ListCategoryFragment : Fragment(R.layout.fragment_list_category) {
 
         listCategoryBinding = FragmentListCategoryBinding.bind(view)
 
-        listCategoryBinding.textViewListCategory.text = listCategoryArgs.name
-
-        productPopularityList()
+        checkInternet()
 
     }
 
-    private fun productPopularityList() {
+    private fun dialogCheckInternet() {
+        val dialog = AlertDialog.Builder(requireContext())
+        val dialogView = layoutInflater.inflate(R.layout.dialog_check_internet, null)
+        val buttonCheckInternet: Button = dialogView.findViewById(R.id.buttonCheckInternet)
+        dialog.setView(dialogView)
+        dialog.setCancelable(false)
+        val customDialog = dialog.create()
+        customDialog.show()
 
+        buttonCheckInternet.setOnClickListener {
+            customDialog.dismiss()
+            checkInternet()
+        }
+    }
+
+    private fun checkInternet() {
+        val networkConnection = NetworkManager(requireContext())
+        networkConnection.observe(viewLifecycleOwner) { isConnect ->
+            if (isConnect) {
+                listCategoryBinding.textViewListCategory.text = listCategoryArgs.name
+                productPopularityList()
+            } else {
+                dialogCheckInternet()
+            }
+        }
+    }
+
+    private fun productPopularityList() {
         val listCategoryAdapter = ListCategoryAdapter(details = { product ->
             navController.navigate(
                 ListCategoryFragmentDirections.actionListCategoryFragmentToDetailFragment(
@@ -54,16 +80,15 @@ class ListCategoryFragment : Fragment(R.layout.fragment_list_category) {
 
         listCategoryViewModel.getProductCategoryList(listCategoryArgs.id)
 
-        viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch{
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 listCategoryViewModel.productCategoryList.collect {
                     listCategoryAdapter.submitList(it)
-                    Log.i("error", it.toString())
-                    listCategoryBinding.recyclerViewListCategory.adapter = listCategoryAdapter
+                    listCategoryBinding.recyclerViewListCategory.adapter =
+                        listCategoryAdapter
                 }
             }
         }
-
     }
 
 }
