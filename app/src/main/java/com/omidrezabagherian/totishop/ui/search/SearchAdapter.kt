@@ -1,4 +1,4 @@
-package com.omidrezabagherian.totishop.ui.listcategory
+package com.omidrezabagherian.totishop.ui.search
 
 import android.graphics.Paint
 import android.view.LayoutInflater
@@ -9,12 +9,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.omidrezabagherian.totishop.databinding.ItemListProductBinding
+import com.omidrezabagherian.totishop.databinding.ItemProductBinding
 import com.omidrezabagherian.totishop.domain.model.product.Product
 
-class ListCategoryAdapter(private val details: (Product) -> Unit) :
-    ListAdapter<Product, ListCategoryAdapter.ListCategoryViewHolder>(ListCategoryDiffCall()) {
+class SearchAdapter(private val details: (Product) -> Unit) :
+    ListAdapter<Product, SearchAdapter.SearchViewHolder>(SearchDiffCall()) {
 
-    class ListCategoryViewHolder(
+    class SearchViewHolder(
         private val itemListProductBinding: ItemListProductBinding,
         private val details: (Product) -> Unit
     ) : RecyclerView.ViewHolder(itemListProductBinding.root) {
@@ -38,17 +39,15 @@ class ListCategoryAdapter(private val details: (Product) -> Unit) :
                 val numPercent =
                     ((product.regular_price.toInt() - product.sale_price.toInt()) / (product.regular_price.toInt() / 100)).toString()
                 itemListProductBinding.textViewListProductPercent.text = "$numPercent%"
-                itemListProductBinding.textViewListProductOffer.text =
-                    "${product.regular_price} تومان"
+                itemListProductBinding.textViewListProductOffer.text = "${product.regular_price} تومان"
                 itemListProductBinding.textViewListProductOffer.paintFlags =
                     itemListProductBinding.textViewListProductOffer.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             }
-
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListCategoryViewHolder {
-        return ListCategoryViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
+        return SearchViewHolder(
             ItemListProductBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -57,12 +56,13 @@ class ListCategoryAdapter(private val details: (Product) -> Unit) :
         )
     }
 
-    override fun onBindViewHolder(holder: ListCategoryViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
+
 }
 
-class ListCategoryDiffCall : DiffUtil.ItemCallback<Product>() {
+class SearchDiffCall : DiffUtil.ItemCallback<Product>() {
     override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
         return oldItem.id == newItem.id
     }

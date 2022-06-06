@@ -5,15 +5,19 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.SearchView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.core.NetworkManager
 import com.omidrezabagherian.totishop.databinding.FragmentSearchBinding
+import com.omidrezabagherian.totishop.domain.model.product.Product
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -54,21 +58,47 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         val networkConnection = NetworkManager(requireContext())
         networkConnection.observe(viewLifecycleOwner) { isConnect ->
             if (isConnect) {
-                searchProduct()
+                searchView()
             } else {
                 dialogCheckInternet()
             }
         }
     }
 
-    private fun searchProduct() {
+    private fun searchView() {
+        searchBinding.searchViewSearchProduct.setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchProduct(query.toString())
+                return false
+            }
 
-        searchViewModel.getProductCategoryList("موبایل")
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+
+        })
+    }
+
+    private fun searchProduct(query: String) {
+        val searchAdapter = SearchAdapter(details = { product ->
+            navController.navigate(
+                SearchFragmentDirections.actionSearchFragmentToDetailFragment(
+                    product.id
+                )
+            )
+        })
+
+        searchViewModel.getProductCategoryList(query)
+
+        searchBinding.recyclerViewSearchProduct.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 searchViewModel.productSearchList.collect {
-                    Log.i("searchProduct", it.toString())
+                    searchAdapter.submitList(it)
+                    searchBinding.recyclerViewSearchProduct.adapter = searchAdapter
                 }
             }
         }

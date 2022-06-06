@@ -33,8 +33,15 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
 
         houseBinding = FragmentHouseBinding.bind(view)
 
+        searchPage()
         checkInternet()
 
+    }
+
+    private fun searchPage() {
+        houseBinding.imageViewHouseSearch.setOnClickListener {
+            navController.navigate(HouseFragmentDirections.actionHouseFragmentToSearchFragment())
+        }
     }
 
     private fun dialogCheckInternet() {
