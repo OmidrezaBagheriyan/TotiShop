@@ -54,7 +54,7 @@
                 android:layout_margin="4dp"
                 android:iconifiedByDefault="false"
                 android:queryBackground="@android:color/transparent"
-                android:queryHint="جسنجو کنید"
+                android:queryHint="جستجو کنید"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageViewSearchFilter"

@@ -59,9 +59,23 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         networkConnection.observe(viewLifecycleOwner) { isConnect ->
             if (isConnect) {
                 searchView()
+                filterSearch()
+                sortSearch()
             } else {
                 dialogCheckInternet()
             }
+        }
+    }
+
+    private fun filterSearch(){
+        searchBinding.imageViewSearchFilter.setOnClickListener {
+            Toast.makeText(requireContext(), "فیلتر", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun sortSearch(){
+        searchBinding.imageViewSearchSorting.setOnClickListener {
+            Toast.makeText(requireContext(), "مرتب سازی", Toast.LENGTH_SHORT).show()
         }
     }
 
