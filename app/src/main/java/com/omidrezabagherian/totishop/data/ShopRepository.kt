@@ -1,6 +1,7 @@
 package com.omidrezabagherian.totishop.data
 
 import com.omidrezabagherian.totishop.data.remote.RemoteDataSource
+import com.omidrezabagherian.totishop.util.Values
 
 class ShopRepository(
     private val remoteDataSource: RemoteDataSource
@@ -18,5 +19,12 @@ class ShopRepository(
             page,
             perPage,
             category
+        )
+
+    suspend fun getProductSearchList(page: Int, perPage: Int, search: String) =
+        remoteDataSource.getProductSearchList(
+            page,
+            perPage,
+            search
         )
 }
