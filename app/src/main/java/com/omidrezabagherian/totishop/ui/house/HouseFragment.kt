@@ -2,10 +2,10 @@ package com.omidrezabagherian.totishop.ui.house
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.Button
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -16,8 +16,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.core.NetworkManager
 import com.omidrezabagherian.totishop.databinding.FragmentHouseBinding
+import com.omidrezabagherian.totishop.util.Values.DELAY_MS
+import com.omidrezabagherian.totishop.util.Values.PERIOD_MS
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.util.*
 
 @AndroidEntryPoint
 class HouseFragment : Fragment(R.layout.fragment_house) {
@@ -35,6 +38,37 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
 
         searchPage()
         checkInternet()
+
+    }
+
+    private fun sliderImage() {
+        houseViewModel.getSliderImageList(608)
+
+        var currentPage = 0;
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                houseViewModel.sliderImage.collect { images ->
+                    val sliderAdapter = SliderAdapter(requireContext(), images.images)
+                    houseBinding.viewPagerHouseSliderImage.adapter = sliderAdapter
+
+                    Timer().schedule(object : TimerTask() {
+                        override fun run() {
+                            Handler(Looper.getMainLooper()).post(Runnable {
+                                if (currentPage == images.images.size - 1) {
+                                    currentPage = 0
+                                }
+                                houseBinding.viewPagerHouseSliderImage.setCurrentItem(
+                                    currentPage++,
+                                    true
+                                )
+                            })
+                        }
+                    }, DELAY_MS, PERIOD_MS)
+                }
+            }
+        }
+
 
     }
 
@@ -63,6 +97,7 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
         val networkConnection = NetworkManager(requireContext())
         networkConnection.observe(viewLifecycleOwner) { isConnect ->
             if (isConnect) {
+                sliderImage()
                 productDateList()
                 productRatingList()
                 productPopularityList()

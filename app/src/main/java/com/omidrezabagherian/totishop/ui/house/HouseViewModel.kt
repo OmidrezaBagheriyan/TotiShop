@@ -23,6 +23,9 @@ class HouseViewModel @Inject constructor(private val shopRepository: ShopReposit
     private val _productRatingList = MutableStateFlow<List<Product>>(emptyList())
     val productRatingList: StateFlow<List<Product>> = _productRatingList
 
+    private val _sliderImage = MutableSharedFlow<Product>()
+    val sliderImage: SharedFlow<Product> = _sliderImage
+
     private val _productError = MutableStateFlow(false)
     val productError: StateFlow<Boolean> = _productError
 
@@ -60,6 +63,17 @@ class HouseViewModel @Inject constructor(private val shopRepository: ShopReposit
                     _productRatingList.emit(responseProductList.body()!!)
                 } else {
                     _productError.emit(true)
+                }
+            }
+        }
+    }
+
+    fun getSliderImageList(id: Int) {
+        viewModelScope.launch {
+            val responseProduct = shopRepository.getProduct(id)
+            withContext(Dispatchers.Main) {
+                if (responseProduct.isSuccessful) {
+                    _sliderImage.emit(responseProduct.body()!!)
                 }
             }
         }
