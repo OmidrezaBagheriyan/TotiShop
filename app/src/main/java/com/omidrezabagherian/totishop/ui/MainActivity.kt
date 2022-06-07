@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
                         navController.navigate(R.id.bagFragment)
                     }
                     R.id.userTab -> {
-                        navController.navigate(R.id.userFragment)
+                        navController.navigate(R.id.loginFragment)
                     }
                 }
             }
