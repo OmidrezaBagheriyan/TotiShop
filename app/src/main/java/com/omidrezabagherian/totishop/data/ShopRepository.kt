@@ -1,6 +1,7 @@
 package com.omidrezabagherian.totishop.data
 
 import com.omidrezabagherian.totishop.data.remote.RemoteDataSource
+import com.omidrezabagherian.totishop.domain.model.createcustomer.CreateCustomer
 import com.omidrezabagherian.totishop.util.Values
 
 class ShopRepository(
@@ -27,4 +28,11 @@ class ShopRepository(
             perPage,
             search
         )
+
+    suspend fun setCustomer(createCustomer: CreateCustomer) = remoteDataSource.setCustomer(
+        createCustomer
+    )
+
+    suspend fun getCustomer(email:String) = remoteDataSource.getCustomer(email)
+
 }
