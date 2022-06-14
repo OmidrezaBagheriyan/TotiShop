@@ -2,7 +2,6 @@ package com.omidrezabagherian.totishop.data
 
 import com.omidrezabagherian.totishop.data.remote.RemoteDataSource
 import com.omidrezabagherian.totishop.domain.model.createcustomer.CreateCustomer
-import com.omidrezabagherian.totishop.util.Values
 
 class ShopRepository(
     private val remoteDataSource: RemoteDataSource

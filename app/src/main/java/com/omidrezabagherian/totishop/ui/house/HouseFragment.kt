@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.core.NetworkManager
 import com.omidrezabagherian.totishop.databinding.FragmentHouseBinding
-import com.omidrezabagherian.totishop.util.Values.DELAY_MS
-import com.omidrezabagherian.totishop.util.Values.PERIOD_MS
+import com.omidrezabagherian.totishop.core.Values.DELAY_MS
+import com.omidrezabagherian.totishop.core.Values.PERIOD_MS
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.*
