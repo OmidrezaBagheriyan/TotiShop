@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/graph_app.xml"
-    app:startDestination="@id/registerFragment">
+    app:startDestination="@id/houseFragment">
 
     <fragment
         android:id="@+id/houseFragment"
@@ -120,7 +120,9 @@
             app:destination="@id/settingFragment" />
         <action
             android:id="@+id/action_registerFragment_to_userFragment"
-            app:destination="@id/userFragment" />
+            app:destination="@id/userFragment"
+            app:popUpTo="@id/registerFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
 </navigation>

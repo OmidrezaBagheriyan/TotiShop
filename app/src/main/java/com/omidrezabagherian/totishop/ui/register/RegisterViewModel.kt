@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.omidrezabagherian.totishop.data.ShopRepository
 import com.omidrezabagherian.totishop.domain.model.createcustomer.CreateCustomer
 import com.omidrezabagherian.totishop.domain.model.customer.Customer
-import com.omidrezabagherian.totishop.domain.model.errorcreatecustomer.ErrorCreateCustomer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow

@@ -46,10 +46,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         checkInternet()
 
-        loginBinding.materialButtonLoginSubmit.setOnClickListener {
-            navController.navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
-        }
-
     }
 
     private fun dialogCheckInternet() {
