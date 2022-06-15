@@ -51,6 +51,12 @@ class RemoteDataSource @Inject constructor(private val shopService: ShopService)
         createCustomer
     )
 
+    suspend fun setCustomerError(createCustomer: CreateCustomer) = shopService.setCustomerError(
+        Values.CUSTOMER_KEY,
+        Values.CUSTOMER_SECRET,
+        createCustomer
+    )
+
     suspend fun getCustomer(email:String) = shopService.getCustomer(
         Values.CUSTOMER_KEY,
         Values.CUSTOMER_SECRET,

@@ -43,7 +43,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         loginBinding = FragmentLoginBinding.bind(view)
 
         registerPage()
+
         checkInternet()
+
+        loginBinding.materialButtonLoginSubmit.setOnClickListener {
+            navController.navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
+        }
 
     }
 
@@ -66,7 +71,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         val networkConnection = NetworkManager(requireContext())
         networkConnection.observe(viewLifecycleOwner) { isConnect ->
             if (isConnect) {
-                loginApp()
+                checkLoginApp()
             } else {
                 dialogCheckInternet()
             }
@@ -76,19 +81,19 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private fun checkLoginApp() {
         loginSharedPreferences =
             requireActivity().getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE)
+
         val id = loginSharedPreferences.getInt(ID_SHARED_PREFERENCES, 0)
         val email = loginSharedPreferences.getString(EMAIL_SHARED_PREFERENCES, "")
         val password = loginSharedPreferences.getString(PASSWORD_SHARED_PREFERENCES, "")
 
         if (email!!.isNotEmpty() && password!!.isNotEmpty()) {
             navController.navigate(LoginFragmentDirections.actionLoginFragmentToUserFragment(id))
+        } else {
+            loginApp()
         }
     }
 
     private fun loginApp() {
-
-        checkLoginApp()
-
         loginSharedPreferences =
             requireActivity().getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE)
 

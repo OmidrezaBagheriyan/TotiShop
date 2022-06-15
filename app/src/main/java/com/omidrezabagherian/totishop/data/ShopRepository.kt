@@ -32,6 +32,11 @@ class ShopRepository(
         createCustomer
     )
 
-    suspend fun getCustomer(email:String) = remoteDataSource.getCustomer(email)
+    suspend fun setCustomerError(createCustomer: CreateCustomer) =
+        remoteDataSource.setCustomerError(
+            createCustomer
+        )
+
+    suspend fun getCustomer(email: String) = remoteDataSource.getCustomer(email)
 
 }

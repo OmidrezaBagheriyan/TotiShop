@@ -3,6 +3,7 @@ package com.omidrezabagherian.totishop.data.remote
 import com.omidrezabagherian.totishop.domain.model.category.Category
 import com.omidrezabagherian.totishop.domain.model.createcustomer.CreateCustomer
 import com.omidrezabagherian.totishop.domain.model.customer.Customer
+import com.omidrezabagherian.totishop.domain.model.errorcreatecustomer.ErrorCreateCustomer
 import com.omidrezabagherian.totishop.domain.model.product.Product
 import retrofit2.Response
 import retrofit2.http.*
@@ -56,6 +57,13 @@ interface ShopService {
         @Query("consumer_secret") consumerSecret: String,
         @Body createCustomer: CreateCustomer
     ): Response<Customer>
+
+    @POST("customers")
+    suspend fun setCustomerError(
+        @Query("consumer_key") consumerKey: String,
+        @Query("consumer_secret") consumerSecret: String,
+        @Body createCustomer: CreateCustomer
+    ): Response<ErrorCreateCustomer>
 
     @GET("customers")
     suspend fun getCustomer(
