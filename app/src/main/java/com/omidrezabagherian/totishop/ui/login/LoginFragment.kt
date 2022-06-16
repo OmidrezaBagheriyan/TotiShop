@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
@@ -16,16 +15,13 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.core.NetworkManager
-import com.omidrezabagherian.totishop.core.Values
 import com.omidrezabagherian.totishop.core.Values.EMAIL_SHARED_PREFERENCES
 import com.omidrezabagherian.totishop.core.Values.ID_SHARED_PREFERENCES
 import com.omidrezabagherian.totishop.core.Values.PASSWORD_SHARED_PREFERENCES
 import com.omidrezabagherian.totishop.core.Values.SHARED_PREFERENCES
 import com.omidrezabagherian.totishop.databinding.FragmentLoginBinding
-import com.omidrezabagherian.totishop.domain.model.createcustomer.CreateCustomer
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import java.util.HashMap
 
 @AndroidEntryPoint
 class LoginFragment : Fragment(R.layout.fragment_login) {
@@ -96,7 +92,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         val loginSharedPreferencesEditor = loginSharedPreferences.edit()
 
         loginBinding.materialButtonLoginSubmit.setOnClickListener {
-            loginViewModel.getCustomer(loginBinding.textInputEditTextLoginEmail.text.toString())
+            loginViewModel.getCustomerByEmail(loginBinding.textInputEditTextLoginEmail.text.toString())
             viewLifecycleOwner.lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     loginViewModel.customerInfo.collect { customer ->

@@ -1,4 +1,4 @@
-package com.omidrezabagherian.totishop.ui.login
+package com.omidrezabagherian.totishop.ui.user
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,21 +15,21 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val showRepository: ShopRepository) :
+class UserViewModel @Inject constructor(private val showRepository: ShopRepository) :
     ViewModel() {
 
-    private val _customerInfo = MutableSharedFlow<List<Customer>>()
-    val customerInfo: SharedFlow<List<Customer>> = _customerInfo
+    private val _customer = MutableSharedFlow<Customer>()
+    val customer: SharedFlow<Customer> = _customer
 
     private val _customerError = MutableStateFlow(false)
     val customerError: StateFlow<Boolean> = _customerError
 
-    fun getCustomerByEmail(email: String) {
+    fun getCustomer(id: Int) {
         viewModelScope.launch {
-            val responseCustomer = showRepository.getCustomerByEmail(email)
+            val responseCustomer = showRepository.getCustomer(id)
             withContext(Dispatchers.Main) {
                 if (responseCustomer.isSuccessful) {
-                    _customerInfo.emit(responseCustomer.body()!!)
+                    _customer.emit(responseCustomer.body()!!)
                 } else {
                     _customerError.emit(true)
                 }

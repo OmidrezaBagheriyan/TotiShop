@@ -18,11 +18,11 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:textColor="@color/black_application"
-                android:layout_width="wrap_content"
                 style="@style/TextViewMediumCustom"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/text_tab_user"
+                android:textColor="@color/black_application"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -33,12 +33,124 @@
                 android:id="@+id/buttonUserOpenSetting"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:src="@drawable/ic_setting"
                 android:layout_margin="12dp"
+                android:contentDescription="@string/text_tab_setting"
+                android:src="@drawable/ic_setting"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:contentDescription="@string/text_tab_setting" />
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardViewUser">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/textViewUserNameAndFamilyTitle"
+                style="@style/TextViewMediumCustom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="نام و نام خانوادگی:"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewUserNameAndFamily"
+                style="@style/TextViewRegularCustom"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:gravity="center"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@+id/textViewUserNameAndFamilyTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewUserEmailTitle"
+                style="@style/TextViewMediumCustom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="ایمیل:"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewUserNameAndFamilyTitle" />
+
+            <TextView
+                android:id="@+id/textViewUserEmail"
+                style="@style/TextViewRegularCustom"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:gravity="center"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@+id/textViewUserEmailTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewUserNameAndFamily" />
+
+            <TextView
+                android:id="@+id/textViewUserNumberPhoneTitle"
+                style="@style/TextViewMediumCustom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="شماره همراه:"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewUserEmailTitle" />
+
+            <TextView
+                android:id="@+id/textViewUserNumberPhone"
+                style="@style/TextViewRegularCustom"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:gravity="center"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@+id/textViewUserNumberPhoneTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewUserEmail" />
+
+            <TextView
+                android:id="@+id/textViewUserAddressTitle"
+                style="@style/TextViewMediumCustom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="آدرس:"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewUserNumberPhoneTitle" />
+
+            <TextView
+                android:id="@+id/textViewUserAddress"
+                style="@style/TextViewRegularCustom"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:gravity="center"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@+id/textViewUserAddressTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewUserNumberPhone" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -46,12 +158,12 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/materialButtonExit"
-        android:layout_margin="8dp"
         style="@style/TextViewMediumCustom"
-        android:textSize="14sp"
-        android:text="خروج از اکانت"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="خروج از اکانت"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -52,9 +52,15 @@ class RemoteDataSource @Inject constructor(private val shopService: ShopService)
     )
 
 
-    suspend fun getCustomer(email:String) = shopService.getCustomer(
+    suspend fun getCustomerByEmail(email:String) = shopService.getCustomerByEmail(
         Values.CUSTOMER_KEY,
         Values.CUSTOMER_SECRET,
         email
+    )
+
+    suspend fun getCustomer(id:Int) = shopService.getCustomer(
+        id,
+        Values.CUSTOMER_KEY,
+        Values.CUSTOMER_SECRET
     )
 }

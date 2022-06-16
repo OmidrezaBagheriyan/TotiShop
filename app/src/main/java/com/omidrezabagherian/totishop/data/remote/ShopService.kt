@@ -58,9 +58,16 @@ interface ShopService {
     ): Response<Customer>
 
     @GET("customers")
-    suspend fun getCustomer(
+    suspend fun getCustomerByEmail(
         @Query("consumer_key") consumerKey: String,
         @Query("consumer_secret") consumerSecret: String,
         @Query("email") email: String
     ): Response<List<Customer>>
+
+    @GET("customers/{id}")
+    suspend fun getCustomer(
+        @Path("id") id: Int,
+        @Query("consumer_key") consumerKey: String,
+        @Query("consumer_secret") consumerSecret: String
+    ): Response<Customer>
 }
