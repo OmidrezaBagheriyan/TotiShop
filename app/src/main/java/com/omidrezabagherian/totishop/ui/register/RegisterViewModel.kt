@@ -33,6 +33,7 @@ class RegisterViewModel @Inject constructor(private val showRepository: ShopRepo
             val responseAddCustomer = showRepository.setCustomer(createCustomer)
             withContext(Dispatchers.Main) {
                 if (responseAddCustomer.code() == 201) {
+                    _errorCustomerInfo.emit(false)
                     if (responseAddCustomer.isSuccessful) {
                         _addCustomerInfo.emit(responseAddCustomer.body()!!)
                     } else {

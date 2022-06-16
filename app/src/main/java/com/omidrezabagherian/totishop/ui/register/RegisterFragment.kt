@@ -82,12 +82,14 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 email = registerBinding.textInputEditTextRegisterEmail.text.toString(),
                 username = registerBinding.textInputEditTextRegisterUsername.text.toString(),
                 billing = Billing(
+                    address_1 = registerBinding.textInputEditTextRegisterAddress.text.toString(),
                     first_name = registerBinding.textInputEditTextRegisterName.text.toString(),
                     last_name = registerBinding.textInputEditTextRegisterFamily.text.toString(),
                     email = registerBinding.textInputEditTextRegisterEmail.text.toString(),
                     phone = registerBinding.textInputEditTextRegisterNumberPhone.text.toString()
                 ),
                 shipping = Shipping(
+                    address_1 = registerBinding.textInputEditTextRegisterAddress.text.toString(),
                     first_name = registerBinding.textInputEditTextRegisterName.text.toString(),
                     last_name = registerBinding.textInputEditTextRegisterFamily.text.toString()
                 )
