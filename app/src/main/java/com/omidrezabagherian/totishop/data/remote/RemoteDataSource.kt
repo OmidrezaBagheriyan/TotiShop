@@ -78,10 +78,10 @@ class RemoteDataSource @Inject constructor(private val shopService: ShopService)
         Values.CUSTOMER_SECRET
     )
 
-    suspend fun putOrders(id: Int, lineItem: LineItem) = shopService.putOrders(
+    suspend fun putOrders(id: Int, createOrder: CreateOrder) = shopService.putOrders(
         id,
         Values.CUSTOMER_KEY,
         Values.CUSTOMER_SECRET,
-        lineItem
+        createOrder
     )
 }

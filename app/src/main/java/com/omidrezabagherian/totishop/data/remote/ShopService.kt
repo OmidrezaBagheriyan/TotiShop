@@ -93,6 +93,6 @@ interface ShopService {
         @Path("id") id: Int,
         @Query("consumer_key") consumerKey: String,
         @Query("consumer_secret") consumerSecret: String,
-        @Body lineItem: LineItem
+        @Body createOrder: CreateOrder
     ): Response<Order>
 }

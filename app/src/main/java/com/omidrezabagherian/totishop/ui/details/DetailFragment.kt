@@ -1,9 +1,12 @@
 package com.omidrezabagherian.totishop.ui.details
 
 import android.app.AlertDialog
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
@@ -18,9 +21,15 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.core.NetworkManager
+import com.omidrezabagherian.totishop.core.Values
 import com.omidrezabagherian.totishop.databinding.FragmentDetailsBinding
+import com.omidrezabagherian.totishop.domain.model.createorder.Billing
+import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
+import com.omidrezabagherian.totishop.domain.model.createorder.Shipping
+import com.omidrezabagherian.totishop.domain.model.order.LineItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import kotlin.math.log
 
 @AndroidEntryPoint
 class DetailFragment : Fragment(R.layout.fragment_details) {
@@ -28,6 +37,7 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
     private lateinit var detailsBinding: FragmentDetailsBinding
     private val detailViewModel: DetailViewModel by viewModels()
     private val detailArgs: DetailFragmentArgs by navArgs()
+    private lateinit var detailSharedPreferences: SharedPreferences
     private val navController by lazy {
         findNavController()
     }
@@ -37,6 +47,11 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
         super.onViewCreated(view, savedInstanceState)
 
         detailsBinding = FragmentDetailsBinding.bind(view)
+
+        detailSharedPreferences = requireActivity().getSharedPreferences(
+            Values.SHARED_PREFERENCES,
+            Context.MODE_PRIVATE
+        )
 
         checkInternet()
 
@@ -64,7 +79,7 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
         networkConnection.observe(viewLifecycleOwner) { isConnect ->
             if (isConnect) {
                 detailViewModel.getProduct(detailArgs.id)
-
+                getListItems()
                 showDetails()
             } else {
                 dialogCheckInternet()
@@ -112,6 +127,92 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
                 }
             }
         }
+    }
+
+    private fun getListItems() {
+        detailViewModel.getOrders(
+            detailSharedPreferences.getInt(
+                Values.ID_ORDER_SHARED_PREFERENCES,
+                0
+            )
+        )
+
+        val value = mutableListOf<LineItem>()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                detailViewModel.getProductBagList.collect {
+                    value.addAll(it.line_items)
+
+                    for (i in it.line_items) {
+                        if (i.product_id == detailArgs.id) {
+                            detailsBinding.buttonDetailAddToBag.visibility = View.GONE
+                        }
+                    }
+                }
+            }
+        }
+
+        detailsBinding.buttonDetailAddToBag.setOnClickListener {
+            val addValue =
+                mutableListOf<com.omidrezabagherian.totishop.domain.model.createorder.LineItem>()
+            /*for (i in value) {
+                addValue.add(
+                    com.omidrezabagherian.totishop.domain.model.createorder.LineItem(
+                        i.product_id,
+                        i.quantity
+                    )
+                )
+            }*/
+
+            Log.i(
+                "logLineId", detailSharedPreferences.getInt(
+                    Values.ID_ORDER_SHARED_PREFERENCES,
+                    0
+                ).toString()
+            )
+
+            addValue.add(
+                com.omidrezabagherian.totishop.domain.model.createorder.LineItem(
+                    detailArgs.id,
+                    1
+                )
+            )
+
+            val createOrder = CreateOrder(
+                billing = Billing(
+                    address_1 = "کرج - فردیس - خیابان داوری - کوچه عباسی - پلاک ۳۰ - واحد ۳",
+                    email = "omidrezabagherian@yahoo.com",
+                    first_name = "اميدرضا",
+                    last_name = "باقریان اسفندانی",
+                    phone = "09028501761"
+                ),
+                shipping = Shipping(
+                    address_1 = "کرج - فردیس - خیابان داوری - کوچه عباسی - پلاک ۳۰ - واحد ۳",
+                    first_name = "اميدرضا",
+                    last_name = "باقریان اسفندانی",
+                ),
+                line_items = addValue,
+                shipping_lines = emptyList()
+            )
+
+            detailViewModel.putOrders(
+                detailSharedPreferences.getInt(
+                    Values.ID_ORDER_SHARED_PREFERENCES,
+                    0
+                ), createOrder
+            )
+
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    detailViewModel.getProductBagList.collect {
+                        Log.i("logLineItem", it.toString())
+                    }
+                }
+            }
+
+        }
+
     }
 
 }

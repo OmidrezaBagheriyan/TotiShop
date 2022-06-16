@@ -45,6 +45,7 @@ class ShopRepository(
 
     suspend fun getOrders(id: Int) = remoteDataSource.getOrders(id)
 
-    suspend fun putOrders(id: Int, lineItem: LineItem) = remoteDataSource.putOrders(id, lineItem)
+    suspend fun putOrders(id: Int, createOrder: CreateOrder) =
+        remoteDataSource.putOrders(id, createOrder)
 
 }

@@ -16,11 +16,8 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class BagViewModel @Inject constructor(private val showRepository: ShopRepository) :
+class BagViewModel @Inject constructor(private val shopRepository: ShopRepository) :
     ViewModel() {
-
-    private val _setProductBagList = MutableSharedFlow<Order>()
-    val setProductBagList: SharedFlow<Order> = _setProductBagList
 
     private val _getProductBagList = MutableSharedFlow<Order>()
     val getProductBagList: SharedFlow<Order> = _getProductBagList
@@ -28,22 +25,9 @@ class BagViewModel @Inject constructor(private val showRepository: ShopRepositor
     private val _orderError = MutableStateFlow(false)
     val orderError: StateFlow<Boolean> = _orderError
 
-    fun setOrders(createOrder: CreateOrder) {
-        viewModelScope.launch {
-            val responseProductBagList = showRepository.setOrders(createOrder)
-            withContext(Dispatchers.Main) {
-                if (responseProductBagList.isSuccessful) {
-                    _setProductBagList.emit(responseProductBagList.body()!!)
-                } else {
-                    _orderError.emit(true)
-                }
-            }
-        }
-    }
-
     fun getOrders(id: Int) {
         viewModelScope.launch {
-            val responseProductBagList = showRepository.getOrders(id)
+            val responseProductBagList = shopRepository.getOrders(id)
             withContext(Dispatchers.Main) {
                 if (responseProductBagList.isSuccessful) {
                     _getProductBagList.emit(responseProductBagList.body()!!)

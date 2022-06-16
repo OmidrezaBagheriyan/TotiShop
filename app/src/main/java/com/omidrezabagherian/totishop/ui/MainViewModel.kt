@@ -3,7 +3,9 @@ package com.omidrezabagherian.totishop.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.omidrezabagherian.totishop.data.ShopRepository
+import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
 import com.omidrezabagherian.totishop.domain.model.customer.Customer
+import com.omidrezabagherian.totishop.domain.model.order.Order
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -13,7 +15,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val showRepository: ShopRepository) :
+class MainViewModel @Inject constructor(private val shopRepository: ShopRepository) :
     ViewModel() {
 
     private val _isLoading = MutableStateFlow(true)
@@ -21,6 +23,9 @@ class MainViewModel @Inject constructor(private val showRepository: ShopReposito
 
     private val _customer = MutableSharedFlow<Customer>()
     val customer: SharedFlow<Customer> = _customer
+
+    private val _setProductBagList = MutableSharedFlow<Order>()
+    val setProductBagList: SharedFlow<Order> = _setProductBagList
 
     private val _customerError = MutableStateFlow(false)
     val customerError: StateFlow<Boolean> = _customerError
@@ -32,9 +37,23 @@ class MainViewModel @Inject constructor(private val showRepository: ShopReposito
         }
     }
 
+
+    fun setOrders(createOrder: CreateOrder) {
+        viewModelScope.launch {
+            val responseProductBagList = shopRepository.setOrders(createOrder)
+            withContext(Dispatchers.Main) {
+                if (responseProductBagList.isSuccessful) {
+                    _setProductBagList.emit(responseProductBagList.body()!!)
+                } else {
+                    _customerError.emit(true)
+                }
+            }
+        }
+    }
+
     fun getCustomer(id: Int) {
         viewModelScope.launch {
-            val responseCustomer = showRepository.getCustomer(id)
+            val responseCustomer = shopRepository.getCustomer(id)
             withContext(Dispatchers.Main) {
                 if (responseCustomer.isSuccessful) {
                     _customer.emit(responseCustomer.body()!!)

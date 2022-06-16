@@ -42,24 +42,12 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
 
         mainViewModel.getCustomer(bagSharedPreferences.getInt(Values.ID_SHARED_PREFERENCES, 0))
 
-        val createOrder = CreateOrder(
-            billing = Billing(
-                address_1 = "کرج - فردیس - خیابان داوری - کوچه عباسی - پلاک ۳۰ - واحد ۳",
-                email = "omidrezabagherian@yahoo.com",
-                first_name = "اميدرضا",
-                last_name = "باقریان اسفندانی",
-                phone = "09028501761"
-            ),
-            shipping = Shipping(
-                address_1 = "کرج - فردیس - خیابان داوری - کوچه عباسی - پلاک ۳۰ - واحد ۳",
-                first_name = "اميدرضا",
-                last_name = "باقریان اسفندانی",
-            ),
-            line_items = emptyList(),
-            shipping_lines = emptyList()
+        bagViewModel.getOrders(
+            bagSharedPreferences.getInt(
+                Values.ID_ORDER_SHARED_PREFERENCES,
+                0
+            )
         )
-
-        bagViewModel.setOrders(createOrder)
 
         bagBinding.recyclerViewBagShop.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -68,53 +56,21 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
 
         })
 
-        if (bagSharedPreferences.getInt(Values.ID_ORDER_SHARED_PREFERENCES, 0) == 0) {
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    bagViewModel.setProductBagList.collect {
-                        bagAdapter.submitList(it.line_items)
-                        bagBinding.recyclerViewBagShop.adapter = bagAdapter
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                bagViewModel.getProductBagList.collect {
+                    Log.i(
+                        "lineItems",
+                        it.line_items.toString()
+                    )
 
-                        Log.i(
-                            "lineItems",
-                            it.line_items.toString()
-                        )
+                    bagAdapter.submitList(it.line_items)
+                    bagBinding.recyclerViewBagShop.adapter = bagAdapter
 
-                        bagSharedPreferencesEditor.putInt(Values.ID_ORDER_SHARED_PREFERENCES, it.id)
-                        bagSharedPreferencesEditor.commit()
-                        bagSharedPreferencesEditor.apply()
-
-                        Log.i(
-                            "idOrder0",
-                            it.id.toString()
-                        )
-                    }
-                }
-            }
-        } else {
-            bagViewModel.getOrders(
-                bagSharedPreferences.getInt(
-                    Values.ID_ORDER_SHARED_PREFERENCES,
-                    0
-                )
-            )
-
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    bagViewModel.getProductBagList.collect {
-                        Log.i(
-                            "lineItems",
-                            it.line_items.toString()
-                        )
-
-                        bagAdapter.submitList(it.line_items)
-                        bagBinding.recyclerViewBagShop.adapter = bagAdapter
-
-                        Log.i(
-                            "idOrder0",
-                            it.id.toString()
-                        )
-                    }
+                    Log.i(
+                        "idOrder0",
+                        it.id.toString()
+                    )
                 }
             }
         }
