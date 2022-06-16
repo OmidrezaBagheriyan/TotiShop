@@ -8,7 +8,10 @@ object Values {
     const val PERIOD_MS: Long = 5000
     const val SHARED_PREFERENCES = "TotiApp"
     const val ID_SHARED_PREFERENCES = "ID"
+    const val NAME_SHARED_PREFERENCES = "Name"
+    const val FAMILY_SHARED_PREFERENCES = "Family"
     const val EMAIL_SHARED_PREFERENCES = "Email"
+    const val Address_SHARED_PREFERENCES = "Address"
     const val PASSWORD_SHARED_PREFERENCES = "Password"
     const val ID_ORDER_SHARED_PREFERENCES = "IDOrder"
 

@@ -81,14 +81,14 @@ interface ShopService {
         @Body createOrder: CreateOrder
     ): Response<Order>
 
-    @GET("orders")
+    @GET("orders/{id}")
     suspend fun getOrders(
         @Path("id") id: Int,
         @Query("consumer_key") consumerKey: String,
         @Query("consumer_secret") consumerSecret: String,
     ): Response<Order>
 
-    @PUT("orders")
+    @PUT("orders/{id}")
     suspend fun putOrders(
         @Path("id") id: Int,
         @Query("consumer_key") consumerKey: String,

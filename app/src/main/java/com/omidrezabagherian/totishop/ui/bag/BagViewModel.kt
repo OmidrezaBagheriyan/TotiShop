@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.omidrezabagherian.totishop.data.ShopRepository
 import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
 import com.omidrezabagherian.totishop.domain.model.order.Order
-import com.omidrezabagherian.totishop.domain.model.product.Product
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -20,18 +19,34 @@ import javax.inject.Inject
 class BagViewModel @Inject constructor(private val showRepository: ShopRepository) :
     ViewModel() {
 
-    private val _productBagList = MutableSharedFlow<Order>()
-    val productBagList: SharedFlow<Order> = _productBagList
+    private val _setProductBagList = MutableSharedFlow<Order>()
+    val setProductBagList: SharedFlow<Order> = _setProductBagList
+
+    private val _getProductBagList = MutableSharedFlow<Order>()
+    val getProductBagList: SharedFlow<Order> = _getProductBagList
 
     private val _orderError = MutableStateFlow(false)
     val orderError: StateFlow<Boolean> = _orderError
 
-    fun getProductBagList(createOrder: CreateOrder) {
+    fun setOrders(createOrder: CreateOrder) {
         viewModelScope.launch {
             val responseProductBagList = showRepository.setOrders(createOrder)
             withContext(Dispatchers.Main) {
                 if (responseProductBagList.isSuccessful) {
-                    _productBagList.emit(responseProductBagList.body()!!)
+                    _setProductBagList.emit(responseProductBagList.body()!!)
+                } else {
+                    _orderError.emit(true)
+                }
+            }
+        }
+    }
+
+    fun getOrders(id: Int) {
+        viewModelScope.launch {
+            val responseProductBagList = showRepository.getOrders(id)
+            withContext(Dispatchers.Main) {
+                if (responseProductBagList.isSuccessful) {
+                    _getProductBagList.emit(responseProductBagList.body()!!)
                 } else {
                     _orderError.emit(true)
                 }

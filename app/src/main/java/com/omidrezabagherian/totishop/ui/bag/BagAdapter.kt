@@ -18,10 +18,12 @@ class BagAdapter(private val delete: (LineItem) -> Unit) :
         private val delete: (LineItem) -> Unit
     ) : RecyclerView.ViewHolder(itemBagProductBinding.root) {
         fun bind(lineItem: LineItem) {
-            Glide.with(itemBagProductBinding.root).load(lineItem.meta_data[0].value)
-                .into(itemBagProductBinding.imageViewListProduct)
+            if (lineItem.meta_data.isNotEmpty()){
+                Glide.with(itemBagProductBinding.root).load(lineItem.meta_data[0].value)
+                    .into(itemBagProductBinding.imageViewListProduct)
+            }
             itemBagProductBinding.textViewListProductName.text = lineItem.name
-            itemBagProductBinding.textViewListProductOrdinary.text = lineItem.price.toString()
+            itemBagProductBinding.textViewListProductOrdinary.text = "${lineItem.price.toInt()} تومان"
             itemBagProductBinding.textViewBagQuantity.text = lineItem.quantity.toString()
             itemBagProductBinding.imageViewBagQuantityPlusOne.setOnClickListener {
                 Toast.makeText(itemBagProductBinding.root.context, "+1", Toast.LENGTH_SHORT).show()
