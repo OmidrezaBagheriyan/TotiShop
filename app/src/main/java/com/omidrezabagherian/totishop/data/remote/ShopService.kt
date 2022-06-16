@@ -2,7 +2,10 @@ package com.omidrezabagherian.totishop.data.remote
 
 import com.omidrezabagherian.totishop.domain.model.category.Category
 import com.omidrezabagherian.totishop.domain.model.createcustomer.CreateCustomer
+import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
+import com.omidrezabagherian.totishop.domain.model.createorder.LineItem
 import com.omidrezabagherian.totishop.domain.model.customer.Customer
+import com.omidrezabagherian.totishop.domain.model.order.Order
 import com.omidrezabagherian.totishop.domain.model.product.Product
 import retrofit2.Response
 import retrofit2.http.*
@@ -70,4 +73,26 @@ interface ShopService {
         @Query("consumer_key") consumerKey: String,
         @Query("consumer_secret") consumerSecret: String
     ): Response<Customer>
+
+    @POST("orders")
+    suspend fun setOrders(
+        @Query("consumer_key") consumerKey: String,
+        @Query("consumer_secret") consumerSecret: String,
+        @Body createOrder: CreateOrder
+    ): Response<Order>
+
+    @GET("orders")
+    suspend fun getOrders(
+        @Path("id") id: Int,
+        @Query("consumer_key") consumerKey: String,
+        @Query("consumer_secret") consumerSecret: String,
+    ): Response<Order>
+
+    @PUT("orders")
+    suspend fun putOrders(
+        @Path("id") id: Int,
+        @Query("consumer_key") consumerKey: String,
+        @Query("consumer_secret") consumerSecret: String,
+        @Body lineItem: LineItem
+    ): Response<Order>
 }

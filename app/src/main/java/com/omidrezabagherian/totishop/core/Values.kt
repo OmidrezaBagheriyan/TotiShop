@@ -7,8 +7,9 @@ object Values {
     const val DELAY_MS: Long = 500
     const val PERIOD_MS: Long = 5000
     const val SHARED_PREFERENCES = "TotiApp"
-    const val ID_SHARED_PREFERENCES = "id"
+    const val ID_SHARED_PREFERENCES = "ID"
     const val EMAIL_SHARED_PREFERENCES = "Email"
     const val PASSWORD_SHARED_PREFERENCES = "Password"
+    const val ID_ORDER_SHARED_PREFERENCES = "IDOrder"
 
 }

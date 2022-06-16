@@ -1,7 +1,10 @@
 package com.omidrezabagherian.totishop.data
 
+import com.omidrezabagherian.totishop.core.Values
 import com.omidrezabagherian.totishop.data.remote.RemoteDataSource
 import com.omidrezabagherian.totishop.domain.model.createcustomer.CreateCustomer
+import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
+import com.omidrezabagherian.totishop.domain.model.createorder.LineItem
 
 class ShopRepository(
     private val remoteDataSource: RemoteDataSource
@@ -35,5 +38,13 @@ class ShopRepository(
     suspend fun getCustomerByEmail(email: String) = remoteDataSource.getCustomerByEmail(email)
 
     suspend fun getCustomer(id: Int) = remoteDataSource.getCustomer(id)
+
+    suspend fun setOrders(createOrder: CreateOrder) = remoteDataSource.setOrders(
+        createOrder
+    )
+
+    suspend fun getOrders(id: Int) = remoteDataSource.getOrders(id)
+
+    suspend fun putOrders(id: Int, lineItem: LineItem) = remoteDataSource.putOrders(id, lineItem)
 
 }

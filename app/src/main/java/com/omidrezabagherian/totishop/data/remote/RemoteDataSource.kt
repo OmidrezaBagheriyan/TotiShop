@@ -2,6 +2,8 @@ package com.omidrezabagherian.totishop.data.remote
 
 import com.omidrezabagherian.totishop.domain.model.createcustomer.CreateCustomer
 import com.omidrezabagherian.totishop.core.Values
+import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
+import com.omidrezabagherian.totishop.domain.model.createorder.LineItem
 import javax.inject.Inject
 
 class RemoteDataSource @Inject constructor(private val shopService: ShopService) {
@@ -52,15 +54,34 @@ class RemoteDataSource @Inject constructor(private val shopService: ShopService)
     )
 
 
-    suspend fun getCustomerByEmail(email:String) = shopService.getCustomerByEmail(
+    suspend fun getCustomerByEmail(email: String) = shopService.getCustomerByEmail(
         Values.CUSTOMER_KEY,
         Values.CUSTOMER_SECRET,
         email
     )
 
-    suspend fun getCustomer(id:Int) = shopService.getCustomer(
+    suspend fun getCustomer(id: Int) = shopService.getCustomer(
         id,
         Values.CUSTOMER_KEY,
         Values.CUSTOMER_SECRET
+    )
+
+    suspend fun setOrders(createOrder: CreateOrder) = shopService.setOrders(
+        Values.CUSTOMER_KEY,
+        Values.CUSTOMER_SECRET,
+        createOrder
+    )
+
+    suspend fun getOrders(id: Int) = shopService.getOrders(
+        id,
+        Values.CUSTOMER_KEY,
+        Values.CUSTOMER_SECRET
+    )
+
+    suspend fun putOrders(id: Int, lineItem: LineItem) = shopService.putOrders(
+        id,
+        Values.CUSTOMER_KEY,
+        Values.CUSTOMER_SECRET,
+        lineItem
     )
 }

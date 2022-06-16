@@ -4,12 +4,10 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -18,6 +16,7 @@ import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.core.NetworkManager
 import com.omidrezabagherian.totishop.core.Values
 import com.omidrezabagherian.totishop.databinding.FragmentUserBinding
+import com.omidrezabagherian.totishop.ui.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -25,7 +24,7 @@ import kotlinx.coroutines.launch
 class UserFragment : Fragment(R.layout.fragment_user) {
 
     private lateinit var userBinding: FragmentUserBinding
-    private val userViewModel: UserViewModel by viewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
     private lateinit var userSharedPreferences: SharedPreferences
     private val navController by lazy {
         findNavController()
@@ -71,11 +70,11 @@ class UserFragment : Fragment(R.layout.fragment_user) {
     }
 
     private fun showCustomer() {
-        userViewModel.getCustomer(userSharedPreferences.getInt(Values.ID_SHARED_PREFERENCES, 0))
+        mainViewModel.getCustomer(userSharedPreferences.getInt(Values.ID_SHARED_PREFERENCES, 0))
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                userViewModel.customer.collect { customer ->
+                mainViewModel.customer.collect { customer ->
                     userBinding.textViewUserNameAndFamily.text =
                         "${customer.first_name} ${customer.last_name}"
                     userBinding.textViewUserEmail.text = customer.billing.email
