@@ -32,16 +32,12 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     private val navController by lazy {
         findNavController()
     }
-    private var orderby = "title"
+    private var orderby = "price"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         searchBinding = FragmentSearchBinding.bind(view)
-
-        val bottomNavigation: BottomNavigationView =
-            requireActivity().findViewById(R.id.bottomNavigationViewMain)
-        bottomNavigation.visibility = View.GONE
 
         checkInternet()
 
@@ -93,31 +89,31 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             customDialog.show()
 
             buttonCheckInternet.setOnClickListener {
-                val word = when (radioGroup.checkedRadioButtonId) {
-                    0 -> {
+
+                orderby = when (radioGroup.checkedRadioButtonId) {
+                    R.id.orderByDate -> {
+                        radioGroup
                         "date"
                     }
-                    1 -> {
+                    R.id.orderByID -> {
                         "id"
                     }
-                    2 -> {
+                    R.id.orderByTitle -> {
                         "title"
                     }
-                    3 -> {
+                    R.id.orderByPrice -> {
                         "price"
                     }
-                    4 -> {
+                    R.id.orderByPopularity -> {
                         "popularity"
                     }
-                    5 -> {
+                    R.id.orderByRating -> {
                         "rating"
                     }
                     else -> {
-                        "title"
+                        "price"
                     }
                 }
-
-                orderby = word
 
                 customDialog.dismiss()
                 checkInternet()
@@ -129,7 +125,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         searchBinding.searchViewSearchProduct.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                Log.i("TagFilter",orderby)
 
                 searchProduct(query.toString(), orderby)
                 return false
@@ -142,7 +137,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         })
     }
 
-    private fun searchProduct(query: String, orderby:String) {
+    private fun searchProduct(query: String, orderby: String) {
         val searchAdapter = SearchAdapter(details = { product ->
             navController.navigate(
                 SearchFragmentDirections.actionSearchFragmentToDetailFragment(

@@ -37,10 +37,6 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
 
         houseBinding = FragmentHouseBinding.bind(view)
 
-        val bottomNavigation: BottomNavigationView =
-            requireActivity().findViewById(R.id.bottomNavigationViewMain)
-        bottomNavigation.visibility = View.VISIBLE
-
         searchPage()
         checkInternet()
 

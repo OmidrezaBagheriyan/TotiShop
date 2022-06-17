@@ -85,13 +85,16 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
         bagBinding.textViewBagPriceAll.text = "${price.toInt().toString()} تومان"
 
         bagBinding.materialButtonContinuationPay.setOnClickListener {
-            bagSharedPreferencesEditor.clear()
+            bagSharedPreferencesEditor.putInt(Values.ID_ORDER_SHARED_PREFERENCES, 0)
             bagSharedPreferencesEditor.commit()
             bagSharedPreferencesEditor.apply()
 
             val createOrder = CreateOrder(
                 billing = com.omidrezabagherian.totishop.domain.model.createorder.Billing(
-                    address_1 = bagSharedPreferences.getString(Values.Address_SHARED_PREFERENCES, "")
+                    address_1 = bagSharedPreferences.getString(
+                        Values.Address_SHARED_PREFERENCES,
+                        ""
+                    )
                         .toString(),
                     email = bagSharedPreferences.getString(Values.EMAIL_SHARED_PREFERENCES, "")
                         .toString(),
@@ -103,7 +106,10 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
                         .toString()
                 ),
                 shipping = com.omidrezabagherian.totishop.domain.model.createorder.Shipping(
-                    address_1 = bagSharedPreferences.getString(Values.Address_SHARED_PREFERENCES, "")
+                    address_1 = bagSharedPreferences.getString(
+                        Values.Address_SHARED_PREFERENCES,
+                        ""
+                    )
                         .toString(),
                     first_name = bagSharedPreferences.getString(Values.NAME_SHARED_PREFERENCES, "")
                         .toString(),
@@ -120,7 +126,10 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
                 viewLifecycleOwner.lifecycleScope.launch {
                     viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                         mainViewModel.setProductBagList.collect {
-                            bagSharedPreferencesEditor.putInt(Values.ID_ORDER_SHARED_PREFERENCES, it.id)
+                            bagSharedPreferencesEditor.putInt(
+                                Values.ID_ORDER_SHARED_PREFERENCES,
+                                it.id
+                            )
                             bagSharedPreferencesEditor.commit()
                             bagSharedPreferencesEditor.apply()
                         }
@@ -147,7 +156,10 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
         val bagAdapter = BagAdapter(add = {
             val updateOrder = UpdateOrder(
                 billing = Billing(
-                    address_1 = bagSharedPreferences.getString(Values.Address_SHARED_PREFERENCES, "")
+                    address_1 = bagSharedPreferences.getString(
+                        Values.Address_SHARED_PREFERENCES,
+                        ""
+                    )
                         .toString(),
                     email = bagSharedPreferences.getString(Values.EMAIL_SHARED_PREFERENCES, "")
                         .toString(),
@@ -159,7 +171,10 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
                         .toString()
                 ),
                 shipping = Shipping(
-                    address_1 = bagSharedPreferences.getString(Values.Address_SHARED_PREFERENCES, "")
+                    address_1 = bagSharedPreferences.getString(
+                        Values.Address_SHARED_PREFERENCES,
+                        ""
+                    )
                         .toString(),
                     first_name = bagSharedPreferences.getString(Values.NAME_SHARED_PREFERENCES, "")
                         .toString(),
@@ -188,7 +203,10 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
         }, nag = {
             val updateOrder = UpdateOrder(
                 billing = Billing(
-                    address_1 = bagSharedPreferences.getString(Values.Address_SHARED_PREFERENCES, "")
+                    address_1 = bagSharedPreferences.getString(
+                        Values.Address_SHARED_PREFERENCES,
+                        ""
+                    )
                         .toString(),
                     email = bagSharedPreferences.getString(Values.EMAIL_SHARED_PREFERENCES, "")
                         .toString(),
@@ -200,7 +218,10 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
                         .toString()
                 ),
                 shipping = Shipping(
-                    address_1 = bagSharedPreferences.getString(Values.Address_SHARED_PREFERENCES, "")
+                    address_1 = bagSharedPreferences.getString(
+                        Values.Address_SHARED_PREFERENCES,
+                        ""
+                    )
                         .toString(),
                     first_name = bagSharedPreferences.getString(Values.NAME_SHARED_PREFERENCES, "")
                         .toString(),

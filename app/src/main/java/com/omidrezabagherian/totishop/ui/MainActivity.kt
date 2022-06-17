@@ -3,6 +3,7 @@ package com.omidrezabagherian.totishop.ui
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -109,6 +110,14 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
 
         mainBinding.bottomNavigationViewMain.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { controller, destenation, _ ->
+            if (destenation.id == R.id.detailFragment || destenation.id == R.id.searchFragment) {
+                mainBinding.bottomNavigationViewMain.visibility = View.GONE
+            } else {
+                mainBinding.bottomNavigationViewMain.visibility = View.VISIBLE
+            }
+        }
 
         mainBinding.bottomNavigationViewMain.setOnItemSelectedListener { tab ->
             val fragmentMain = navController.currentDestination?.id?.plus(1)

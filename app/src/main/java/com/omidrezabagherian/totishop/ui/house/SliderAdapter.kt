@@ -31,7 +31,7 @@ class SliderAdapter(private val context: Context, private val images: List<Image
 
         val imageView: ImageView = itemView.findViewById(R.id.imageViewSlider)
 
-        Glide.with(context).load(images[position].src).fitCenter().into(imageView)
+        Glide.with(context).load(images[position].src).centerCrop().into(imageView)
 
         Objects.requireNonNull(container).addView(itemView)
 
