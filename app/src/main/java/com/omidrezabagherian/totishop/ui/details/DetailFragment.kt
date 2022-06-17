@@ -154,53 +154,85 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
         }
 
         detailsBinding.buttonDetailAddToBag.setOnClickListener {
-            val addValue =
-                mutableListOf<com.omidrezabagherian.totishop.domain.model.createorder.LineItem>()
+            val email = detailSharedPreferences.getString(Values.EMAIL_SHARED_PREFERENCES, "")
+            val password = detailSharedPreferences.getString(Values.PASSWORD_SHARED_PREFERENCES, "")
 
-            Log.i(
-                "logLineId", detailSharedPreferences.getInt(
-                    Values.ID_ORDER_SHARED_PREFERENCES,
-                    0
-                ).toString()
-            )
+            if (email!!.isNotEmpty() && password!!.isNotEmpty()) {
+                val addValue =
+                    mutableListOf<com.omidrezabagherian.totishop.domain.model.createorder.LineItem>()
 
-            addValue.add(
-                com.omidrezabagherian.totishop.domain.model.createorder.LineItem(
-                    detailArgs.id,
-                    1
+                addValue.add(
+                    com.omidrezabagherian.totishop.domain.model.createorder.LineItem(
+                        detailArgs.id,
+                        1
+                    )
                 )
-            )
 
-            val createOrder = CreateOrder(
-                billing = Billing(
-                    address_1 = "کرج - فردیس - خیابان داوری - کوچه عباسی - پلاک ۳۰ - واحد ۳",
-                    email = "omidrezabagherian@yahoo.com",
-                    first_name = "اميدرضا",
-                    last_name = "باقریان اسفندانی",
-                    phone = "09028501761"
-                ),
-                shipping = Shipping(
-                    address_1 = "کرج - فردیس - خیابان داوری - کوچه عباسی - پلاک ۳۰ - واحد ۳",
-                    first_name = "اميدرضا",
-                    last_name = "باقریان اسفندانی",
-                ),
-                line_items = addValue,
-                shipping_lines = emptyList()
-            )
+                val createOrder = CreateOrder(
+                    billing = Billing(
+                        address_1 = detailSharedPreferences.getString(
+                            Values.Address_SHARED_PREFERENCES,
+                            ""
+                        )
+                            .toString(),
+                        email = detailSharedPreferences.getString(
+                            Values.EMAIL_SHARED_PREFERENCES,
+                            ""
+                        )
+                            .toString(),
+                        first_name = detailSharedPreferences.getString(
+                            Values.NAME_SHARED_PREFERENCES,
+                            ""
+                        )
+                            .toString(),
+                        last_name = detailSharedPreferences.getString(
+                            Values.FAMILY_SHARED_PREFERENCES,
+                            ""
+                        )
+                            .toString(),
+                        phone = detailSharedPreferences.getString(
+                            Values.PASSWORD_SHARED_PREFERENCES,
+                            ""
+                        )
+                            .toString()
+                    ),
+                    shipping = Shipping(
+                        address_1 = detailSharedPreferences.getString(
+                            Values.Address_SHARED_PREFERENCES,
+                            ""
+                        )
+                            .toString(),
+                        first_name = detailSharedPreferences.getString(
+                            Values.NAME_SHARED_PREFERENCES,
+                            ""
+                        )
+                            .toString(),
+                        last_name = detailSharedPreferences.getString(
+                            Values.FAMILY_SHARED_PREFERENCES,
+                            ""
+                        )
+                            .toString(),
+                    ),
+                    line_items = addValue,
+                    shipping_lines = emptyList()
+                )
 
-            detailViewModel.putOrders(
-                detailSharedPreferences.getInt(
-                    Values.ID_ORDER_SHARED_PREFERENCES,
-                    0
-                ), createOrder
-            )
+                detailViewModel.putOrders(
+                    detailSharedPreferences.getInt(
+                        Values.ID_ORDER_SHARED_PREFERENCES,
+                        0
+                    ), createOrder
+                )
 
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    detailViewModel.putProductBagList.collect {
-                        Log.i("logLineItem", it.toString())
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                        detailViewModel.putProductBagList.collect {
+                            Log.i("logLineItem", it.toString())
+                        }
                     }
                 }
+            } else {
+                Toast.makeText(requireContext(), "لطفا وارد حساب کاربری خود شوید", Toast.LENGTH_SHORT).show()
             }
 
         }

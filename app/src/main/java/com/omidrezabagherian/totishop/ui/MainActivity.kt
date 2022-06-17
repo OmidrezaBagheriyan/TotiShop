@@ -59,16 +59,24 @@ class MainActivity : AppCompatActivity() {
     private fun setOrder() {
         val createOrder = CreateOrder(
             billing = Billing(
-                address_1 = "کرج - فردیس - خیابان داوری - کوچه عباسی - پلاک ۳۰ - واحد ۳",
-                email = "omidrezabagherian@yahoo.com",
-                first_name = "اميدرضا",
-                last_name = "باقریان اسفندانی",
-                phone = "09028501761"
+                address_1 = mainSharedPreferences.getString(Values.Address_SHARED_PREFERENCES, "")
+                    .toString(),
+                email = mainSharedPreferences.getString(Values.EMAIL_SHARED_PREFERENCES, "")
+                    .toString(),
+                first_name = mainSharedPreferences.getString(Values.NAME_SHARED_PREFERENCES, "")
+                    .toString(),
+                last_name = mainSharedPreferences.getString(Values.FAMILY_SHARED_PREFERENCES, "")
+                    .toString(),
+                phone = mainSharedPreferences.getString(Values.PASSWORD_SHARED_PREFERENCES, "")
+                    .toString()
             ),
             shipping = Shipping(
-                address_1 = "کرج - فردیس - خیابان داوری - کوچه عباسی - پلاک ۳۰ - واحد ۳",
-                first_name = "اميدرضا",
-                last_name = "باقریان اسفندانی",
+                address_1 = mainSharedPreferences.getString(Values.Address_SHARED_PREFERENCES, "")
+                    .toString(),
+                first_name = mainSharedPreferences.getString(Values.NAME_SHARED_PREFERENCES, "")
+                    .toString(),
+                last_name = mainSharedPreferences.getString(Values.FAMILY_SHARED_PREFERENCES, "")
+                    .toString(),
             ),
             line_items = emptyList(),
             shipping_lines = emptyList()
@@ -82,7 +90,10 @@ class MainActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     mainViewModel.setProductBagList.collect {
-                        mainSharedPreferencesEditor.putInt(Values.ID_ORDER_SHARED_PREFERENCES, it.id)
+                        mainSharedPreferencesEditor.putInt(
+                            Values.ID_ORDER_SHARED_PREFERENCES,
+                            it.id
+                        )
                         mainSharedPreferencesEditor.commit()
                         mainSharedPreferencesEditor.apply()
                     }

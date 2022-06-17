@@ -36,7 +36,6 @@ class UserFragment : Fragment(R.layout.fragment_user) {
         userSharedPreferences =
             requireActivity().getSharedPreferences(Values.SHARED_PREFERENCES, Context.MODE_PRIVATE)
 
-
         checkInternet()
 
         super.onViewCreated(view, savedInstanceState)
@@ -71,7 +70,7 @@ class UserFragment : Fragment(R.layout.fragment_user) {
 
     private fun showCustomer() {
         mainViewModel.getCustomer(userSharedPreferences.getInt(Values.ID_SHARED_PREFERENCES, 0))
-
+        val userSharedPreferencesEditor = userSharedPreferences.edit()
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 mainViewModel.customer.collect { customer ->
@@ -80,6 +79,20 @@ class UserFragment : Fragment(R.layout.fragment_user) {
                     userBinding.textViewUserEmail.text = customer.billing.email
                     userBinding.textViewUserNumberPhone.text = customer.billing.phone
                     userBinding.textViewUserAddress.text = customer.billing.address_1
+                    userSharedPreferencesEditor.putString(
+                        Values.NAME_SHARED_PREFERENCES,
+                        customer.first_name
+                    )
+                    userSharedPreferencesEditor.putString(
+                        Values.FAMILY_SHARED_PREFERENCES,
+                        customer.last_name
+                    )
+                    userSharedPreferencesEditor.putString(
+                        Values.Address_SHARED_PREFERENCES,
+                        customer.billing.address_1
+                    )
+                    userSharedPreferencesEditor.commit()
+                    userSharedPreferencesEditor.apply()
                 }
             }
         }

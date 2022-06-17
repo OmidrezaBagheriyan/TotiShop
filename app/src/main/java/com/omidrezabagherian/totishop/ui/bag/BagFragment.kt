@@ -91,16 +91,24 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
 
             val createOrder = CreateOrder(
                 billing = com.omidrezabagherian.totishop.domain.model.createorder.Billing(
-                    address_1 = "کرج - فردیس - خیابان داوری - کوچه عباسی - پلاک ۳۰ - واحد ۳",
-                    email = "omidrezabagherian@yahoo.com",
-                    first_name = "اميدرضا",
-                    last_name = "باقریان اسفندانی",
-                    phone = "09028501761"
+                    address_1 = bagSharedPreferences.getString(Values.Address_SHARED_PREFERENCES, "")
+                        .toString(),
+                    email = bagSharedPreferences.getString(Values.EMAIL_SHARED_PREFERENCES, "")
+                        .toString(),
+                    first_name = bagSharedPreferences.getString(Values.NAME_SHARED_PREFERENCES, "")
+                        .toString(),
+                    last_name = bagSharedPreferences.getString(Values.FAMILY_SHARED_PREFERENCES, "")
+                        .toString(),
+                    phone = bagSharedPreferences.getString(Values.PASSWORD_SHARED_PREFERENCES, "")
+                        .toString()
                 ),
                 shipping = com.omidrezabagherian.totishop.domain.model.createorder.Shipping(
-                    address_1 = "کرج - فردیس - خیابان داوری - کوچه عباسی - پلاک ۳۰ - واحد ۳",
-                    first_name = "اميدرضا",
-                    last_name = "باقریان اسفندانی",
+                    address_1 = bagSharedPreferences.getString(Values.Address_SHARED_PREFERENCES, "")
+                        .toString(),
+                    first_name = bagSharedPreferences.getString(Values.NAME_SHARED_PREFERENCES, "")
+                        .toString(),
+                    last_name = bagSharedPreferences.getString(Values.FAMILY_SHARED_PREFERENCES, "")
+                        .toString(),
                 ),
                 line_items = emptyList(),
                 shipping_lines = emptyList()
@@ -139,16 +147,24 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
         val bagAdapter = BagAdapter(add = {
             val updateOrder = UpdateOrder(
                 billing = Billing(
-                    address_1 = "کرج - فردیس - خیابان داوری - کوچه عباسی - پلاک ۳۰ - واحد ۳",
-                    email = "omidrezabagherian@yahoo.com",
-                    first_name = "اميدرضا",
-                    last_name = "باقریان اسفندانی",
-                    phone = "09028501761"
+                    address_1 = bagSharedPreferences.getString(Values.Address_SHARED_PREFERENCES, "")
+                        .toString(),
+                    email = bagSharedPreferences.getString(Values.EMAIL_SHARED_PREFERENCES, "")
+                        .toString(),
+                    first_name = bagSharedPreferences.getString(Values.NAME_SHARED_PREFERENCES, "")
+                        .toString(),
+                    last_name = bagSharedPreferences.getString(Values.FAMILY_SHARED_PREFERENCES, "")
+                        .toString(),
+                    phone = bagSharedPreferences.getString(Values.PASSWORD_SHARED_PREFERENCES, "")
+                        .toString()
                 ),
                 shipping = Shipping(
-                    address_1 = "کرج - فردیس - خیابان داوری - کوچه عباسی - پلاک ۳۰ - واحد ۳",
-                    first_name = "اميدرضا",
-                    last_name = "باقریان اسفندانی",
+                    address_1 = bagSharedPreferences.getString(Values.Address_SHARED_PREFERENCES, "")
+                        .toString(),
+                    first_name = bagSharedPreferences.getString(Values.NAME_SHARED_PREFERENCES, "")
+                        .toString(),
+                    last_name = bagSharedPreferences.getString(Values.FAMILY_SHARED_PREFERENCES, "")
+                        .toString(),
                 ),
                 line_items = mutableListOf(LineItem(it.id, it.product_id, (it.quantity + 1))),
                 shipping_lines = emptyList()
@@ -172,16 +188,24 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
         }, nag = {
             val updateOrder = UpdateOrder(
                 billing = Billing(
-                    address_1 = "کرج - فردیس - خیابان داوری - کوچه عباسی - پلاک ۳۰ - واحد ۳",
-                    email = "omidrezabagherian@yahoo.com",
-                    first_name = "اميدرضا",
-                    last_name = "باقریان اسفندانی",
-                    phone = "09028501761"
+                    address_1 = bagSharedPreferences.getString(Values.Address_SHARED_PREFERENCES, "")
+                        .toString(),
+                    email = bagSharedPreferences.getString(Values.EMAIL_SHARED_PREFERENCES, "")
+                        .toString(),
+                    first_name = bagSharedPreferences.getString(Values.NAME_SHARED_PREFERENCES, "")
+                        .toString(),
+                    last_name = bagSharedPreferences.getString(Values.FAMILY_SHARED_PREFERENCES, "")
+                        .toString(),
+                    phone = bagSharedPreferences.getString(Values.PASSWORD_SHARED_PREFERENCES, "")
+                        .toString()
                 ),
                 shipping = Shipping(
-                    address_1 = "کرج - فردیس - خیابان داوری - کوچه عباسی - پلاک ۳۰ - واحد ۳",
-                    first_name = "اميدرضا",
-                    last_name = "باقریان اسفندانی",
+                    address_1 = bagSharedPreferences.getString(Values.Address_SHARED_PREFERENCES, "")
+                        .toString(),
+                    first_name = bagSharedPreferences.getString(Values.NAME_SHARED_PREFERENCES, "")
+                        .toString(),
+                    last_name = bagSharedPreferences.getString(Values.FAMILY_SHARED_PREFERENCES, "")
+                        .toString(),
                 ),
                 line_items = mutableListOf(LineItem(it.id, it.product_id, (it.quantity - 1))),
                 shipping_lines = emptyList()

@@ -126,9 +126,18 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 registerViewModel.addCustomerInfo.collect { customer ->
+
                     registerSharedPreferencesEditor.putInt(
                         Values.ID_SHARED_PREFERENCES,
                         customer.id
+                    )
+                    registerSharedPreferencesEditor.putString(
+                        Values.NAME_SHARED_PREFERENCES,
+                        registerBinding.textInputEditTextRegisterName.text.toString()
+                    )
+                    registerSharedPreferencesEditor.putString(
+                        Values.FAMILY_SHARED_PREFERENCES,
+                        registerBinding.textInputEditTextRegisterFamily.text.toString()
                     )
                     registerSharedPreferencesEditor.putString(
                         Values.EMAIL_SHARED_PREFERENCES,
@@ -138,8 +147,14 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                         Values.PASSWORD_SHARED_PREFERENCES,
                         registerBinding.textInputEditTextRegisterNumberPhone.text.toString()
                     )
+                    registerSharedPreferencesEditor.putString(
+                        Values.Address_SHARED_PREFERENCES,
+                        registerBinding.textInputEditTextRegisterAddress.text.toString()
+                    )
+
                     registerSharedPreferencesEditor.commit()
                     registerSharedPreferencesEditor.apply()
+
                     navController.navigate(
                         RegisterFragmentDirections.actionRegisterFragmentToUserFragment(
                             customer.id
