@@ -23,11 +23,17 @@ class ShopRepository(
             category
         )
 
-    suspend fun getProductSearchList(page: Int, perPage: Int, search: String) =
+    suspend fun getProductSearchList(
+        page: Int,
+        perPage: Int,
+        search: String,
+        orderby: String
+    ) =
         remoteDataSource.getProductSearchList(
             page,
             perPage,
-            search
+            search,
+            orderby
         )
 
     suspend fun setCustomer(createCustomer: CreateCustomer) = remoteDataSource.setCustomer(
@@ -46,7 +52,7 @@ class ShopRepository(
 
     suspend fun addProductToOrders(id: Int, createOrder: CreateOrder) =
         remoteDataSource.addProductToOrders(id, createOrder)
-    
+
     suspend fun editQuantityToOrders(id: Int, updateOrder: UpdateOrder) =
         remoteDataSource.editQuantityToOrders(id, updateOrder)
 

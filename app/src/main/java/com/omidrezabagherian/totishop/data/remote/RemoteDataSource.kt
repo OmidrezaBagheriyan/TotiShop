@@ -38,13 +38,19 @@ class RemoteDataSource @Inject constructor(private val shopService: ShopService)
             category
         )
 
-    suspend fun getProductSearchList(page: Int, perPage: Int, search: String) =
+    suspend fun getProductSearchList(
+        page: Int,
+        perPage: Int,
+        search: String,
+        orderby: String
+    ) =
         shopService.getProductSearchList(
             Values.CUSTOMER_KEY,
             Values.CUSTOMER_SECRET,
             page,
             perPage,
-            search
+            search,
+            orderby
         )
 
     suspend fun setCustomer(createCustomer: CreateCustomer) = shopService.setCustomer(
@@ -78,18 +84,20 @@ class RemoteDataSource @Inject constructor(private val shopService: ShopService)
         Values.CUSTOMER_SECRET
     )
 
-    suspend fun addProductToOrders(id: Int, createOrder: CreateOrder) = shopService.addProductToOrders(
-        id,
-        Values.CUSTOMER_KEY,
-        Values.CUSTOMER_SECRET,
-        createOrder
-    )
+    suspend fun addProductToOrders(id: Int, createOrder: CreateOrder) =
+        shopService.addProductToOrders(
+            id,
+            Values.CUSTOMER_KEY,
+            Values.CUSTOMER_SECRET,
+            createOrder
+        )
 
-    suspend fun editQuantityToOrders(id: Int, updateOrder: UpdateOrder) = shopService.editQuantityToOrders(
-        id,
-        Values.CUSTOMER_KEY,
-        Values.CUSTOMER_SECRET,
-        updateOrder
-    )
+    suspend fun editQuantityToOrders(id: Int, updateOrder: UpdateOrder) =
+        shopService.editQuantityToOrders(
+            id,
+            Values.CUSTOMER_KEY,
+            Values.CUSTOMER_SECRET,
+            updateOrder
+        )
 
 }

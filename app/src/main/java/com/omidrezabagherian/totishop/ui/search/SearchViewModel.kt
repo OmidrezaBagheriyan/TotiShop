@@ -13,18 +13,22 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(private val showRepository: ShopRepository) :
+class SearchViewModel @Inject constructor(private val shopRepository: ShopRepository) :
     ViewModel() {
 
     private val _productSearchList = MutableStateFlow<List<Product>>(emptyList())
     val productSearchList: StateFlow<List<Product>> = _productSearchList
 
+    private val _productListOrderBy = MutableStateFlow<List<Product>>(emptyList())
+    val productListOrderBy: StateFlow<List<Product>> = _productListOrderBy
+
     private val _productError = MutableStateFlow(false)
     val productError: StateFlow<Boolean> = _productError
 
-    fun getProductCategoryList(search: String) {
+    fun getProductCategoryList(search: String, orderby: String) {
         viewModelScope.launch {
-            val responseProductSearchList = showRepository.getProductSearchList(1, 20, search)
+            val responseProductSearchList =
+                shopRepository.getProductSearchList(1, 20, search, orderby)
             withContext(Dispatchers.Main) {
                 if (responseProductSearchList.isSuccessful) {
                     _productSearchList.emit(responseProductSearchList.body()!!)

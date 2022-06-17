@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.RadioGroup
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -14,12 +15,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.core.NetworkManager
 import com.omidrezabagherian.totishop.databinding.FragmentSearchBinding
 import com.omidrezabagherian.totishop.domain.model.product.Product
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.util.HashMap
 
 @AndroidEntryPoint
 class SearchFragment : Fragment(R.layout.fragment_search) {
@@ -29,11 +32,16 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     private val navController by lazy {
         findNavController()
     }
+    private var orderby = "title"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         searchBinding = FragmentSearchBinding.bind(view)
+
+        val bottomNavigation: BottomNavigationView =
+            requireActivity().findViewById(R.id.bottomNavigationViewMain)
+        bottomNavigation.visibility = View.GONE
 
         checkInternet()
 
@@ -67,15 +75,53 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         }
     }
 
-    private fun filterSearch(){
+    private fun filterSearch() {
         searchBinding.imageViewSearchFilter.setOnClickListener {
             Toast.makeText(requireContext(), "فیلتر", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun sortSearch(){
+    private fun sortSearch() {
         searchBinding.imageViewSearchSorting.setOnClickListener {
-            Toast.makeText(requireContext(), "مرتب سازی", Toast.LENGTH_SHORT).show()
+            val dialog = AlertDialog.Builder(requireContext())
+            val dialogView = layoutInflater.inflate(R.layout.dialog_orderby, null)
+            val buttonCheckInternet: Button = dialogView.findViewById(R.id.buttonCheckOrderBy)
+            val radioGroup: RadioGroup = dialogView.findViewById(R.id.radioGroupOrderBy)
+            dialog.setView(dialogView)
+            dialog.setCancelable(false)
+            val customDialog = dialog.create()
+            customDialog.show()
+
+            buttonCheckInternet.setOnClickListener {
+                val word = when (radioGroup.checkedRadioButtonId) {
+                    0 -> {
+                        "date"
+                    }
+                    1 -> {
+                        "id"
+                    }
+                    2 -> {
+                        "title"
+                    }
+                    3 -> {
+                        "price"
+                    }
+                    4 -> {
+                        "popularity"
+                    }
+                    5 -> {
+                        "rating"
+                    }
+                    else -> {
+                        "title"
+                    }
+                }
+
+                orderby = word
+
+                customDialog.dismiss()
+                checkInternet()
+            }
         }
     }
 
@@ -83,7 +129,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         searchBinding.searchViewSearchProduct.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                searchProduct(query.toString())
+                Log.i("TagFilter",orderby)
+
+                searchProduct(query.toString(), orderby)
                 return false
             }
 
@@ -94,7 +142,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         })
     }
 
-    private fun searchProduct(query: String) {
+    private fun searchProduct(query: String, orderby:String) {
         val searchAdapter = SearchAdapter(details = { product ->
             navController.navigate(
                 SearchFragmentDirections.actionSearchFragmentToDetailFragment(
@@ -103,16 +151,17 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             )
         })
 
-        searchViewModel.getProductCategoryList(query)
+        searchViewModel.getProductCategoryList(query, orderby)
 
         searchBinding.recyclerViewSearchProduct.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
+        searchBinding.recyclerViewSearchProduct.adapter = searchAdapter
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 searchViewModel.productSearchList.collect {
                     searchAdapter.submitList(it)
-                    searchBinding.recyclerViewSearchProduct.adapter = searchAdapter
                 }
             }
         }

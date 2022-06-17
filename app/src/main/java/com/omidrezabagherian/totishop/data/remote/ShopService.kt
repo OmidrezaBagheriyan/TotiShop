@@ -51,7 +51,8 @@ interface ShopService {
         @Query("consumer_secret") consumerSecret: String,
         @Query("page") page: Int,
         @Query("per_page") perPage: Int,
-        @Query("search") search: String
+        @Query("search") search: String,
+        @Query("orderby") orderby: String
     ): Response<List<Product>>
 
     @POST("customers")

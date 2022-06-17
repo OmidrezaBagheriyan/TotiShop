@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.core.NetworkManager
 import com.omidrezabagherian.totishop.databinding.FragmentHouseBinding
@@ -36,6 +37,10 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
 
         houseBinding = FragmentHouseBinding.bind(view)
 
+        val bottomNavigation: BottomNavigationView =
+            requireActivity().findViewById(R.id.bottomNavigationViewMain)
+        bottomNavigation.visibility = View.VISIBLE
+
         searchPage()
         checkInternet()
 
@@ -45,6 +50,7 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
         houseViewModel.getSliderImageList(608)
 
         var currentPage = 0;
+
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
