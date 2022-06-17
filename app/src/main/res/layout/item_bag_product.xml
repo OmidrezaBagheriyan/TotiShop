@@ -87,10 +87,11 @@
                     android:id="@+id/textViewBagQuantity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:text="1"
                     android:textColor="@color/black_application"
-                    android:layout_margin="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/imageViewBagQuantityPlusOne"
                     app:layout_constraintStart_toEndOf="@+id/imageViewBagQuantityNagOne"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -100,17 +101,6 @@
                     android:layout_height="24dp"
                     android:layout_margin="8dp"
                     android:src="@drawable/ic_exposure_plus_one"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/imageViewBagRemove"
-                    app:layout_constraintStart_toEndOf="@+id/textViewBagQuantity"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/imageViewBagRemove"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_margin="8dp"
-                    android:src="@drawable/ic_delete"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

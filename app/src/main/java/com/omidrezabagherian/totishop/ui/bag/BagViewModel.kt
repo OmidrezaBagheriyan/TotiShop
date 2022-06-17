@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.omidrezabagherian.totishop.data.ShopRepository
 import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
 import com.omidrezabagherian.totishop.domain.model.order.Order
+import com.omidrezabagherian.totishop.domain.model.updateorder.UpdateOrder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -22,6 +23,9 @@ class BagViewModel @Inject constructor(private val shopRepository: ShopRepositor
     private val _getProductBagList = MutableSharedFlow<Order>()
     val getProductBagList: SharedFlow<Order> = _getProductBagList
 
+    private val _putProductBagList = MutableSharedFlow<Order>()
+    val putProductBagList: SharedFlow<Order> = _putProductBagList
+
     private val _orderError = MutableStateFlow(false)
     val orderError: StateFlow<Boolean> = _orderError
 
@@ -34,6 +38,17 @@ class BagViewModel @Inject constructor(private val shopRepository: ShopRepositor
                 } else {
                     _orderError.emit(true)
                 }
+            }
+        }
+    }
+
+    fun editQuantityToOrders(id: Int, updateOrder: UpdateOrder) {
+        viewModelScope.launch {
+            val responseProductBagList = shopRepository.editQuantityToOrders(id, updateOrder)
+            if (responseProductBagList.isSuccessful) {
+                _putProductBagList.emit(responseProductBagList.body()!!)
+            } else {
+                _orderError.emit(true)
             }
         }
     }

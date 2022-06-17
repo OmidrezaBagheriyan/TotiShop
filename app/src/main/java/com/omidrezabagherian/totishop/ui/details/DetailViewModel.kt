@@ -60,7 +60,7 @@ class DetailViewModel @Inject constructor(private val shopRepository: ShopReposi
 
     fun putOrders(id: Int, createOrder: CreateOrder) {
         viewModelScope.launch {
-            val responseProductBagList = shopRepository.putOrders(id, createOrder)
+            val responseProductBagList = shopRepository.addProductToOrders(id, createOrder)
             if (responseProductBagList.isSuccessful) {
                 _getProductBagList.emit(responseProductBagList.body()!!)
             } else {

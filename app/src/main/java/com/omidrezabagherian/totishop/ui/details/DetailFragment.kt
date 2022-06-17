@@ -156,14 +156,6 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
         detailsBinding.buttonDetailAddToBag.setOnClickListener {
             val addValue =
                 mutableListOf<com.omidrezabagherian.totishop.domain.model.createorder.LineItem>()
-            /*for (i in value) {
-                addValue.add(
-                    com.omidrezabagherian.totishop.domain.model.createorder.LineItem(
-                        i.product_id,
-                        i.quantity
-                    )
-                )
-            }*/
 
             Log.i(
                 "logLineId", detailSharedPreferences.getInt(
@@ -205,7 +197,7 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
 
             viewLifecycleOwner.lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    detailViewModel.getProductBagList.collect {
+                    detailViewModel.putProductBagList.collect {
                         Log.i("logLineItem", it.toString())
                     }
                 }

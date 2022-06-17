@@ -7,6 +7,7 @@ import com.omidrezabagherian.totishop.domain.model.createorder.LineItem
 import com.omidrezabagherian.totishop.domain.model.customer.Customer
 import com.omidrezabagherian.totishop.domain.model.order.Order
 import com.omidrezabagherian.totishop.domain.model.product.Product
+import com.omidrezabagherian.totishop.domain.model.updateorder.UpdateOrder
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -89,10 +90,18 @@ interface ShopService {
     ): Response<Order>
 
     @PUT("orders/{id}")
-    suspend fun putOrders(
+    suspend fun addProductToOrders(
         @Path("id") id: Int,
         @Query("consumer_key") consumerKey: String,
         @Query("consumer_secret") consumerSecret: String,
         @Body createOrder: CreateOrder
+    ): Response<Order>
+
+    @PUT("orders/{id}")
+    suspend fun editQuantityToOrders(
+        @Path("id") id: Int,
+        @Query("consumer_key") consumerKey: String,
+        @Query("consumer_secret") consumerSecret: String,
+        @Body updateOrder: UpdateOrder
     ): Response<Order>
 }

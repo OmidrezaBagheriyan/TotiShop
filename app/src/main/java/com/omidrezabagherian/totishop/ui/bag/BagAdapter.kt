@@ -2,7 +2,6 @@ package com.omidrezabagherian.totishop.ui.bag
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -10,29 +9,33 @@ import com.bumptech.glide.Glide
 import com.omidrezabagherian.totishop.databinding.ItemBagProductBinding
 import com.omidrezabagherian.totishop.domain.model.order.LineItem
 
-class BagAdapter(private val delete: (LineItem) -> Unit) :
+class BagAdapter(
+    private val add: (LineItem) -> Unit,
+    private val nag: (LineItem) -> Unit,
+) :
     ListAdapter<LineItem, BagAdapter.BagViewHolder>(BagDiffCall()) {
 
     class BagViewHolder(
         private val itemBagProductBinding: ItemBagProductBinding,
-        private val delete: (LineItem) -> Unit
+        private val add: (LineItem) -> Unit,
+        private val nag: (LineItem) -> Unit
     ) : RecyclerView.ViewHolder(itemBagProductBinding.root) {
         fun bind(lineItem: LineItem) {
-            if (lineItem.meta_data.isNotEmpty()){
+            if (lineItem.meta_data.isNotEmpty()) {
                 Glide.with(itemBagProductBinding.root).load(lineItem.meta_data[0].value)
                     .into(itemBagProductBinding.imageViewListProduct)
             }
             itemBagProductBinding.textViewListProductName.text = lineItem.name
-            itemBagProductBinding.textViewListProductOrdinary.text = "${lineItem.price.toInt()} تومان"
+            itemBagProductBinding.textViewListProductOrdinary.text =
+                "${lineItem.price.toInt()} تومان"
             itemBagProductBinding.textViewBagQuantity.text = lineItem.quantity.toString()
             itemBagProductBinding.imageViewBagQuantityPlusOne.setOnClickListener {
-                Toast.makeText(itemBagProductBinding.root.context, "+1", Toast.LENGTH_SHORT).show()
+                add(lineItem)
+                itemBagProductBinding.textViewBagQuantity.text = (lineItem.quantity + 1).toString()
             }
             itemBagProductBinding.imageViewBagQuantityNagOne.setOnClickListener {
-                Toast.makeText(itemBagProductBinding.root.context, "-1", Toast.LENGTH_SHORT).show()
-            }
-            itemBagProductBinding.imageViewBagRemove.setOnClickListener {
-                Toast.makeText(itemBagProductBinding.root.context, "remove", Toast.LENGTH_SHORT).show()
+                nag(lineItem)
+                itemBagProductBinding.textViewBagQuantity.text = (lineItem.quantity - 1).toString()
             }
         }
     }
@@ -43,7 +46,7 @@ class BagAdapter(private val delete: (LineItem) -> Unit) :
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            ), delete
+            ), add, nag
         )
     }
 
