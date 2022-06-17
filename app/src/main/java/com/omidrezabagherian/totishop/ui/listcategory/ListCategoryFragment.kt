@@ -78,7 +78,7 @@ class ListCategoryFragment : Fragment(R.layout.fragment_list_category) {
         listCategoryBinding.recyclerViewListCategory.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
-        listCategoryViewModel.getProductCategoryList(listCategoryArgs.id)
+        listCategoryViewModel.getProductSubCategoryList(listCategoryArgs.id)
 
         viewLifecycleOwner.lifecycleScope.launch{
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {

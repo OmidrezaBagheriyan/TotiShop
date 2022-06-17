@@ -29,8 +29,14 @@ class RemoteDataSource @Inject constructor(private val shopService: ShopService)
         perPage
     )
 
-    suspend fun getProductCategoryList(page: Int, perPage: Int, category: Int) =
-        shopService.getProductCategoryList(
+    suspend fun getSubCategoryList(parent:Int) = shopService.getSubCategoryList(
+        Values.CUSTOMER_KEY,
+        Values.CUSTOMER_SECRET,
+        parent
+    )
+
+    suspend fun getProductSubCategoryList(page: Int, perPage: Int, category: Int) =
+        shopService.getProductSubCategoryList(
             Values.CUSTOMER_KEY,
             Values.CUSTOMER_SECRET,
             page,

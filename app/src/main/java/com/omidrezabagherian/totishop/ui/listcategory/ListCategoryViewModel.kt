@@ -22,10 +22,10 @@ class ListCategoryViewModel @Inject constructor(private val showRepository: Shop
     private val _productError = MutableStateFlow(false)
     val productError: StateFlow<Boolean> = _productError
 
-    fun getProductCategoryList(category: Int) {
+    fun getProductSubCategoryList(category: Int) {
         viewModelScope.launch {
             val responseProductCategoryList =
-                showRepository.getProductCategoryList(1, 50, category)
+                showRepository.getProductSubCategoryList(1, 50, category)
             withContext(Dispatchers.Main) {
                 if (responseProductCategoryList.isSuccessful) {
                     _productCategoryList.emit(responseProductCategoryList.body()!!)

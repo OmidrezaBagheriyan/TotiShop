@@ -1,29 +1,29 @@
-package com.omidrezabagherian.totishop.ui.category
+package com.omidrezabagherian.totishop.ui.subcategory
 
 import android.app.AlertDialog
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.core.NetworkManager
-import com.omidrezabagherian.totishop.databinding.FragmentCategoryBinding
+import com.omidrezabagherian.totishop.databinding.FragmentSubCategoryBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CategoryFragment : Fragment(R.layout.fragment_category) {
-
-    private lateinit var categoryBinding: FragmentCategoryBinding
-    private val categoryViewModel: CategoryViewModel by viewModels()
+class SubCategoryFragment : Fragment(R.layout.fragment_sub_category) {
+    private lateinit var subCategoryBinding: FragmentSubCategoryBinding
+    private val subCategoryViewModel: SubCategoryViewModel by viewModels()
+    private val subCategoryFragmentArgs: SubCategoryFragmentArgs by navArgs()
     private val navController by lazy {
         findNavController()
     }
@@ -31,7 +31,7 @@ class CategoryFragment : Fragment(R.layout.fragment_category) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        categoryBinding = FragmentCategoryBinding.bind(view)
+        subCategoryBinding = FragmentSubCategoryBinding.bind(view)
 
         checkInternet()
 
@@ -56,36 +56,45 @@ class CategoryFragment : Fragment(R.layout.fragment_category) {
         val networkConnection = NetworkManager(requireContext())
         networkConnection.observe(viewLifecycleOwner) { isConnect ->
             if (isConnect) {
-                checkCategory()
+                checkSubCategory()
             } else {
                 dialogCheckInternet()
             }
         }
     }
 
-    private fun checkCategory() {
-        val categoryAdapter = CategoryAdapter(details = { category ->
+    private fun checkSubCategory() {
+        val subCategoryAdapter = SubCategoryAdapter(details = { subCategory ->
             navController.navigate(
-                CategoryFragmentDirections.actionCategoryFragmentToSubCategoryFragment(
-                    category.id,
-                    category.name
+                SubCategoryFragmentDirections.actionSubCategoryFragmentToListCategoryFragment(
+                    subCategory.name, subCategory.id
                 )
             )
         })
 
+        subCategoryBinding.materialButtonSubCategoryShowMore.setOnClickListener {
+            navController.navigate(
+                SubCategoryFragmentDirections.actionSubCategoryFragmentToListCategoryFragment(
+                    subCategoryFragmentArgs.name, subCategoryFragmentArgs.id
+                )
+            )
+        }
+
         if (requireActivity().resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            categoryBinding.recyclerViewCategory.layoutManager =
+            subCategoryBinding.recyclerViewSubCategory.layoutManager =
                 GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
         } else {
-            categoryBinding.recyclerViewCategory.layoutManager =
+            subCategoryBinding.recyclerViewSubCategory.layoutManager =
                 GridLayoutManager(requireContext(), 4, GridLayoutManager.VERTICAL, false)
         }
 
+        subCategoryViewModel.getSubCategoryList(subCategoryFragmentArgs.id)
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                categoryViewModel.categoryList.collect {
-                    categoryAdapter.submitList(it)
-                    categoryBinding.recyclerViewCategory.adapter = categoryAdapter
+                subCategoryViewModel.subCategoryList.collect {
+                    subCategoryAdapter.submitList(it)
+                    subCategoryBinding.recyclerViewSubCategory.adapter = subCategoryAdapter
                 }
             }
         }

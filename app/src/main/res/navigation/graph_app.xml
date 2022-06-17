@@ -24,8 +24,8 @@
         android:label="CategoryFragment"
         tools:layout="@layout/fragment_category">
         <action
-            android:id="@+id/action_categoryFragment_to_listCategoryFragment"
-            app:destination="@id/listCategoryFragment" />
+            android:id="@+id/action_categoryFragment_to_subCategoryFragment"
+            app:destination="@id/subCategoryFragment" />
     </fragment>
 
     <fragment
@@ -123,6 +123,21 @@
             app:destination="@id/userFragment"
             app:popUpTo="@id/registerFragment"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        tools:layout="@layout/fragment_sub_category"
+        android:id="@+id/subCategoryFragment"
+        android:name="com.omidrezabagherian.totishop.ui.subcategory.SubCategoryFragment"
+        android:label="SubCategoryFragment" >
+        <action
+            android:id="@+id/action_subCategoryFragment_to_listCategoryFragment"
+            app:destination="@id/listCategoryFragment" />
+        <argument
+            android:name="id"
+            app:argType="integer" />
+        <argument
+            android:name="name"
+            app:argType="string" />
     </fragment>
 
 </navigation>
