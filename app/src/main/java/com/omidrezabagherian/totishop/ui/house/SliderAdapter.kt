@@ -12,8 +12,17 @@ import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.domain.model.product.Image
 import java.util.*
 
-class SliderAdapter(private val context: Context, private val images: List<Image>) :
+class SliderAdapter(private val context: Context) :
     PagerAdapter() {
+
+    private val images = mutableListOf<Image>()
+
+    fun setImages(images: List<Image>) {
+        this.images.clear()
+        this.images.addAll(images)
+        notifyDataSetChanged()
+    }
+
     override fun getCount(): Int {
         return images.size
     }

@@ -47,26 +47,29 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
 
         var currentPage = 0;
 
+        val sliderAdapter = SliderAdapter(requireContext())
+        houseBinding.viewPagerHouseSliderImage.adapter = sliderAdapter
+
+        Timer().scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                Handler(Looper.getMainLooper()).post(Runnable {
+                    if (currentPage == sliderAdapter.count - 1) {
+                        currentPage = 0
+                    }
+                    houseBinding.viewPagerHouseSliderImage.setCurrentItem(
+                        currentPage++,
+                        true
+                    )
+                })
+            }
+        }, DELAY_MS, PERIOD_MS)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 houseViewModel.sliderImage.collect { images ->
-                    val sliderAdapter = SliderAdapter(requireContext(), images.images)
-                    houseBinding.viewPagerHouseSliderImage.adapter = sliderAdapter
 
-                    Timer().schedule(object : TimerTask() {
-                        override fun run() {
-                            Handler(Looper.getMainLooper()).post(Runnable {
-                                if (currentPage == images.images.size - 1) {
-                                    currentPage = 0
-                                }
-                                houseBinding.viewPagerHouseSliderImage.setCurrentItem(
-                                    currentPage++,
-                                    true
-                                )
-                            })
-                        }
-                    }, DELAY_MS, PERIOD_MS)
+                    sliderAdapter.setImages(images.images)
+
                 }
             }
         }
