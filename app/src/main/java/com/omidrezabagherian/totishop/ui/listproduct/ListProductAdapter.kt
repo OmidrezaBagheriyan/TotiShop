@@ -11,10 +11,10 @@ import com.bumptech.glide.Glide
 import com.omidrezabagherian.totishop.databinding.ItemListProductBinding
 import com.omidrezabagherian.totishop.domain.model.product.Product
 
-class ListCategoryAdapter(private val details: (Product) -> Unit) :
-    ListAdapter<Product, ListCategoryAdapter.ListCategoryViewHolder>(ListCategoryDiffCall()) {
+class ListProductAdapter(private val details: (Product) -> Unit) :
+    ListAdapter<Product, ListProductAdapter.ListProductViewHolder>(ListCategoryDiffCall()) {
 
-    class ListCategoryViewHolder(
+    class ListProductViewHolder(
         private val itemListProductBinding: ItemListProductBinding,
         private val details: (Product) -> Unit
     ) : RecyclerView.ViewHolder(itemListProductBinding.root) {
@@ -47,8 +47,8 @@ class ListCategoryAdapter(private val details: (Product) -> Unit) :
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListCategoryViewHolder {
-        return ListCategoryViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListProductViewHolder {
+        return ListProductViewHolder(
             ItemListProductBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -57,7 +57,7 @@ class ListCategoryAdapter(private val details: (Product) -> Unit) :
         )
     }
 
-    override fun onBindViewHolder(holder: ListCategoryViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ListProductViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 }

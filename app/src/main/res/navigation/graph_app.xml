@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_houseFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_houseFragment_to_listProductFragment"
+            app:destination="@id/listProductFragment" />
     </fragment>
 
     <fragment
@@ -138,6 +141,18 @@
         <argument
             android:name="name"
             app:argType="string" />
+    </fragment>
+    <fragment
+        tools:layout="@layout/fragment_list_product"
+        android:id="@+id/listProductFragment"
+        android:name="com.omidrezabagherian.totishop.ui.listproduct.ListProductFragment"
+        android:label="ListProductFragment" >
+        <argument
+            android:name="valueProduct"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_listProductFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
     </fragment>
 
 </navigation>

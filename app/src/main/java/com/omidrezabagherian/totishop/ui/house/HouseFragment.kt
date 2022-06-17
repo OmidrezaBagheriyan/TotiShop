@@ -110,6 +110,13 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
     }
 
     private fun productDateList() {
+        val word = "date"
+        houseBinding.textViewHouseDateProductMore.setOnClickListener {
+            navController.navigate(
+                HouseFragmentDirections.actionHouseFragmentToListProductFragment(word)
+            )
+        }
+
         val houseAdapter = HouseAdapter(details = { product ->
             navController.navigate(
                 HouseFragmentDirections.actionHouseFragmentToDetailFragment(
@@ -119,7 +126,7 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
         })
 
         val productsDateMap = HashMap<String, String>().apply {
-            put("orderby", "date")
+            put("orderby", word)
         }
 
         houseBinding.recyclerViewHouseDateProduct.layoutManager =
@@ -139,6 +146,13 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
     }
 
     private fun productRatingList() {
+        val word = "rating"
+        houseBinding.textViewHouseRateProductMore.setOnClickListener {
+            navController.navigate(
+                HouseFragmentDirections.actionHouseFragmentToListProductFragment(word)
+            )
+        }
+
         val houseAdapter = HouseAdapter(details = { product ->
             navController.navigate(
                 HouseFragmentDirections.actionHouseFragmentToDetailFragment(
@@ -148,7 +162,7 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
         })
 
         val productsRatingMap = HashMap<String, String>().apply {
-            put("orderby", "rating")
+            put("orderby", word)
         }
 
         houseBinding.recyclerViewHouseRateProduct.layoutManager =
@@ -168,6 +182,13 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
     }
 
     private fun productPopularityList() {
+        val word = "popularity"
+        houseBinding.textViewHousePopularityProductMore.setOnClickListener {
+            navController.navigate(
+                HouseFragmentDirections.actionHouseFragmentToListProductFragment(word)
+            )
+        }
+
         val houseAdapter = HouseAdapter(details = { product ->
             navController.navigate(
                 HouseFragmentDirections.actionHouseFragmentToDetailFragment(
@@ -177,7 +198,7 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
         })
 
         val productsPopularityMap = HashMap<String, String>().apply {
-            put("orderby", "popularity")
+            put("orderby", word)
         }
 
         houseBinding.recyclerViewHousePopularityProduct.layoutManager =
