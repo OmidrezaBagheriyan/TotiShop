@@ -2,6 +2,7 @@ package com.omidrezabagherian.totishop.ui.house
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.omidrezabagherian.totishop.core.ResultWrapper
 import com.omidrezabagherian.totishop.data.ShopRepository
 import com.omidrezabagherian.totishop.domain.model.product.Product
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,14 +15,19 @@ import javax.inject.Inject
 @HiltViewModel
 class HouseViewModel @Inject constructor(private val shopRepository: ShopRepository) : ViewModel() {
 
-    private val _productDateList = MutableStateFlow<List<Product>>(emptyList())
-    val productDateList: StateFlow<List<Product>> = _productDateList
+    private val _productDateList: MutableStateFlow<ResultWrapper<List<Product>>> =
+        MutableStateFlow(ResultWrapper.Loading)
+    val productDateList: StateFlow<ResultWrapper<List<Product>>> = _productDateList.asStateFlow()
 
-    private val _productPopularityList = MutableStateFlow<List<Product>>(emptyList())
-    val productPopularityList: StateFlow<List<Product>> = _productPopularityList
+    private val _productPopularityList: MutableStateFlow<ResultWrapper<List<Product>>> =
+        MutableStateFlow(ResultWrapper.Loading)
+    val productPopularityList: StateFlow<ResultWrapper<List<Product>>> =
+        _productPopularityList.asStateFlow()
 
-    private val _productRatingList = MutableStateFlow<List<Product>>(emptyList())
-    val productRatingList: StateFlow<List<Product>> = _productRatingList
+    private val _productRatingList: MutableStateFlow<ResultWrapper<List<Product>>> =
+        MutableStateFlow(ResultWrapper.Loading)
+    val productRatingList: StateFlow<ResultWrapper<List<Product>>> =
+        _productRatingList.asStateFlow()
 
     private val _sliderImage = MutableSharedFlow<Product>()
     val sliderImage: SharedFlow<Product> = _sliderImage
@@ -32,12 +38,8 @@ class HouseViewModel @Inject constructor(private val shopRepository: ShopReposit
     fun getProductDateList(filter: Map<String, String>) {
         viewModelScope.launch {
             val responseProductList = shopRepository.getProductList(1, 10, filter)
-            withContext(Dispatchers.Main) {
-                if (responseProductList.isSuccessful) {
-                    _productDateList.emit(responseProductList.body()!!)
-                } else {
-                    _productError.emit(true)
-                }
+            responseProductList.collect {
+                _productDateList.emit(it)
             }
         }
     }
@@ -45,12 +47,8 @@ class HouseViewModel @Inject constructor(private val shopRepository: ShopReposit
     fun getProductPopularityList(filter: Map<String, String>) {
         viewModelScope.launch {
             val responseProductList = shopRepository.getProductList(1, 10, filter)
-            withContext(Dispatchers.Main) {
-                if (responseProductList.isSuccessful) {
-                    _productPopularityList.emit(responseProductList.body()!!)
-                } else {
-                    _productError.emit(true)
-                }
+            responseProductList.collect {
+                _productPopularityList.emit(it)
             }
         }
     }
@@ -58,12 +56,8 @@ class HouseViewModel @Inject constructor(private val shopRepository: ShopReposit
     fun getProductRatingList(filter: Map<String, String>) {
         viewModelScope.launch {
             val responseProductList = shopRepository.getProductList(1, 10, filter)
-            withContext(Dispatchers.Main) {
-                if (responseProductList.isSuccessful) {
-                    _productRatingList.emit(responseProductList.body()!!)
-                } else {
-                    _productError.emit(true)
-                }
+            responseProductList.collect {
+                _productRatingList.emit(it)
             }
         }
     }

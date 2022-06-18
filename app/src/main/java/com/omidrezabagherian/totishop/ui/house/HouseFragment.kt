@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.core.NetworkManager
+import com.omidrezabagherian.totishop.core.ResultWrapper
 import com.omidrezabagherian.totishop.databinding.FragmentHouseBinding
 import com.omidrezabagherian.totishop.core.Values.DELAY_MS
 import com.omidrezabagherian.totishop.core.Values.PERIOD_MS
@@ -40,47 +42,6 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
         searchPage()
         checkInternet()
 
-    }
-
-    private fun sliderImage() {
-        houseViewModel.getSliderImageList(608)
-
-        var currentPage = 0;
-
-        val sliderAdapter = SliderAdapter(requireContext())
-        houseBinding.viewPagerHouseSliderImage.adapter = sliderAdapter
-
-        Timer().scheduleAtFixedRate(object : TimerTask() {
-            override fun run() {
-                Handler(Looper.getMainLooper()).post(Runnable {
-                    if (currentPage == sliderAdapter.count - 1) {
-                        currentPage = 0
-                    }
-                    houseBinding.viewPagerHouseSliderImage.setCurrentItem(
-                        currentPage++,
-                        true
-                    )
-                })
-            }
-        }, DELAY_MS, PERIOD_MS)
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                houseViewModel.sliderImage.collect { images ->
-
-                    sliderAdapter.setImages(images.images)
-
-                }
-            }
-        }
-
-
-    }
-
-    private fun searchPage() {
-        houseBinding.imageViewHouseSearch.setOnClickListener {
-            navController.navigate(HouseFragmentDirections.actionHouseFragmentToSearchFragment())
-        }
     }
 
     private fun dialogCheckInternet() {
@@ -112,6 +73,45 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
         }
     }
 
+    private fun searchPage() {
+        houseBinding.imageViewHouseSearch.setOnClickListener {
+            navController.navigate(HouseFragmentDirections.actionHouseFragmentToSearchFragment())
+        }
+    }
+
+    private fun sliderImage() {
+        houseViewModel.getSliderImageList(608)
+
+        var currentPage = 0;
+
+        val sliderAdapter = SliderAdapter(requireContext())
+        houseBinding.viewPagerHouseSliderImage.adapter = sliderAdapter
+
+        Timer().scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                Handler(Looper.getMainLooper()).post(Runnable {
+                    if (currentPage == sliderAdapter.count - 1) {
+                        currentPage = 0
+                    }
+                    houseBinding.viewPagerHouseSliderImage.setCurrentItem(
+                        currentPage++,
+                        true
+                    )
+                })
+            }
+        }, DELAY_MS, PERIOD_MS)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                houseViewModel.sliderImage.collect { images ->
+                    sliderAdapter.setImages(images.images)
+                }
+            }
+        }
+
+
+    }
+
     private fun productDateList() {
         val word = "date"
         houseBinding.textViewHouseDateProductMore.setOnClickListener {
@@ -136,12 +136,22 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
         houseViewModel.getProductDateList(productsDateMap)
+        houseBinding.recyclerViewHouseDateProduct.adapter = houseAdapter
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 houseViewModel.productDateList.collect {
-                    houseAdapter.submitList(it)
-                    houseBinding.recyclerViewHouseDateProduct.adapter = houseAdapter
+                    when (it) {
+                        is ResultWrapper.Loading -> {
+                            Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
+                        }
+                        is ResultWrapper.Success -> {
+                            houseAdapter.submitList(it.value)
+                        }
+                        is ResultWrapper.Error -> {
+                            Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
             }
         }
@@ -172,12 +182,22 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
         houseViewModel.getProductRatingList(productsRatingMap)
+        houseBinding.recyclerViewHouseRateProduct.adapter = houseAdapter
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 houseViewModel.productRatingList.collect {
-                    houseAdapter.submitList(it)
-                    houseBinding.recyclerViewHouseRateProduct.adapter = houseAdapter
+                    when (it) {
+                        is ResultWrapper.Loading -> {
+                            Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
+                        }
+                        is ResultWrapper.Success -> {
+                            houseAdapter.submitList(it.value)
+                        }
+                        is ResultWrapper.Error -> {
+                            Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
             }
         }
@@ -208,12 +228,22 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
         houseViewModel.getProductPopularityList(productsPopularityMap)
+        houseBinding.recyclerViewHousePopularityProduct.adapter = houseAdapter
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 houseViewModel.productPopularityList.collect {
-                    houseAdapter.submitList(it)
-                    houseBinding.recyclerViewHousePopularityProduct.adapter = houseAdapter
+                    when (it) {
+                        is ResultWrapper.Loading -> {
+                            Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
+                        }
+                        is ResultWrapper.Success -> {
+                            houseAdapter.submitList(it.value)
+                        }
+                        is ResultWrapper.Error -> {
+                            Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
             }
         }

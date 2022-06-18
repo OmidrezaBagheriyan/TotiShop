@@ -1,20 +1,25 @@
 package com.omidrezabagherian.totishop.data
 
+import com.omidrezabagherian.totishop.core.safeApiCall
 import com.omidrezabagherian.totishop.data.remote.RemoteDataSource
 import com.omidrezabagherian.totishop.domain.model.createcustomer.CreateCustomer
 import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
 import com.omidrezabagherian.totishop.domain.model.updateorder.UpdateOrder
+import kotlinx.coroutines.CoroutineDispatcher
 
 class ShopRepository(
-    private val remoteDataSource: RemoteDataSource
+    private val remoteDataSource: RemoteDataSource,
+    private val dispatcher: CoroutineDispatcher
 ) {
-    suspend fun getProductList(page: Int, perPage: Int, filter: Map<String, String>) =
+    suspend fun getProductList(page: Int, perPage: Int, filter: Map<String, String>) = safeApiCall {
         remoteDataSource.getProductList(page, perPage, filter)
+    }
+
 
     suspend fun getCategoryList(page: Int, perPage: Int) =
         remoteDataSource.getCategoryList(page, perPage)
 
-    suspend fun getSubCategoryList(parent:Int) =
+    suspend fun getSubCategoryList(parent: Int) =
         remoteDataSource.getSubCategoryList(parent)
 
     suspend fun getProduct(id: Int) = remoteDataSource.getProduct(id)
