@@ -15,21 +15,23 @@ class ShopRepository(
         remoteDataSource.getProductList(page, perPage, filter)
     }
 
-
-    suspend fun getCategoryList(page: Int, perPage: Int) =
+    suspend fun getCategoryList(page: Int, perPage: Int) = safeApiCall {
         remoteDataSource.getCategoryList(page, perPage)
+    }
 
-    suspend fun getSubCategoryList(parent: Int) =
+    suspend fun getSubCategoryList(parent: Int) = safeApiCall {
         remoteDataSource.getSubCategoryList(parent)
+    }
 
     suspend fun getProduct(id: Int) = remoteDataSource.getProduct(id)
 
-    suspend fun getProductSubCategoryList(page: Int, perPage: Int, category: Int) =
+    suspend fun getProductSubCategoryList(page: Int, perPage: Int, category: Int) = safeApiCall {
         remoteDataSource.getProductSubCategoryList(
             page,
             perPage,
             category
         )
+    }
 
     suspend fun getProductSearchList(
         page: Int,

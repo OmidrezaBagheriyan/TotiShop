@@ -5,6 +5,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -15,6 +16,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.core.NetworkManager
+import com.omidrezabagherian.totishop.core.ResultWrapper
 import com.omidrezabagherian.totishop.databinding.FragmentSubCategoryBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -90,11 +92,22 @@ class SubCategoryFragment : Fragment(R.layout.fragment_sub_category) {
 
         subCategoryViewModel.getSubCategoryList(subCategoryFragmentArgs.id)
 
+        subCategoryBinding.recyclerViewSubCategory.adapter = subCategoryAdapter
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 subCategoryViewModel.subCategoryList.collect {
-                    subCategoryAdapter.submitList(it)
-                    subCategoryBinding.recyclerViewSubCategory.adapter = subCategoryAdapter
+                    when (it) {
+                        is ResultWrapper.Loading -> {
+                            Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
+                        }
+                        is ResultWrapper.Success -> {
+                            subCategoryAdapter.submitList(it.value)
+                        }
+                        is ResultWrapper.Error -> {
+                            Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
             }
         }

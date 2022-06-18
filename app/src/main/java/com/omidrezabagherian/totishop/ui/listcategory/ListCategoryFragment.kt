@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.core.NetworkManager
+import com.omidrezabagherian.totishop.core.ResultWrapper
 import com.omidrezabagherian.totishop.databinding.FragmentListCategoryBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -81,12 +82,22 @@ class ListCategoryFragment : Fragment(R.layout.fragment_list_category) {
 
         listCategoryViewModel.getProductSubCategoryList(listCategoryArgs.id)
 
-        viewLifecycleOwner.lifecycleScope.launch{
+        listCategoryBinding.recyclerViewListCategory.adapter = listCategoryAdapter
+
+        viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 listCategoryViewModel.productCategoryList.collect {
-                    listCategoryAdapter.submitList(it)
-                    listCategoryBinding.recyclerViewListCategory.adapter =
-                        listCategoryAdapter
+                    when (it) {
+                        is ResultWrapper.Loading -> {
+                            Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
+                        }
+                        is ResultWrapper.Success -> {
+                            listCategoryAdapter.submitList(it.value)
+                        }
+                        is ResultWrapper.Error -> {
+                            Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
             }
         }
