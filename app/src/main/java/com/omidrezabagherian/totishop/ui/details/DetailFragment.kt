@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.core.NetworkManager
+import com.omidrezabagherian.totishop.core.ResultWrapper
 import com.omidrezabagherian.totishop.core.Values
 import com.omidrezabagherian.totishop.databinding.FragmentDetailsBinding
 import com.omidrezabagherian.totishop.domain.model.createorder.Billing
@@ -111,20 +112,58 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                detailViewModel.productValues.collect { product ->
-                    val imageAdapter = ImageAdapter(requireContext(), product.images)
-                    detailsBinding.viewPagerDetailsImages.adapter = imageAdapter
-                    detailsBinding.textViewDetailName.text = product.name
-                    detailsBinding.textViewDetailNumberRate.text =
-                        " ${product.rating_count} امتیاز /"
-                    detailsBinding.ratingDetailNumberRate.rating = product.rating_count.toFloat()
-                    categoryAdapter.submitList(product.categories)
-                    detailsBinding.recyclerViewDetailCategories.adapter = categoryAdapter
-                    tagAdapter.submitList(product.tags)
-                    detailsBinding.recyclerViewDetailTags.adapter = tagAdapter
-                    detailsBinding.textViewDetailPrice.text = "${product.price} تومان"
-                    detailsBinding.textViewDetailDescription.text =
-                        Html.fromHtml(product.description, 0)
+                detailViewModel.productValues.collect {
+                    when (it) {
+                        is ResultWrapper.Loading -> {
+                            detailsBinding.cardViewPrice.visibility = View.GONE
+                            detailsBinding.nestedScrollViewDetails.visibility = View.GONE
+                            detailsBinding.lottieAnimationViewErrorDetails.visibility =
+                                View.INVISIBLE
+                            detailsBinding.lottieAnimationViewLoadingDetails.visibility =
+                                View.VISIBLE
+                            detailsBinding.textViewErrorLoadingDetails.text =
+                                "در حال بارگذاری"
+                            detailsBinding.cardViewDetailsCheckingDetails.visibility =
+                                View.VISIBLE
+                        }
+                        is ResultWrapper.Success -> {
+                            detailsBinding.cardViewPrice.visibility = View.VISIBLE
+                            detailsBinding.nestedScrollViewDetails.visibility = View.VISIBLE
+                            detailsBinding.cardViewDetailsCheckingDetails.visibility =
+                                View.GONE
+                            detailsBinding.lottieAnimationViewErrorDetails.visibility =
+                                View.GONE
+                            detailsBinding.lottieAnimationViewLoadingDetails.visibility =
+                                View.GONE
+                            detailsBinding.textViewErrorLoadingDetails.text = ""
+                            val imageAdapter = ImageAdapter(requireContext(), it.value.images)
+                            detailsBinding.viewPagerDetailsImages.adapter = imageAdapter
+                            detailsBinding.textViewDetailName.text = it.value.name
+                            detailsBinding.textViewDetailNumberRate.text =
+                                " ${it.value.rating_count} امتیاز /"
+                            detailsBinding.ratingDetailNumberRate.rating =
+                                it.value.rating_count.toFloat()
+                            categoryAdapter.submitList(it.value.categories)
+                            detailsBinding.recyclerViewDetailCategories.adapter = categoryAdapter
+                            tagAdapter.submitList(it.value.tags)
+                            detailsBinding.recyclerViewDetailTags.adapter = tagAdapter
+                            detailsBinding.textViewDetailPrice.text = "${it.value.price} تومان"
+                            detailsBinding.textViewDetailDescription.text =
+                                Html.fromHtml(it.value.description, 0)
+                        }
+                        is ResultWrapper.Error -> {
+                            detailsBinding.cardViewPrice.visibility = View.GONE
+                            detailsBinding.nestedScrollViewDetails.visibility = View.GONE
+                            detailsBinding.lottieAnimationViewErrorDetails.visibility =
+                                View.VISIBLE
+                            detailsBinding.lottieAnimationViewLoadingDetails.visibility =
+                                View.INVISIBLE
+                            detailsBinding.textViewErrorLoadingDetails.text =
+                                "خطا در بارگذاری"
+                            detailsBinding.cardViewDetailsCheckingDetails.visibility =
+                                View.VISIBLE
+                        }
+                    }
                 }
             }
         }
@@ -233,7 +272,11 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
                     }
                 }
             } else {
-                Toast.makeText(requireContext(), "لطفا وارد حساب کاربری خود شوید", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "لطفا وارد حساب کاربری خود شوید",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
         }

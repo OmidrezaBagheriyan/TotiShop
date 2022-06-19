@@ -2,16 +2,14 @@ package com.omidrezabagherian.totishop.ui.details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.omidrezabagherian.totishop.core.ResultWrapper
 import com.omidrezabagherian.totishop.data.ShopRepository
 import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
 import com.omidrezabagherian.totishop.domain.model.order.Order
 import com.omidrezabagherian.totishop.domain.model.product.Product
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -20,8 +18,8 @@ import javax.inject.Inject
 class DetailViewModel @Inject constructor(private val shopRepository: ShopRepository) :
     ViewModel() {
 
-    private val _productValues = MutableSharedFlow<Product>()
-    val productValues: SharedFlow<Product> = _productValues
+    private val _productValues = MutableSharedFlow<ResultWrapper<Product>>()
+    val productValues: SharedFlow<ResultWrapper<Product>> = _productValues.asSharedFlow()
 
     private val _getProductBagList = MutableSharedFlow<Order>()
     val getProductBagList: SharedFlow<Order> = _getProductBagList
@@ -36,10 +34,8 @@ class DetailViewModel @Inject constructor(private val shopRepository: ShopReposi
         viewModelScope.launch {
             val responseProduct = shopRepository.getProduct(id)
             withContext(Dispatchers.Main) {
-                if (responseProduct.isSuccessful) {
-                    _productValues.emit(responseProduct.body()!!)
-                } else {
-                    _productError.emit(true)
+                responseProduct.collect {
+                    _productValues.emit(it)
                 }
             }
         }

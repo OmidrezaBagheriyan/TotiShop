@@ -29,11 +29,10 @@ class HouseViewModel @Inject constructor(private val shopRepository: ShopReposit
     val productRatingList: StateFlow<ResultWrapper<List<Product>>> =
         _productRatingList.asStateFlow()
 
-    private val _sliderImage = MutableSharedFlow<Product>()
-    val sliderImage: SharedFlow<Product> = _sliderImage
-
-    private val _productError = MutableStateFlow(false)
-    val productError: StateFlow<Boolean> = _productError
+    private val _sliderImage: MutableStateFlow<ResultWrapper<Product>> =
+        MutableStateFlow(ResultWrapper.Loading)
+    val sliderImage: StateFlow<ResultWrapper<Product>> =
+        _sliderImage.asStateFlow()
 
     fun getProductDateList(filter: Map<String, String>) {
         viewModelScope.launch {
@@ -66,8 +65,8 @@ class HouseViewModel @Inject constructor(private val shopRepository: ShopReposit
         viewModelScope.launch {
             val responseProduct = shopRepository.getProduct(id)
             withContext(Dispatchers.Main) {
-                if (responseProduct.isSuccessful) {
-                    _sliderImage.emit(responseProduct.body()!!)
+                responseProduct.collect {
+                    _sliderImage.emit(it)
                 }
             }
         }

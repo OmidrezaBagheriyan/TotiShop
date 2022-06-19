@@ -103,8 +103,42 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                houseViewModel.sliderImage.collect { images ->
-                    sliderAdapter.setImages(images.images)
+                houseViewModel.sliderImage.collect {
+                    when (it) {
+                        is ResultWrapper.Loading -> {
+                            houseBinding.viewPagerHouseSliderImage.visibility = View.GONE
+                            houseBinding.lottieAnimationViewErrorSliderImageHouse.visibility =
+                                View.INVISIBLE
+                            houseBinding.lottieAnimationViewLoadingSliderImageHouse.visibility =
+                                View.VISIBLE
+                            houseBinding.textViewErrorLoadingSliderImageHouse.text =
+                                "در حال بارگذاری"
+                            houseBinding.cardViewSliderImageCheckingSliderImage.visibility =
+                                View.VISIBLE
+                        }
+                        is ResultWrapper.Success -> {
+                            houseBinding.viewPagerHouseSliderImage.visibility = View.VISIBLE
+                            houseBinding.cardViewSliderImageCheckingSliderImage.visibility =
+                                View.GONE
+                            houseBinding.lottieAnimationViewErrorSliderImageHouse.visibility =
+                                View.GONE
+                            houseBinding.lottieAnimationViewLoadingSliderImageHouse.visibility =
+                                View.GONE
+                            houseBinding.textViewErrorLoadingSliderImageHouse.text = ""
+                            sliderAdapter.setImages(it.value.images)
+                        }
+                        is ResultWrapper.Error -> {
+                            houseBinding.viewPagerHouseSliderImage.visibility = View.GONE
+                            houseBinding.lottieAnimationViewErrorSliderImageHouse.visibility =
+                                View.VISIBLE
+                            houseBinding.lottieAnimationViewLoadingSliderImageHouse.visibility =
+                                View.INVISIBLE
+                            houseBinding.textViewErrorLoadingSliderImageHouse.text =
+                                "خطا در بارگذاری"
+                            houseBinding.cardViewSliderImageCheckingSliderImage.visibility =
+                                View.VISIBLE
+                        }
+                    }
                 }
             }
         }
@@ -136,7 +170,7 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
         }
 
         houseBinding.recyclerViewHouseDateProduct.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, true)
 
         houseViewModel.getProductDateList(productsDateMap)
         houseBinding.recyclerViewHouseDateProduct.adapter = houseAdapter
@@ -198,7 +232,7 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
         }
 
         houseBinding.recyclerViewHouseRateProduct.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, true)
 
         houseViewModel.getProductRatingList(productsRatingMap)
         houseBinding.recyclerViewHouseRateProduct.adapter = houseAdapter
@@ -260,7 +294,7 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
         }
 
         houseBinding.recyclerViewHousePopularityProduct.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, true)
 
         houseViewModel.getProductPopularityList(productsPopularityMap)
         houseBinding.recyclerViewHousePopularityProduct.adapter = houseAdapter

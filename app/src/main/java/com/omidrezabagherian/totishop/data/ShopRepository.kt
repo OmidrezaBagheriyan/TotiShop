@@ -23,7 +23,9 @@ class ShopRepository(
         remoteDataSource.getSubCategoryList(parent)
     }
 
-    suspend fun getProduct(id: Int) = remoteDataSource.getProduct(id)
+    suspend fun getProduct(id: Int) = safeApiCall {
+        remoteDataSource.getProduct(id)
+    }
 
     suspend fun getProductSubCategoryList(page: Int, perPage: Int, category: Int) = safeApiCall {
         remoteDataSource.getProductSubCategoryList(

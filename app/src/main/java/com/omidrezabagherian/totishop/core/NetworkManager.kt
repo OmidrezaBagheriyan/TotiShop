@@ -12,10 +12,10 @@ import androidx.lifecycle.LiveData
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 class NetworkManager(private val context: Context) : LiveData<Boolean>() {
-    var connectionManger: ConnectivityManager =
+    private var connectionManger: ConnectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-    lateinit var networkCallback: ConnectivityManager.NetworkCallback
+    private lateinit var networkCallback: ConnectivityManager.NetworkCallback
 
     fun checkConnection() {
         val activeNetwork: NetworkInfo? = connectionManger.activeNetworkInfo
