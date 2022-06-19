@@ -116,7 +116,10 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
         val word = "date"
         houseBinding.textViewHouseDateProductMore.setOnClickListener {
             navController.navigate(
-                HouseFragmentDirections.actionHouseFragmentToListProductFragment(word)
+                HouseFragmentDirections.actionHouseFragmentToListProductFragment(
+                    word,
+                    "جدیدترین محصولات"
+                )
             )
         }
 
@@ -143,7 +146,8 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
                 houseViewModel.productDateList.collect {
                     when (it) {
                         is ResultWrapper.Loading -> {
-                            houseBinding.lottieAnimationViewErrorDateHouse.visibility = View.INVISIBLE
+                            houseBinding.lottieAnimationViewErrorDateHouse.visibility =
+                                View.INVISIBLE
                             houseBinding.lottieAnimationViewLoadingDateHouse.visibility =
                                 View.VISIBLE
                             houseBinding.textViewErrorLoadingDateHouse.text = "در حال بارگذاری"
@@ -158,7 +162,8 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
                         }
                         is ResultWrapper.Error -> {
                             houseBinding.lottieAnimationViewErrorDateHouse.visibility = View.VISIBLE
-                            houseBinding.lottieAnimationViewLoadingDateHouse.visibility = View.INVISIBLE
+                            houseBinding.lottieAnimationViewLoadingDateHouse.visibility =
+                                View.INVISIBLE
                             houseBinding.textViewErrorLoadingDateHouse.text = "خطا در بارگذاری"
                             houseBinding.cardViewHouseCheckingDate.visibility = View.VISIBLE
                         }
@@ -173,7 +178,10 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
         val word = "rating"
         houseBinding.textViewHouseRateProductMore.setOnClickListener {
             navController.navigate(
-                HouseFragmentDirections.actionHouseFragmentToListProductFragment(word)
+                HouseFragmentDirections.actionHouseFragmentToListProductFragment(
+                    word,
+                    "پربازدیدترین محصولات"
+                )
             )
         }
 
@@ -200,7 +208,8 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
                 houseViewModel.productRatingList.collect {
                     when (it) {
                         is ResultWrapper.Loading -> {
-                            houseBinding.lottieAnimationViewErrorRateHouse.visibility = View.INVISIBLE
+                            houseBinding.lottieAnimationViewErrorRateHouse.visibility =
+                                View.INVISIBLE
                             houseBinding.lottieAnimationViewLoadingRateHouse.visibility =
                                 View.VISIBLE
                             houseBinding.textViewErrorLoadingRateHouse.text = "در حال بارگذاری"
@@ -215,7 +224,8 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
                         }
                         is ResultWrapper.Error -> {
                             houseBinding.lottieAnimationViewErrorRateHouse.visibility = View.VISIBLE
-                            houseBinding.lottieAnimationViewLoadingRateHouse.visibility = View.INVISIBLE
+                            houseBinding.lottieAnimationViewLoadingRateHouse.visibility =
+                                View.INVISIBLE
                             houseBinding.textViewErrorLoadingRateHouse.text = "خطا در بارگذاری"
                             houseBinding.cardViewHouseCheckingRate.visibility = View.VISIBLE
                         }
@@ -230,7 +240,10 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
         val word = "popularity"
         houseBinding.textViewHousePopularityProductMore.setOnClickListener {
             navController.navigate(
-                HouseFragmentDirections.actionHouseFragmentToListProductFragment(word)
+                HouseFragmentDirections.actionHouseFragmentToListProductFragment(
+                    word,
+                    "محبوبیت محصولات"
+                )
             )
         }
 
@@ -257,23 +270,30 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
                 houseViewModel.productPopularityList.collect {
                     when (it) {
                         is ResultWrapper.Loading -> {
-                            houseBinding.lottieAnimationViewErrorPopularityHouse.visibility = View.INVISIBLE
+                            houseBinding.lottieAnimationViewErrorPopularityHouse.visibility =
+                                View.INVISIBLE
                             houseBinding.lottieAnimationViewLoadingPopularityHouse.visibility =
                                 View.VISIBLE
-                            houseBinding.textViewErrorLoadingPopularityHouse.text = "در حال بارگذاری"
+                            houseBinding.textViewErrorLoadingPopularityHouse.text =
+                                "در حال بارگذاری"
                             houseBinding.cardViewHouseCheckingPopularity.visibility = View.VISIBLE
                         }
                         is ResultWrapper.Success -> {
                             houseBinding.cardViewHouseCheckingPopularity.visibility = View.GONE
-                            houseBinding.lottieAnimationViewErrorPopularityHouse.visibility = View.GONE
-                            houseBinding.lottieAnimationViewLoadingPopularityHouse.visibility = View.GONE
+                            houseBinding.lottieAnimationViewErrorPopularityHouse.visibility =
+                                View.GONE
+                            houseBinding.lottieAnimationViewLoadingPopularityHouse.visibility =
+                                View.GONE
                             houseBinding.textViewErrorLoadingPopularityHouse.text = ""
                             houseAdapter.submitList(it.value)
                         }
                         is ResultWrapper.Error -> {
-                            houseBinding.lottieAnimationViewErrorPopularityHouse.visibility = View.VISIBLE
-                            houseBinding.lottieAnimationViewLoadingPopularityHouse.visibility = View.INVISIBLE
-                            houseBinding.textViewErrorLoadingPopularityHouse.text = "خطا در بارگذاری"
+                            houseBinding.lottieAnimationViewErrorPopularityHouse.visibility =
+                                View.VISIBLE
+                            houseBinding.lottieAnimationViewLoadingPopularityHouse.visibility =
+                                View.INVISIBLE
+                            houseBinding.textViewErrorLoadingPopularityHouse.text =
+                                "خطا در بارگذاری"
                             houseBinding.cardViewHouseCheckingPopularity.visibility = View.VISIBLE
                         }
                     }

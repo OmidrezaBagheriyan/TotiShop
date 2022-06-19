@@ -2,6 +2,7 @@ package com.omidrezabagherian.totishop.ui.listproduct
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
@@ -72,6 +73,8 @@ class ListProductFragment : Fragment(R.layout.fragment_list_product) {
     private fun initProduct() {
         val word = listProductFragmentArgs.valueProduct
 
+        listProductBinding.textViewListProductTitle.text = listProductFragmentArgs.nameProduct
+
         val productsDateMap = HashMap<String, String>().apply {
             put("orderby", word)
         }
@@ -99,13 +102,36 @@ class ListProductFragment : Fragment(R.layout.fragment_list_product) {
                 listProductViewModel.productList.collect {
                     when (it) {
                         is ResultWrapper.Loading -> {
-                            Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
+                            listProductBinding.recyclerViewListProduct.visibility = View.GONE
+                            listProductBinding.lottieAnimationViewErrorListProduct.visibility =
+                                View.INVISIBLE
+                            listProductBinding.lottieAnimationViewLoadingListProduct.visibility =
+                                View.VISIBLE
+                            listProductBinding.textViewErrorLoadingListProduct.text =
+                                "در حال بارگذاری"
+                            listProductBinding.cardViewListProductCheckingListProduct.visibility = View.VISIBLE
                         }
                         is ResultWrapper.Success -> {
+                            listProductBinding.cardViewListProductCheckingListProduct.visibility = View.GONE
+                            listProductBinding.lottieAnimationViewErrorListProduct.visibility =
+                                View.GONE
+                            listProductBinding.lottieAnimationViewLoadingListProduct.visibility =
+                                View.GONE
+                            listProductBinding.textViewErrorLoadingListProduct.text = ""
+
+                            listProductBinding.recyclerViewListProduct.visibility = View.VISIBLE
+
                             listProductAdapter.submitList(it.value)
                         }
                         is ResultWrapper.Error -> {
-                            Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
+                            listProductBinding.recyclerViewListProduct.visibility = View.GONE
+                            listProductBinding.lottieAnimationViewErrorListProduct.visibility =
+                                View.VISIBLE
+                            listProductBinding.lottieAnimationViewLoadingListProduct.visibility =
+                                View.INVISIBLE
+                            listProductBinding.textViewErrorLoadingListProduct.text =
+                                "خطا در بارگذاری"
+                            listProductBinding.cardViewListProductCheckingListProduct.visibility = View.VISIBLE
                         }
                     }
                 }
