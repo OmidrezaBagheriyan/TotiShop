@@ -40,13 +40,14 @@ class ShopRepository(
         perPage: Int,
         search: String,
         orderby: String
-    ) =
+    ) = safeApiCall {
         remoteDataSource.getProductSearchList(
             page,
             perPage,
             search,
             orderby
         )
+    }
 
     suspend fun setCustomer(createCustomer: CreateCustomer) = remoteDataSource.setCustomer(
         createCustomer

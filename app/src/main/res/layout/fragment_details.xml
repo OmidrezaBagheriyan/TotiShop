@@ -60,7 +60,6 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollViewDetails"
         android:layout_width="0dp"
-        android:visibility="gone"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/cardViewPrice"
         app:layout_constraintEnd_toEndOf="parent"

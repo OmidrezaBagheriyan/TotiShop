@@ -18,8 +18,8 @@ import javax.inject.Inject
 class DetailViewModel @Inject constructor(private val shopRepository: ShopRepository) :
     ViewModel() {
 
-    private val _productValues = MutableSharedFlow<ResultWrapper<Product>>()
-    val productValues: SharedFlow<ResultWrapper<Product>> = _productValues.asSharedFlow()
+    private val _productValues = MutableStateFlow<ResultWrapper<Product>>(ResultWrapper.Loading)
+    val productValues: StateFlow<ResultWrapper<Product>> = _productValues.asStateFlow()
 
     private val _getProductBagList = MutableSharedFlow<Order>()
     val getProductBagList: SharedFlow<Order> = _getProductBagList

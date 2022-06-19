@@ -1,13 +1,12 @@
 package com.omidrezabagherian.totishop.ui.search
 
 import android.app.AlertDialog
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.RadioGroup
-import android.widget.SearchView
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -15,23 +14,25 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.core.NetworkManager
+import com.omidrezabagherian.totishop.core.ResultWrapper
+import com.omidrezabagherian.totishop.core.Values.ID_FILTER_SHARED_PREFERENCES
+import com.omidrezabagherian.totishop.core.Values.SHARED_PREFERENCES
 import com.omidrezabagherian.totishop.databinding.FragmentSearchBinding
-import com.omidrezabagherian.totishop.domain.model.product.Product
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import java.util.HashMap
 
 @AndroidEntryPoint
 class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private lateinit var searchBinding: FragmentSearchBinding
     private val searchViewModel: SearchViewModel by viewModels()
+    private lateinit var searchSharedPreferences: SharedPreferences
     private val navController by lazy {
         findNavController()
     }
+    private var search: String = ""
     private var orderby = "price"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,6 +40,8 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
         searchBinding = FragmentSearchBinding.bind(view)
 
+        searchSharedPreferences =
+            requireActivity().getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE)
         checkInternet()
 
     }
@@ -82,40 +85,82 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             val dialog = AlertDialog.Builder(requireContext())
             val dialogView = layoutInflater.inflate(R.layout.dialog_orderby, null)
             val buttonCheckInternet: Button = dialogView.findViewById(R.id.buttonCheckOrderBy)
-            val radioGroup: RadioGroup = dialogView.findViewById(R.id.radioGroupOrderBy)
             dialog.setView(dialogView)
             dialog.setCancelable(false)
             val customDialog = dialog.create()
             customDialog.show()
+            val radioGroupOrder: RadioGroup = dialogView.findViewById(R.id.radioGroupOrderBy)
+            val radioButtonOrderByDate: RadioButton = dialogView.findViewById(R.id.orderByDate)
+            val radioButtonOrderByTitle: RadioButton = dialogView.findViewById(R.id.orderByTitle)
+            val radioButtonOrderByPrice: RadioButton = dialogView.findViewById(R.id.orderByPrice)
+            val radioButtonOrderByPopularity: RadioButton =
+                dialogView.findViewById(R.id.orderByPopularity)
+            val radioButtonOrderByRating: RadioButton = dialogView.findViewById(R.id.orderByRating)
+
+            val searchSharedPreferencesEditor = searchSharedPreferences.edit()
+
+            when (searchSharedPreferences.getInt(ID_FILTER_SHARED_PREFERENCES, 0).toInt()) {
+                1 -> {
+                    radioButtonOrderByDate.isChecked = true
+                }
+                2 -> {
+                    radioButtonOrderByTitle.isChecked = true
+                }
+                3 -> {
+                    radioButtonOrderByPrice.isChecked = true
+                }
+                4 -> {
+                    radioButtonOrderByPopularity.isChecked = true
+                }
+                5 -> {
+                    radioButtonOrderByRating.isChecked = true
+                }
+            }
 
             buttonCheckInternet.setOnClickListener {
 
-                orderby = when (radioGroup.checkedRadioButtonId) {
+                orderby = when (radioGroupOrder.checkedRadioButtonId) {
                     R.id.orderByDate -> {
+                        searchSharedPreferencesEditor.putInt(ID_FILTER_SHARED_PREFERENCES, 1)
                         "date"
                     }
-                    R.id.orderByID -> {
+                    R.id.orderByTitle -> {
+                        searchSharedPreferencesEditor.putInt(ID_FILTER_SHARED_PREFERENCES, 2)
                         "id"
                     }
-                    R.id.orderByTitle -> {
+                    R.id.orderByPrice -> {
+                        searchSharedPreferencesEditor.putInt(ID_FILTER_SHARED_PREFERENCES, 3)
                         "title"
                     }
-                    R.id.orderByPrice -> {
+                    R.id.orderByPopularity -> {
+                        searchSharedPreferencesEditor.putInt(ID_FILTER_SHARED_PREFERENCES, 4)
                         "price"
                     }
-                    R.id.orderByPopularity -> {
+                    R.id.orderByRating -> {
+                        searchSharedPreferencesEditor.putInt(ID_FILTER_SHARED_PREFERENCES, 5)
                         "popularity"
                     }
-                    R.id.orderByRating -> {
-                        "rating"
-                    }
                     else -> {
+                        searchSharedPreferencesEditor.putInt(ID_FILTER_SHARED_PREFERENCES, 4)
                         "price"
                     }
                 }
 
+                if (search.isNotEmpty()) {
+                    searchSharedPreferencesEditor.commit()
+                    searchSharedPreferencesEditor.apply()
+                    searchProduct(search, orderby)
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "لطفا کلمه خود را سرچ کنید",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    customDialog.dismiss()
+                }
+
                 customDialog.dismiss()
-                checkInternet()
             }
         }
     }
@@ -125,6 +170,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
 
+                search = query.toString()
                 searchProduct(query.toString(), orderby)
                 return false
             }
@@ -155,7 +201,35 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 searchViewModel.productSearchList.collect {
-                    searchAdapter.submitList(it)
+                    when (it) {
+                        is ResultWrapper.Loading -> {
+                            searchBinding.lottieAnimationViewErrorSearch.visibility =
+                                View.INVISIBLE
+                            searchBinding.lottieAnimationViewLoadingSearch.visibility =
+                                View.VISIBLE
+                            searchBinding.textViewErrorLoadingSearch.text =
+                                "در حال بارگذاری"
+                            searchBinding.cardViewSearchCheckingSearch.visibility = View.VISIBLE
+                        }
+                        is ResultWrapper.Success -> {
+                            searchBinding.cardViewSearchCheckingSearch.visibility = View.GONE
+                            searchBinding.lottieAnimationViewErrorSearch.visibility =
+                                View.GONE
+                            searchBinding.lottieAnimationViewLoadingSearch.visibility =
+                                View.GONE
+                            searchBinding.textViewErrorLoadingSearch.text = ""
+                            searchAdapter.submitList(it.value)
+                        }
+                        is ResultWrapper.Error -> {
+                            searchBinding.lottieAnimationViewErrorSearch.visibility =
+                                View.VISIBLE
+                            searchBinding.lottieAnimationViewLoadingSearch.visibility =
+                                View.INVISIBLE
+                            searchBinding.textViewErrorLoadingSearch.text =
+                                "خطا در بارگذاری"
+                            searchBinding.cardViewSearchCheckingSearch.visibility = View.VISIBLE
+                        }
+                    }
                 }
             }
         }

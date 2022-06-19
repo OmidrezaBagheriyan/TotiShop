@@ -14,5 +14,6 @@ object Values {
     const val Address_SHARED_PREFERENCES = "Address"
     const val PASSWORD_SHARED_PREFERENCES = "Password"
     const val ID_ORDER_SHARED_PREFERENCES = "IDOrder"
+    const val ID_FILTER_SHARED_PREFERENCES = "IDFilter"
 
 }

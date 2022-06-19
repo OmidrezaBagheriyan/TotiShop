@@ -115,10 +115,11 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
                 detailViewModel.productValues.collect {
                     when (it) {
                         is ResultWrapper.Loading -> {
+                            Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
                             detailsBinding.cardViewPrice.visibility = View.GONE
                             detailsBinding.nestedScrollViewDetails.visibility = View.GONE
                             detailsBinding.lottieAnimationViewErrorDetails.visibility =
-                                View.INVISIBLE
+                                View.GONE
                             detailsBinding.lottieAnimationViewLoadingDetails.visibility =
                                 View.VISIBLE
                             detailsBinding.textViewErrorLoadingDetails.text =
@@ -127,6 +128,7 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
                                 View.VISIBLE
                         }
                         is ResultWrapper.Success -> {
+                            Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
                             detailsBinding.cardViewPrice.visibility = View.VISIBLE
                             detailsBinding.nestedScrollViewDetails.visibility = View.VISIBLE
                             detailsBinding.cardViewDetailsCheckingDetails.visibility =
@@ -152,6 +154,7 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
                                 Html.fromHtml(it.value.description, 0)
                         }
                         is ResultWrapper.Error -> {
+                            Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
                             detailsBinding.cardViewPrice.visibility = View.GONE
                             detailsBinding.nestedScrollViewDetails.visibility = View.GONE
                             detailsBinding.lottieAnimationViewErrorDetails.visibility =
