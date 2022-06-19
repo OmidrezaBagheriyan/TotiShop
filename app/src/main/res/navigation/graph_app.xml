@@ -28,7 +28,8 @@
         tools:layout="@layout/fragment_category">
         <action
             android:id="@+id/action_categoryFragment_to_subCategoryFragment"
-            app:destination="@id/subCategoryFragment" />
+            app:destination="@id/subCategoryFragment"
+            app:enterAnim="@anim/animation_fragments" />
     </fragment>
 
     <fragment
@@ -82,7 +83,8 @@
             app:argType="integer" />
         <action
             android:id="@+id/action_listCategoryFragment_to_detailFragment"
-            app:destination="@id/detailFragment" />
+            app:destination="@id/detailFragment"
+            app:enterAnim="@anim/animation_fragments" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -134,7 +136,8 @@
         android:label="SubCategoryFragment" >
         <action
             android:id="@+id/action_subCategoryFragment_to_listCategoryFragment"
-            app:destination="@id/listCategoryFragment" />
+            app:destination="@id/listCategoryFragment"
+            app:enterAnim="@anim/animation_fragments" />
         <argument
             android:name="id"
             app:argType="integer" />

@@ -21,10 +21,10 @@
 
             <ImageView
                 android:id="@+id/imageViewHouseSearch"
-                android:src="@drawable/ic_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
+                android:src="@drawable/ic_search"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -46,6 +46,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollViewHouse"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -58,10 +59,10 @@
             android:layout_height="match_parent">
 
             <androidx.viewpager.widget.ViewPager
-                android:layout_margin="8dp"
                 android:id="@+id/viewPagerHouseSliderImage"
                 android:layout_width="match_parent"
                 android:layout_height="205dp"
+                android:layout_margin="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -87,6 +88,56 @@
                 app:layout_constraintStart_toStartOf="@+id/recyclerViewHouseDateProduct"
                 app:layout_constraintTop_toTopOf="@+id/textViewHouseDateProduct" />
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewHouseCheckingDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                app:cardCornerRadius="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewHouseDateProduct">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp">
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/lottieAnimationViewLoadingDateHouse"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:lottie_autoPlay="true"
+                        app:lottie_rawRes="@raw/loading_files" />
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/lottieAnimationViewErrorDateHouse"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:lottie_autoPlay="true"
+                        app:lottie_rawRes="@raw/error_files" />
+
+                    <TextView
+                        android:id="@+id/textViewErrorLoadingDateHouse"
+                        style="@style/TextViewBlackCustom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/lottieAnimationViewLoadingDateHouse"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewHouseDateProduct"
                 android:layout_width="match_parent"
@@ -95,7 +146,7 @@
                 android:layoutDirection="rtl"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewHouseDateProduct"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewHouseCheckingDate"
                 tools:itemCount="1"
                 tools:listitem="@layout/item_product" />
 
@@ -120,6 +171,56 @@
                 app:layout_constraintStart_toStartOf="@+id/recyclerViewHouseRateProduct"
                 app:layout_constraintTop_toTopOf="@+id/textViewHouseRateProduct" />
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewHouseCheckingRate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                app:cardCornerRadius="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewHouseRateProduct">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp">
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/lottieAnimationViewLoadingRateHouse"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:lottie_autoPlay="true"
+                        app:lottie_rawRes="@raw/loading_files" />
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/lottieAnimationViewErrorRateHouse"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:lottie_autoPlay="true"
+                        app:lottie_rawRes="@raw/error_files" />
+
+                    <TextView
+                        android:id="@+id/textViewErrorLoadingRateHouse"
+                        style="@style/TextViewBlackCustom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/lottieAnimationViewLoadingRateHouse"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewHouseRateProduct"
                 android:layout_width="match_parent"
@@ -128,7 +229,7 @@
                 android:layoutDirection="rtl"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewHouseRateProduct"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewHouseCheckingRate"
                 tools:itemCount="1"
                 tools:listitem="@layout/item_product" />
 
@@ -153,6 +254,56 @@
                 app:layout_constraintStart_toStartOf="@+id/recyclerViewHousePopularityProduct"
                 app:layout_constraintTop_toTopOf="@+id/textViewHousePopularityProduct" />
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewHouseCheckingPopularity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                app:cardCornerRadius="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewHousePopularityProduct">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp">
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/lottieAnimationViewLoadingPopularityHouse"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:lottie_autoPlay="true"
+                        app:lottie_rawRes="@raw/loading_files" />
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/lottieAnimationViewErrorPopularityHouse"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:lottie_autoPlay="true"
+                        app:lottie_rawRes="@raw/error_files" />
+
+                    <TextView
+                        android:id="@+id/textViewErrorLoadingPopularityHouse"
+                        style="@style/TextViewBlackCustom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/lottieAnimationViewLoadingPopularityHouse"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewHousePopularityProduct"
                 android:layout_width="match_parent"
@@ -161,7 +312,7 @@
                 android:layoutDirection="rtl"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewHousePopularityProduct"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewHouseCheckingPopularity"
                 tools:itemCount="1"
                 tools:listitem="@layout/item_product" />
 

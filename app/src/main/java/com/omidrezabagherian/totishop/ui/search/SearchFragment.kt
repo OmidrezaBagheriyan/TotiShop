@@ -92,7 +92,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
                 orderby = when (radioGroup.checkedRadioButtonId) {
                     R.id.orderByDate -> {
-                        radioGroup
                         "date"
                     }
                     R.id.orderByID -> {

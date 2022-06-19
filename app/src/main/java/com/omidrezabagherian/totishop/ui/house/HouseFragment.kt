@@ -143,13 +143,24 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
                 houseViewModel.productDateList.collect {
                     when (it) {
                         is ResultWrapper.Loading -> {
-                            Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
+                            houseBinding.lottieAnimationViewErrorDateHouse.visibility = View.INVISIBLE
+                            houseBinding.lottieAnimationViewLoadingDateHouse.visibility =
+                                View.VISIBLE
+                            houseBinding.textViewErrorLoadingDateHouse.text = "در حال بارگذاری"
+                            houseBinding.cardViewHouseCheckingDate.visibility = View.VISIBLE
                         }
                         is ResultWrapper.Success -> {
+                            houseBinding.cardViewHouseCheckingDate.visibility = View.GONE
+                            houseBinding.lottieAnimationViewErrorDateHouse.visibility = View.GONE
+                            houseBinding.lottieAnimationViewLoadingDateHouse.visibility = View.GONE
+                            houseBinding.textViewErrorLoadingDateHouse.text = ""
                             houseAdapter.submitList(it.value)
                         }
                         is ResultWrapper.Error -> {
-                            Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
+                            houseBinding.lottieAnimationViewErrorDateHouse.visibility = View.VISIBLE
+                            houseBinding.lottieAnimationViewLoadingDateHouse.visibility = View.INVISIBLE
+                            houseBinding.textViewErrorLoadingDateHouse.text = "خطا در بارگذاری"
+                            houseBinding.cardViewHouseCheckingDate.visibility = View.VISIBLE
                         }
                     }
                 }
@@ -189,13 +200,24 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
                 houseViewModel.productRatingList.collect {
                     when (it) {
                         is ResultWrapper.Loading -> {
-                            Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
+                            houseBinding.lottieAnimationViewErrorRateHouse.visibility = View.INVISIBLE
+                            houseBinding.lottieAnimationViewLoadingRateHouse.visibility =
+                                View.VISIBLE
+                            houseBinding.textViewErrorLoadingRateHouse.text = "در حال بارگذاری"
+                            houseBinding.cardViewHouseCheckingRate.visibility = View.VISIBLE
                         }
                         is ResultWrapper.Success -> {
+                            houseBinding.cardViewHouseCheckingRate.visibility = View.GONE
+                            houseBinding.lottieAnimationViewErrorRateHouse.visibility = View.GONE
+                            houseBinding.lottieAnimationViewLoadingRateHouse.visibility = View.GONE
+                            houseBinding.textViewErrorLoadingRateHouse.text = ""
                             houseAdapter.submitList(it.value)
                         }
                         is ResultWrapper.Error -> {
-                            Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
+                            houseBinding.lottieAnimationViewErrorRateHouse.visibility = View.VISIBLE
+                            houseBinding.lottieAnimationViewLoadingRateHouse.visibility = View.INVISIBLE
+                            houseBinding.textViewErrorLoadingRateHouse.text = "خطا در بارگذاری"
+                            houseBinding.cardViewHouseCheckingRate.visibility = View.VISIBLE
                         }
                     }
                 }
@@ -235,13 +257,24 @@ class HouseFragment : Fragment(R.layout.fragment_house) {
                 houseViewModel.productPopularityList.collect {
                     when (it) {
                         is ResultWrapper.Loading -> {
-                            Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
+                            houseBinding.lottieAnimationViewErrorPopularityHouse.visibility = View.INVISIBLE
+                            houseBinding.lottieAnimationViewLoadingPopularityHouse.visibility =
+                                View.VISIBLE
+                            houseBinding.textViewErrorLoadingPopularityHouse.text = "در حال بارگذاری"
+                            houseBinding.cardViewHouseCheckingPopularity.visibility = View.VISIBLE
                         }
                         is ResultWrapper.Success -> {
+                            houseBinding.cardViewHouseCheckingPopularity.visibility = View.GONE
+                            houseBinding.lottieAnimationViewErrorPopularityHouse.visibility = View.GONE
+                            houseBinding.lottieAnimationViewLoadingPopularityHouse.visibility = View.GONE
+                            houseBinding.textViewErrorLoadingPopularityHouse.text = ""
                             houseAdapter.submitList(it.value)
                         }
                         is ResultWrapper.Error -> {
-                            Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
+                            houseBinding.lottieAnimationViewErrorPopularityHouse.visibility = View.VISIBLE
+                            houseBinding.lottieAnimationViewLoadingPopularityHouse.visibility = View.INVISIBLE
+                            houseBinding.textViewErrorLoadingPopularityHouse.text = "خطا در بارگذاری"
+                            houseBinding.cardViewHouseCheckingPopularity.visibility = View.VISIBLE
                         }
                     }
                 }

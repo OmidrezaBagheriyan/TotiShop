@@ -15,11 +15,17 @@
     </style>
 
     <style name="Theme.StartApplication" parent="Theme.SplashScreen">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowContentOverlay">@null</item>
         <item name="windowSplashScreenBackground">@color/white</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_toti_shop</item>
         <item name="windowSplashScreenAnimationDuration">1000</item>
         <item name="postSplashScreenTheme">@style/Theme.TotiShop</item>
     </style>
+
+
 
     <style name="TextViewBlackCustom" parent="Widget.AppCompat.TextView">
         <item name="android:fontFamily">@font/vazirmatn_black</item>
