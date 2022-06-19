@@ -99,13 +99,45 @@ class SubCategoryFragment : Fragment(R.layout.fragment_sub_category) {
                 subCategoryViewModel.subCategoryList.collect {
                     when (it) {
                         is ResultWrapper.Loading -> {
-                            Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
+                            subCategoryBinding.materialButtonSubCategoryShowMore.visibility =
+                                View.GONE
+                            subCategoryBinding.recyclerViewSubCategory.visibility = View.GONE
+                            subCategoryBinding.lottieAnimationViewErrorSubCategory.visibility =
+                                View.INVISIBLE
+                            subCategoryBinding.lottieAnimationViewLoadingSubCategory.visibility =
+                                View.VISIBLE
+                            subCategoryBinding.textViewErrorLoadingSubCategory.text =
+                                "در حال بارگذاری"
+                            subCategoryBinding.cardViewSubCategoryCheckingSubCategory.visibility =
+                                View.VISIBLE
                         }
                         is ResultWrapper.Success -> {
+                            subCategoryBinding.materialButtonSubCategoryShowMore.visibility =
+                                View.VISIBLE
+                            subCategoryBinding.cardViewSubCategoryCheckingSubCategory.visibility =
+                                View.GONE
+                            subCategoryBinding.lottieAnimationViewErrorSubCategory.visibility =
+                                View.GONE
+                            subCategoryBinding.lottieAnimationViewLoadingSubCategory.visibility =
+                                View.GONE
+                            subCategoryBinding.textViewErrorLoadingSubCategory.text = ""
+
+                            subCategoryBinding.recyclerViewSubCategory.visibility = View.VISIBLE
+
                             subCategoryAdapter.submitList(it.value)
                         }
                         is ResultWrapper.Error -> {
-                            Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
+                            subCategoryBinding.materialButtonSubCategoryShowMore.visibility =
+                                View.GONE
+                            subCategoryBinding.recyclerViewSubCategory.visibility = View.GONE
+                            subCategoryBinding.lottieAnimationViewErrorSubCategory.visibility =
+                                View.VISIBLE
+                            subCategoryBinding.lottieAnimationViewLoadingSubCategory.visibility =
+                                View.INVISIBLE
+                            subCategoryBinding.textViewErrorLoadingSubCategory.text =
+                                "خطا در بارگذاری"
+                            subCategoryBinding.cardViewSubCategoryCheckingSubCategory.visibility =
+                                View.VISIBLE
                         }
                     }
                 }

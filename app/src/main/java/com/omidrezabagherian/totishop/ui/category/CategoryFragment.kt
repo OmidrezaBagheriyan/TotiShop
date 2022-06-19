@@ -91,13 +91,36 @@ class CategoryFragment : Fragment(R.layout.fragment_category) {
                 categoryViewModel.categoryList.collect {
                     when (it) {
                         is ResultWrapper.Loading -> {
-                            Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
+                            categoryBinding.recyclerViewCategory.visibility = View.GONE
+                            categoryBinding.lottieAnimationViewErrorCategory.visibility =
+                                View.INVISIBLE
+                            categoryBinding.lottieAnimationViewLoadingCategory.visibility =
+                                View.VISIBLE
+                            categoryBinding.textViewErrorLoadingCategory.text =
+                                "در حال بارگذاری"
+                            categoryBinding.cardViewCategoryCheckingCategory.visibility = View.VISIBLE
                         }
                         is ResultWrapper.Success -> {
+                            categoryBinding.cardViewCategoryCheckingCategory.visibility = View.GONE
+                            categoryBinding.lottieAnimationViewErrorCategory.visibility =
+                                View.GONE
+                            categoryBinding.lottieAnimationViewLoadingCategory.visibility =
+                                View.GONE
+                            categoryBinding.textViewErrorLoadingCategory.text = ""
+
+                            categoryBinding.recyclerViewCategory.visibility = View.VISIBLE
+
                             categoryAdapter.submitList(it.value)
                         }
                         is ResultWrapper.Error -> {
-                            Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
+                            categoryBinding.recyclerViewCategory.visibility = View.GONE
+                            categoryBinding.lottieAnimationViewErrorCategory.visibility =
+                                View.VISIBLE
+                            categoryBinding.lottieAnimationViewLoadingCategory.visibility =
+                                View.INVISIBLE
+                            categoryBinding.textViewErrorLoadingCategory.text =
+                                "خطا در بارگذاری"
+                            categoryBinding.cardViewCategoryCheckingCategory.visibility = View.VISIBLE
                         }
                     }
                 }
