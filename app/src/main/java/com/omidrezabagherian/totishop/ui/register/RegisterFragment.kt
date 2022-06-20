@@ -16,6 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.core.NetworkManager
+import com.omidrezabagherian.totishop.core.ResultWrapper
 import com.omidrezabagherian.totishop.core.Values
 import com.omidrezabagherian.totishop.databinding.FragmentRegisterBinding
 import com.omidrezabagherian.totishop.domain.model.createcustomer.Billing
@@ -108,26 +109,13 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
         val registerSharedPreferencesEditor = registerSharedPreferences.edit()
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                registerViewModel.errorCustomerInfo.collect { error ->
-                    Log.i("regError", error.toString())
-                    if (error) {
-                        Toast.makeText(
-                            requireContext(),
-                            "ایمیل و نام کاربری تکراری هست",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            }
-        }
+        /*Toast.makeText(
+            requireContext(),
+            "ایمیل و نام کاربری تکراری هست",
+            Toast.LENGTH_SHORT
+        ).show()
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                registerViewModel.addCustomerInfo.collect { customer ->
-
-                    registerSharedPreferencesEditor.putInt(
+        registerSharedPreferencesEditor.putInt(
                         Values.ID_SHARED_PREFERENCES,
                         customer.id
                     )
@@ -161,8 +149,104 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                         )
                     )
                 }
+        */
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                registerViewModel.addCustomerInfo.collect {
+                    when (it) {
+                        is ResultWrapper.Loading -> {
+                            registerBinding.textInputEditTextRegisterName.visibility = View.INVISIBLE
+                            registerBinding.textInputEditTextRegisterFamily.visibility = View.INVISIBLE
+                            registerBinding.textInputEditTextRegisterEmail.visibility = View.INVISIBLE
+                            registerBinding.textInputEditTextRegisterUsername.visibility = View.INVISIBLE
+                            registerBinding.textInputEditTextRegisterNumberPhone.visibility =
+                                View.INVISIBLE
+                            registerBinding.textInputEditTextRegisterAddress.visibility = View.INVISIBLE
+                            registerBinding.materialButtonRegisterSubmit.visibility = View.INVISIBLE
+                            registerBinding.textViewRegisterLogin.visibility = View.INVISIBLE
+                            Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
+                            registerBinding.lottieAnimationViewErrorRegister.visibility =
+                                View.INVISIBLE
+                            registerBinding.lottieAnimationViewLoadingRegister.visibility =
+                                View.VISIBLE
+                            registerBinding.textViewErrorLoadingRegister.text =
+                                "در حال ثبت نام"
+                            registerBinding.cardViewRegisterCheckingRegister.visibility =
+                                View.VISIBLE
+                        }
+                        is ResultWrapper.Success -> {
+                            registerBinding.cardViewRegisterCheckingRegister.visibility =
+                                View.GONE
+                            registerBinding.textInputEditTextRegisterName.visibility = View.VISIBLE
+                            registerBinding.textInputEditTextRegisterUsername.visibility = View.VISIBLE
+                            registerBinding.textInputEditTextRegisterFamily.visibility =
+                                View.VISIBLE
+                            registerBinding.textInputEditTextRegisterEmail.visibility = View.VISIBLE
+                            registerBinding.textInputEditTextRegisterNumberPhone.visibility =
+                                View.VISIBLE
+                            registerBinding.textInputEditTextRegisterAddress.visibility =
+                                View.VISIBLE
+                            registerBinding.materialButtonRegisterSubmit.visibility = View.VISIBLE
+                            registerBinding.textViewRegisterLogin.visibility = View.VISIBLE
+                            Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
+                            registerSharedPreferencesEditor.putInt(
+                                Values.ID_SHARED_PREFERENCES,
+                                it.value.id
+                            )
+                            registerSharedPreferencesEditor.putString(
+                                Values.NAME_SHARED_PREFERENCES,
+                                registerBinding.textInputEditTextRegisterName.text.toString()
+                            )
+                            registerSharedPreferencesEditor.putString(
+                                Values.FAMILY_SHARED_PREFERENCES,
+                                registerBinding.textInputEditTextRegisterFamily.text.toString()
+                            )
+                            registerSharedPreferencesEditor.putString(
+                                Values.EMAIL_SHARED_PREFERENCES,
+                                registerBinding.textInputEditTextRegisterEmail.text.toString()
+                            )
+                            registerSharedPreferencesEditor.putString(
+                                Values.PASSWORD_SHARED_PREFERENCES,
+                                registerBinding.textInputEditTextRegisterNumberPhone.text.toString()
+                            )
+                            registerSharedPreferencesEditor.putString(
+                                Values.Address_SHARED_PREFERENCES,
+                                registerBinding.textInputEditTextRegisterAddress.text.toString()
+                            )
+
+                            registerSharedPreferencesEditor.commit()
+                            registerSharedPreferencesEditor.apply()
+
+                            navController.navigate(
+                                RegisterFragmentDirections.actionRegisterFragmentToUserFragment(
+                                    it.value.id
+                                )
+                            )
+                        }
+                        is ResultWrapper.Error -> {
+                            registerBinding.cardViewRegisterCheckingRegister.visibility =
+                                View.GONE
+                            registerBinding.textInputEditTextRegisterName.visibility = View.VISIBLE
+                            registerBinding.textInputEditTextRegisterUsername.visibility = View.VISIBLE
+                            registerBinding.textInputEditTextRegisterFamily.visibility =
+                                View.VISIBLE
+                            registerBinding.textInputEditTextRegisterEmail.visibility = View.VISIBLE
+                            registerBinding.textInputEditTextRegisterNumberPhone.visibility =
+                                View.VISIBLE
+                            registerBinding.textInputEditTextRegisterAddress.visibility =
+                                View.VISIBLE
+                            registerBinding.materialButtonRegisterSubmit.visibility = View.VISIBLE
+                            registerBinding.textViewRegisterLogin.visibility = View.VISIBLE
+                            Toast.makeText(
+                                requireContext(),
+                                "ایمیل و نام کاربری تکراری هست",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                }
             }
         }
     }
-
 }

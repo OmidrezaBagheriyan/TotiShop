@@ -118,16 +118,16 @@
         android:label="RegisterFragment"
         tools:layout="@layout/fragment_register" >
         <action
-            android:id="@+id/action_registerFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-        <action
             android:id="@+id/action_registerFragment_to_settingFragment"
             app:destination="@id/settingFragment" />
         <action
             android:id="@+id/action_registerFragment_to_userFragment"
             app:destination="@id/userFragment"
             app:popUpTo="@id/registerFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         tools:layout="@layout/fragment_sub_category"

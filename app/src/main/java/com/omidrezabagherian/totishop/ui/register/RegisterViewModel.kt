@@ -2,15 +2,13 @@ package com.omidrezabagherian.totishop.ui.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.omidrezabagherian.totishop.core.ResultWrapper
 import com.omidrezabagherian.totishop.data.ShopRepository
 import com.omidrezabagherian.totishop.domain.model.createcustomer.CreateCustomer
 import com.omidrezabagherian.totishop.domain.model.customer.Customer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -19,29 +17,17 @@ import javax.inject.Inject
 class RegisterViewModel @Inject constructor(private val showRepository: ShopRepository) :
     ViewModel() {
 
-    private val _addCustomerInfo = MutableSharedFlow<Customer>()
-    val addCustomerInfo: SharedFlow<Customer> = _addCustomerInfo
-
-    private val _errorCustomerInfo = MutableStateFlow(false)
-    val errorCustomerInfo: StateFlow<Boolean> = _errorCustomerInfo
-
-    private val _addCustomerError = MutableStateFlow(false)
-    val addCustomerError: StateFlow<Boolean> = _addCustomerError
+    private val _addCustomerInfo = MutableStateFlow<ResultWrapper<Customer>>(ResultWrapper.Loading)
+    val addCustomerInfo: StateFlow<ResultWrapper<Customer>> = _addCustomerInfo.asStateFlow()
 
     fun setCustomer(createCustomer: CreateCustomer) {
         viewModelScope.launch {
             val responseAddCustomer = showRepository.setCustomer(createCustomer)
             withContext(Dispatchers.Main) {
-                if (responseAddCustomer.code() == 201) {
-                    _errorCustomerInfo.emit(false)
-                    if (responseAddCustomer.isSuccessful) {
-                        _addCustomerInfo.emit(responseAddCustomer.body()!!)
-                    } else {
-                        _addCustomerError.emit(true)
-                    }
-                } else {
-                    _errorCustomerInfo.emit(true)
+                responseAddCustomer.collect {
+                    _addCustomerInfo.emit(it)
                 }
+
             }
         }
     }
