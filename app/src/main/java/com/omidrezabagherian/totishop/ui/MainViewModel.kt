@@ -2,6 +2,7 @@ package com.omidrezabagherian.totishop.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.omidrezabagherian.totishop.core.ResultWrapper
 import com.omidrezabagherian.totishop.data.ShopRepository
 import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
 import com.omidrezabagherian.totishop.domain.model.customer.Customer
@@ -21,8 +22,8 @@ class MainViewModel @Inject constructor(private val shopRepository: ShopReposito
     private val _isLoading = MutableStateFlow(true)
     val isLoading = _isLoading.asStateFlow()
 
-    private val _customer = MutableSharedFlow<Customer>()
-    val customer: SharedFlow<Customer> = _customer
+    private val _customer = MutableStateFlow<ResultWrapper<Customer>>(ResultWrapper.Loading)
+    val customer: StateFlow<ResultWrapper<Customer>> = _customer.asStateFlow()
 
     private val _setProductBagList = MutableSharedFlow<Order>()
     val setProductBagList: SharedFlow<Order> = _setProductBagList
@@ -54,12 +55,8 @@ class MainViewModel @Inject constructor(private val shopRepository: ShopReposito
     fun getCustomer(id: Int) {
         viewModelScope.launch {
             val responseCustomer = shopRepository.getCustomer(id)
-            withContext(Dispatchers.Main) {
-                if (responseCustomer.isSuccessful) {
-                    _customer.emit(responseCustomer.body()!!)
-                } else {
-                    _customerError.emit(true)
-                }
+            responseCustomer.collect {
+                _customer.emit(it)
             }
         }
     }

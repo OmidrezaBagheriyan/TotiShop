@@ -14,6 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.core.NetworkManager
+import com.omidrezabagherian.totishop.core.ResultWrapper
 import com.omidrezabagherian.totishop.core.Values
 import com.omidrezabagherian.totishop.databinding.FragmentUserBinding
 import com.omidrezabagherian.totishop.ui.MainViewModel
@@ -73,26 +74,60 @@ class UserFragment : Fragment(R.layout.fragment_user) {
         val userSharedPreferencesEditor = userSharedPreferences.edit()
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.customer.collect { customer ->
-                    userBinding.textViewUserNameAndFamily.text =
-                        "${customer.first_name} ${customer.last_name}"
-                    userBinding.textViewUserEmail.text = customer.billing.email
-                    userBinding.textViewUserNumberPhone.text = customer.billing.phone
-                    userBinding.textViewUserAddress.text = customer.billing.address_1
-                    userSharedPreferencesEditor.putString(
-                        Values.NAME_SHARED_PREFERENCES,
-                        customer.first_name
-                    )
-                    userSharedPreferencesEditor.putString(
-                        Values.FAMILY_SHARED_PREFERENCES,
-                        customer.last_name
-                    )
-                    userSharedPreferencesEditor.putString(
-                        Values.Address_SHARED_PREFERENCES,
-                        customer.billing.address_1
-                    )
-                    userSharedPreferencesEditor.commit()
-                    userSharedPreferencesEditor.apply()
+                mainViewModel.customer.collect {
+                    when (it) {
+                        is ResultWrapper.Loading -> {
+                            userBinding.cardViewUserInformation.visibility = View.GONE
+                            userBinding.materialButtonExit.visibility = View.GONE
+                            userBinding.lottieAnimationViewErrorUser.visibility =
+                                View.INVISIBLE
+                            userBinding.lottieAnimationViewLoadingUser.visibility =
+                                View.VISIBLE
+                            userBinding.textViewErrorLoadingUser.text =
+                                "در حال بارگذاری"
+                            userBinding.cardViewUserCheckingUser.visibility = View.VISIBLE
+                        }
+                        is ResultWrapper.Success -> {
+                            userBinding.cardViewUserInformation.visibility = View.VISIBLE
+                            userBinding.materialButtonExit.visibility = View.VISIBLE
+                            userBinding.cardViewUserCheckingUser.visibility = View.GONE
+                            userBinding.lottieAnimationViewErrorUser.visibility =
+                                View.GONE
+                            userBinding.lottieAnimationViewLoadingUser.visibility =
+                                View.GONE
+                            userBinding.textViewErrorLoadingUser.text = ""
+                            userBinding.textViewUserNameAndFamily.text =
+                                "${it.value.first_name} ${it.value.last_name}"
+                            userBinding.textViewUserEmail.text = it.value.billing.email
+                            userBinding.textViewUserNumberPhone.text = it.value.billing.phone
+                            userBinding.textViewUserAddress.text = it.value.billing.address_1
+                            userSharedPreferencesEditor.putString(
+                                Values.NAME_SHARED_PREFERENCES,
+                                it.value.first_name
+                            )
+                            userSharedPreferencesEditor.putString(
+                                Values.FAMILY_SHARED_PREFERENCES,
+                                it.value.last_name
+                            )
+                            userSharedPreferencesEditor.putString(
+                                Values.Address_SHARED_PREFERENCES,
+                                it.value.billing.address_1
+                            )
+                            userSharedPreferencesEditor.commit()
+                            userSharedPreferencesEditor.apply()
+                        }
+                        is ResultWrapper.Error -> {
+                            userBinding.cardViewUserInformation.visibility = View.GONE
+                            userBinding.materialButtonExit.visibility = View.GONE
+                            userBinding.lottieAnimationViewErrorUser.visibility =
+                                View.VISIBLE
+                            userBinding.lottieAnimationViewLoadingUser.visibility =
+                                View.INVISIBLE
+                            userBinding.textViewErrorLoadingUser.text =
+                                "خطا در بارگذاری"
+                            userBinding.cardViewUserCheckingUser.visibility = View.VISIBLE
+                        }
+                    }
                 }
             }
         }
