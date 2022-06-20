@@ -186,7 +186,8 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 detailViewModel.getProductBagList.collect {
                     when (it) {
-                        is ResultWrapper.Loading -> { }
+                        is ResultWrapper.Loading -> {
+                        }
                         is ResultWrapper.Success -> {
                             value.addAll(it.value.line_items)
 
@@ -197,7 +198,11 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
                             }
                         }
                         is ResultWrapper.Error -> {
-                            Toast.makeText(requireContext(), "مشکل در دریافت لیست سبد خرید", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                requireContext(),
+                                "مشکل در دریافت لیست سبد خرید",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
                 }
@@ -278,6 +283,18 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
                 viewLifecycleOwner.lifecycleScope.launch {
                     viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                         detailViewModel.putProductBagList.collect {
+                            when (it) {
+                                is ResultWrapper.Loading -> {
+                                    detailsBinding.buttonDetailAddToBag.isEnabled = false
+                                }
+                                is ResultWrapper.Success -> {
+                                    detailsBinding.buttonDetailAddToBag.visibility = View.GONE
+                                }
+                                is ResultWrapper.Error -> {
+                                    detailsBinding.buttonDetailAddToBag.isEnabled = true
+                                    Toast.makeText(requireContext(), "خطا در انتقال به سبد خرید", Toast.LENGTH_SHORT).show()
+                                }
+                            }
                             Log.i("logLineItem", it.toString())
                         }
                     }

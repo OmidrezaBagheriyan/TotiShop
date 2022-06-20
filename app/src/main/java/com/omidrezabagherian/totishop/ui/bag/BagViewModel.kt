@@ -21,11 +21,8 @@ class BagViewModel @Inject constructor(private val shopRepository: ShopRepositor
     private val _getProductBagList = MutableStateFlow<ResultWrapper<Order>>(ResultWrapper.Loading)
     val getProductBagList: StateFlow<ResultWrapper<Order>> = _getProductBagList.asStateFlow()
 
-    private val _putProductBagList = MutableSharedFlow<Order>()
-    val putProductBagList: SharedFlow<Order> = _putProductBagList
-
-    private val _orderError = MutableStateFlow(false)
-    val orderError: StateFlow<Boolean> = _orderError
+    private val _putProductBagList =  MutableStateFlow<ResultWrapper<Order>>(ResultWrapper.Loading)
+    val putProductBagList: StateFlow<ResultWrapper<Order>> = _putProductBagList.asStateFlow()
 
     fun getOrders(id: Int) {
         viewModelScope.launch {
@@ -39,10 +36,8 @@ class BagViewModel @Inject constructor(private val shopRepository: ShopRepositor
     fun editQuantityToOrders(id: Int, updateOrder: UpdateOrder) {
         viewModelScope.launch {
             val responseProductBagList = shopRepository.editQuantityToOrders(id, updateOrder)
-            if (responseProductBagList.isSuccessful) {
-                _putProductBagList.emit(responseProductBagList.body()!!)
-            } else {
-                _orderError.emit(true)
+            responseProductBagList.collect {
+                _putProductBagList.emit(it)
             }
         }
     }

@@ -73,10 +73,12 @@ class ShopRepository(
         remoteDataSource.getOrders(id)
     }
 
-    suspend fun addProductToOrders(id: Int, createOrder: CreateOrder) =
+    suspend fun addProductToOrders(id: Int, createOrder: CreateOrder) = safeApiCall {
         remoteDataSource.addProductToOrders(id, createOrder)
+    }
 
-    suspend fun editQuantityToOrders(id: Int, updateOrder: UpdateOrder) =
+    suspend fun editQuantityToOrders(id: Int, updateOrder: UpdateOrder) = safeApiCall {
         remoteDataSource.editQuantityToOrders(id, updateOrder)
+    }
 
 }

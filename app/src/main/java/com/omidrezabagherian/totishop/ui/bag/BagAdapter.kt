@@ -29,13 +29,14 @@ class BagAdapter(
             itemBagProductBinding.textViewListProductOrdinary.text =
                 "${lineItem.price.toInt()} تومان"
             itemBagProductBinding.textViewBagQuantity.text = lineItem.quantity.toString()
+            itemBagProductBinding.textViewBagQuantity.text = lineItem.quantity.toString()
+            itemBagProductBinding.textViewBagQuantity.text = lineItem.quantity.toString()
+
             itemBagProductBinding.imageViewBagQuantityPlusOne.setOnClickListener {
                 add(lineItem)
-                itemBagProductBinding.textViewBagQuantity.text = (lineItem.quantity + 1).toString()
             }
             itemBagProductBinding.imageViewBagQuantityNagOne.setOnClickListener {
                 nag(lineItem)
-                itemBagProductBinding.textViewBagQuantity.text = (lineItem.quantity - 1).toString()
             }
         }
     }

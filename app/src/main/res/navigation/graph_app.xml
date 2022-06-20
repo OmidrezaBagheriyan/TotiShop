@@ -12,13 +12,15 @@
         tools:layout="@layout/fragment_house">
         <action
             android:id="@+id/action_houseFragment_to_detailFragment"
-            app:destination="@id/detailFragment" />
+            app:destination="@id/detailFragment"
+            app:enterAnim="@anim/animation_fragments" />
         <action
             android:id="@+id/action_houseFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
         <action
             android:id="@+id/action_houseFragment_to_listProductFragment"
-            app:destination="@id/listProductFragment" />
+            app:destination="@id/listProductFragment"
+            app:enterAnim="@anim/animation_fragments" />
     </fragment>
 
     <fragment
@@ -45,13 +47,15 @@
         tools:layout="@layout/fragment_user">
         <action
             android:id="@+id/action_userFragment_to_settingFragment"
-            app:destination="@id/settingFragment" />
+            app:destination="@id/settingFragment"
+            app:enterAnim="@anim/animation_fragments" />
         <argument
             android:name="id"
             app:argType="integer" />
         <action
             android:id="@+id/action_userFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/animation_fragments" />
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
@@ -68,7 +72,8 @@
             app:argType="integer" />
         <action
             android:id="@+id/action_detailFragment_to_listCategoryFragment"
-            app:destination="@id/listCategoryFragment" />
+            app:destination="@id/listCategoryFragment"
+            app:enterAnim="@anim/animation_fragments" />
     </fragment>
     <fragment
         android:id="@+id/listCategoryFragment"
@@ -93,7 +98,8 @@
         tools:layout="@layout/fragment_search">
         <action
             android:id="@+id/action_searchFragment_to_detailFragment"
-            app:destination="@id/detailFragment" />
+            app:destination="@id/detailFragment"
+            app:enterAnim="@anim/animation_fragments" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -102,13 +108,16 @@
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_settingFragment"
-            app:destination="@id/settingFragment" />
+            app:destination="@id/settingFragment"
+            app:enterAnim="@anim/animation_fragments" />
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
-            app:destination="@id/registerFragment" />
+            app:destination="@id/registerFragment"
+            app:enterAnim="@anim/animation_fragments" />
         <action
             android:id="@+id/action_loginFragment_to_userFragment"
             app:destination="@id/userFragment"
+            app:enterAnim="@anim/animation_fragments"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -119,7 +128,8 @@
         tools:layout="@layout/fragment_register" >
         <action
             android:id="@+id/action_registerFragment_to_settingFragment"
-            app:destination="@id/settingFragment" />
+            app:destination="@id/settingFragment"
+            app:enterAnim="@anim/animation_fragments" />
         <action
             android:id="@+id/action_registerFragment_to_userFragment"
             app:destination="@id/userFragment"
@@ -127,7 +137,8 @@
             app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/animation_fragments" />
     </fragment>
     <fragment
         tools:layout="@layout/fragment_sub_category"
@@ -155,7 +166,8 @@
             app:argType="string" />
         <action
             android:id="@+id/action_listProductFragment_to_detailFragment"
-            app:destination="@id/detailFragment" />
+            app:destination="@id/detailFragment"
+            app:enterAnim="@anim/animation_fragments" />
         <argument android:name="nameProduct"
             app:argType="string" />
     </fragment>

@@ -35,7 +35,7 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
     private val bagViewModel: BagViewModel by viewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
     private lateinit var bagSharedPreferences: SharedPreferences
-    private val value = mutableListOf<com.omidrezabagherian.totishop.domain.model.order.LineItem>()
+    private lateinit var bagAdapter: BagAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -75,18 +75,21 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
         }
     }
 
-    private fun showPayInformation(lineItemList: List<com.omidrezabagherian.totishop.domain.model.order.LineItem>) {
-
-        val bagSharedPreferencesEditor = bagSharedPreferences.edit()
-
+    private fun totalPricePayInformation(lineItemList: List<com.omidrezabagherian.totishop.domain.model.order.LineItem>) {
         var price = 0.0
         for (i in lineItemList) {
             price += i.price
         }
 
-        bagBinding.textViewBagPriceAll.text = "${price.toInt().toString()} تومان"
+        bagBinding.textViewBagPriceAll.text = "${price.toInt()} تومان"
+    }
+
+    private fun showPayInformation() {
+
+        val bagSharedPreferencesEditor = bagSharedPreferences.edit()
 
         bagBinding.materialButtonContinuationPay.setOnClickListener {
+
             bagSharedPreferencesEditor.putInt(Values.ID_ORDER_SHARED_PREFERENCES, 0)
             bagSharedPreferencesEditor.commit()
             bagSharedPreferencesEditor.apply()
@@ -130,26 +133,39 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
                         mainViewModel.setProductBagList.collect {
                             when (it) {
                                 is ResultWrapper.Loading -> {
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "درحال ساخت سبد خرید",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    bagBinding.recyclerViewBagShop.visibility = View.GONE
+                                    bagBinding.cardViewBagPrice.visibility = View.GONE
+                                    bagBinding.lottieAnimationViewErrorBag.visibility =
+                                        View.INVISIBLE
+                                    bagBinding.lottieAnimationViewLoadingBag.visibility =
+                                        View.VISIBLE
+                                    bagBinding.textViewErrorLoadingBag.text =
+                                        "در حال بارگذاری"
+                                    bagBinding.cardViewBagCheckingBag.visibility = View.VISIBLE
                                 }
                                 is ResultWrapper.Success -> {
+                                    bagBinding.cardViewBagCheckingBag.visibility = View.GONE
+                                    bagBinding.recyclerViewBagShop.visibility = View.VISIBLE
+                                    bagBinding.cardViewBagPrice.visibility = View.VISIBLE
+                                    bagBinding.textViewBagPriceAll.text = "0 تومان"
                                     bagSharedPreferencesEditor.putInt(
                                         Values.ID_ORDER_SHARED_PREFERENCES,
                                         it.value.id
                                     )
                                     bagSharedPreferencesEditor.commit()
                                     bagSharedPreferencesEditor.apply()
+                                    bagAdapter.submitList(it.value.line_items)
                                 }
                                 is ResultWrapper.Error -> {
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "مشکل ساخت سبد خرید",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    bagBinding.recyclerViewBagShop.visibility = View.GONE
+                                    bagBinding.cardViewBagPrice.visibility = View.GONE
+                                    bagBinding.lottieAnimationViewErrorBag.visibility =
+                                        View.VISIBLE
+                                    bagBinding.lottieAnimationViewLoadingBag.visibility =
+                                        View.INVISIBLE
+                                    bagBinding.textViewErrorLoadingBag.text =
+                                        "خطا در بارگذاری"
+                                    bagBinding.cardViewBagCheckingBag.visibility = View.VISIBLE
                                 }
                             }
                         }
@@ -171,7 +187,7 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
         bagBinding.recyclerViewBagShop.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
-        val bagAdapter = BagAdapter(add = {
+        bagAdapter = BagAdapter(add = {
             val updateOrder = UpdateOrder(
                 billing = Billing(
                     address_1 = bagSharedPreferences.getString(
@@ -213,8 +229,31 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
             viewLifecycleOwner.lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     bagViewModel.putProductBagList.collect { order ->
-                        value.clear()
-                        value.addAll(order.line_items)
+                        when (order) {
+                            is ResultWrapper.Loading -> {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "در حال اضافه شدن تعداد محصول",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            is ResultWrapper.Success -> {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "به تعداد محصول اضافه شد",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                totalPricePayInformation(order.value.line_items)
+                                bagAdapter.submitList(order.value.line_items)
+                            }
+                            is ResultWrapper.Error -> {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "خطای در اضافه شدن تعداد محصول",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
                     }
                 }
             }
@@ -260,8 +299,30 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
             viewLifecycleOwner.lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     bagViewModel.putProductBagList.collect { order ->
-                        if (order.line_items.isNotEmpty()) {
-
+                        when (order) {
+                            is ResultWrapper.Loading -> {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "در حال کم شدن تعداد محصول",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            is ResultWrapper.Success -> {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "تعداد محصول کم شد",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                totalPricePayInformation(order.value.line_items)
+                                bagAdapter.submitList(order.value.line_items)
+                            }
+                            is ResultWrapper.Error -> {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "خطای در کم شدن تعداد محصول",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
                     }
                 }
@@ -291,16 +352,17 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
                             bagBinding.recyclerViewBagShop.visibility = View.VISIBLE
                             bagBinding.cardViewBagPrice.visibility = View.VISIBLE
 
-                            showPayInformation(it.value.line_items)
+                            showPayInformation()
+                            totalPricePayInformation(it.value.line_items)
                             bagAdapter.submitList(it.value.line_items)
                         }
                         is ResultWrapper.Error -> {
                             bagBinding.recyclerViewBagShop.visibility = View.GONE
                             bagBinding.cardViewBagPrice.visibility = View.GONE
                             bagBinding.lottieAnimationViewErrorBag.visibility =
-                                View.INVISIBLE
-                            bagBinding.lottieAnimationViewLoadingBag.visibility =
                                 View.VISIBLE
+                            bagBinding.lottieAnimationViewLoadingBag.visibility =
+                                View.INVISIBLE
                             bagBinding.textViewErrorLoadingBag.text =
                                 "خطا در بارگذاری"
                             bagBinding.cardViewBagCheckingBag.visibility = View.VISIBLE
@@ -311,5 +373,3 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
         }
     }
 }
-/*
-)*/
