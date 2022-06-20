@@ -109,63 +109,20 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
         val registerSharedPreferencesEditor = registerSharedPreferences.edit()
 
-        /*Toast.makeText(
-            requireContext(),
-            "ایمیل و نام کاربری تکراری هست",
-            Toast.LENGTH_SHORT
-        ).show()
-
-        registerSharedPreferencesEditor.putInt(
-                        Values.ID_SHARED_PREFERENCES,
-                        customer.id
-                    )
-                    registerSharedPreferencesEditor.putString(
-                        Values.NAME_SHARED_PREFERENCES,
-                        registerBinding.textInputEditTextRegisterName.text.toString()
-                    )
-                    registerSharedPreferencesEditor.putString(
-                        Values.FAMILY_SHARED_PREFERENCES,
-                        registerBinding.textInputEditTextRegisterFamily.text.toString()
-                    )
-                    registerSharedPreferencesEditor.putString(
-                        Values.EMAIL_SHARED_PREFERENCES,
-                        registerBinding.textInputEditTextRegisterEmail.text.toString()
-                    )
-                    registerSharedPreferencesEditor.putString(
-                        Values.PASSWORD_SHARED_PREFERENCES,
-                        registerBinding.textInputEditTextRegisterNumberPhone.text.toString()
-                    )
-                    registerSharedPreferencesEditor.putString(
-                        Values.Address_SHARED_PREFERENCES,
-                        registerBinding.textInputEditTextRegisterAddress.text.toString()
-                    )
-
-                    registerSharedPreferencesEditor.commit()
-                    registerSharedPreferencesEditor.apply()
-
-                    navController.navigate(
-                        RegisterFragmentDirections.actionRegisterFragmentToUserFragment(
-                            customer.id
-                        )
-                    )
-                }
-        */
-
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 registerViewModel.addCustomerInfo.collect {
                     when (it) {
                         is ResultWrapper.Loading -> {
-                            registerBinding.textInputEditTextRegisterName.visibility = View.INVISIBLE
-                            registerBinding.textInputEditTextRegisterFamily.visibility = View.INVISIBLE
-                            registerBinding.textInputEditTextRegisterEmail.visibility = View.INVISIBLE
-                            registerBinding.textInputEditTextRegisterUsername.visibility = View.INVISIBLE
-                            registerBinding.textInputEditTextRegisterNumberPhone.visibility =
+                            registerBinding.textInputLayoutRegisterName.visibility = View.INVISIBLE
+                            registerBinding.textInputLayoutRegisterFamily.visibility = View.INVISIBLE
+                            registerBinding.textInputLayoutRegisterEmail.visibility = View.INVISIBLE
+                            registerBinding.textInputLayoutRegisterUsername.visibility = View.INVISIBLE
+                            registerBinding.textInputLayoutRegisterNumberPhone.visibility =
                                 View.INVISIBLE
-                            registerBinding.textInputEditTextRegisterAddress.visibility = View.INVISIBLE
+                            registerBinding.textInputLayoutRegisterAddress.visibility = View.INVISIBLE
                             registerBinding.materialButtonRegisterSubmit.visibility = View.INVISIBLE
                             registerBinding.textViewRegisterLogin.visibility = View.INVISIBLE
-                            Toast.makeText(requireContext(), "Loading", Toast.LENGTH_SHORT).show()
                             registerBinding.lottieAnimationViewErrorRegister.visibility =
                                 View.INVISIBLE
                             registerBinding.lottieAnimationViewLoadingRegister.visibility =
@@ -178,18 +135,17 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                         is ResultWrapper.Success -> {
                             registerBinding.cardViewRegisterCheckingRegister.visibility =
                                 View.GONE
-                            registerBinding.textInputEditTextRegisterName.visibility = View.VISIBLE
-                            registerBinding.textInputEditTextRegisterUsername.visibility = View.VISIBLE
-                            registerBinding.textInputEditTextRegisterFamily.visibility =
+                            registerBinding.textInputLayoutRegisterName.visibility = View.VISIBLE
+                            registerBinding.textInputLayoutRegisterUsername.visibility = View.VISIBLE
+                            registerBinding.textInputLayoutRegisterFamily.visibility =
                                 View.VISIBLE
-                            registerBinding.textInputEditTextRegisterEmail.visibility = View.VISIBLE
-                            registerBinding.textInputEditTextRegisterNumberPhone.visibility =
+                            registerBinding.textInputLayoutRegisterEmail.visibility = View.VISIBLE
+                            registerBinding.textInputLayoutRegisterNumberPhone.visibility =
                                 View.VISIBLE
-                            registerBinding.textInputEditTextRegisterAddress.visibility =
+                            registerBinding.textInputLayoutRegisterAddress.visibility =
                                 View.VISIBLE
                             registerBinding.materialButtonRegisterSubmit.visibility = View.VISIBLE
                             registerBinding.textViewRegisterLogin.visibility = View.VISIBLE
-                            Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
                             registerSharedPreferencesEditor.putInt(
                                 Values.ID_SHARED_PREFERENCES,
                                 it.value.id
@@ -227,14 +183,14 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                         is ResultWrapper.Error -> {
                             registerBinding.cardViewRegisterCheckingRegister.visibility =
                                 View.GONE
-                            registerBinding.textInputEditTextRegisterName.visibility = View.VISIBLE
-                            registerBinding.textInputEditTextRegisterUsername.visibility = View.VISIBLE
-                            registerBinding.textInputEditTextRegisterFamily.visibility =
+                            registerBinding.textInputLayoutRegisterName.visibility = View.VISIBLE
+                            registerBinding.textInputLayoutRegisterUsername.visibility = View.VISIBLE
+                            registerBinding.textInputLayoutRegisterFamily.visibility =
                                 View.VISIBLE
-                            registerBinding.textInputEditTextRegisterEmail.visibility = View.VISIBLE
-                            registerBinding.textInputEditTextRegisterNumberPhone.visibility =
+                            registerBinding.textInputLayoutRegisterEmail.visibility = View.VISIBLE
+                            registerBinding.textInputLayoutRegisterNumberPhone.visibility =
                                 View.VISIBLE
-                            registerBinding.textInputEditTextRegisterAddress.visibility =
+                            registerBinding.textInputLayoutRegisterAddress.visibility =
                                 View.VISIBLE
                             registerBinding.materialButtonRegisterSubmit.visibility = View.VISIBLE
                             registerBinding.textViewRegisterLogin.visibility = View.VISIBLE

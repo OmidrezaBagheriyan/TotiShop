@@ -15,11 +15,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.core.NetworkManager
+import com.omidrezabagherian.totishop.core.ResultWrapper
+import com.omidrezabagherian.totishop.core.Values
 import com.omidrezabagherian.totishop.core.Values.EMAIL_SHARED_PREFERENCES
 import com.omidrezabagherian.totishop.core.Values.ID_SHARED_PREFERENCES
 import com.omidrezabagherian.totishop.core.Values.PASSWORD_SHARED_PREFERENCES
 import com.omidrezabagherian.totishop.core.Values.SHARED_PREFERENCES
 import com.omidrezabagherian.totishop.databinding.FragmentLoginBinding
+import com.omidrezabagherian.totishop.ui.register.RegisterFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -95,44 +98,83 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             loginViewModel.getCustomerByEmail(loginBinding.textInputEditTextLoginEmail.text.toString())
             viewLifecycleOwner.lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    loginViewModel.customerInfo.collect { customer ->
-                        if (customer.isEmpty()) {
-                            Toast.makeText(requireContext(), "حساب وجود ندارد", Toast.LENGTH_SHORT)
-                                .show()
-                        } else {
-                            if (loginBinding.textInputEditTextLoginPassword.text.toString() == customer[0].billing.phone) {
-                                loginSharedPreferencesEditor.putInt(
-                                    ID_SHARED_PREFERENCES,
-                                    customer[0].id
-                                )
-                                loginSharedPreferencesEditor.putString(
-                                    EMAIL_SHARED_PREFERENCES,
-                                    loginBinding.textInputEditTextLoginEmail.text.toString()
-                                )
-                                loginSharedPreferencesEditor.putString(
-                                    PASSWORD_SHARED_PREFERENCES,
-                                    loginBinding.textInputEditTextLoginPassword.text.toString()
-                                )
-                                loginSharedPreferencesEditor.commit()
-                                loginSharedPreferencesEditor.apply()
-                                navController.navigate(
-                                    LoginFragmentDirections.actionLoginFragmentToUserFragment(
-                                        customer[0].id
+                    loginViewModel.customerInfo.collect {
+                        when (it) {
+                            is ResultWrapper.Loading -> {
+                                loginBinding.textInputLayoutLoginEmail.visibility = View.GONE
+                                loginBinding.textInputLayoutLoginPassword.visibility = View.GONE
+                                loginBinding.materialButtonLoginSubmit.visibility = View.GONE
+                                loginBinding.imageViewLoginLogo.visibility = View.GONE
+
+                                loginBinding.lottieAnimationViewErrorLogin.visibility =
+                                    View.INVISIBLE
+                                loginBinding.lottieAnimationViewLoadingLogin.visibility =
+                                    View.VISIBLE
+                                loginBinding.textViewErrorLoadingLogin.text =
+                                    "در حال ثبت نام"
+                                loginBinding.cardViewLoginCheckingLogin.visibility =
+                                    View.VISIBLE
+                            }
+                            is ResultWrapper.Success -> {
+                                loginBinding.cardViewLoginCheckingLogin.visibility =
+                                    View.GONE
+                                if (loginBinding.textInputEditTextLoginPassword.text.toString() == it.value[0].billing.phone) {
+                                    loginBinding.textInputLayoutLoginEmail.visibility =
+                                        View.VISIBLE
+                                    loginBinding.textInputLayoutLoginPassword.visibility =
+                                        View.VISIBLE
+                                    loginBinding.materialButtonLoginSubmit.visibility =
+                                        View.VISIBLE
+                                    loginBinding.imageViewLoginLogo.visibility = View.VISIBLE
+                                    loginSharedPreferencesEditor.putInt(
+                                        ID_SHARED_PREFERENCES,
+                                        it.value[0].id
                                     )
-                                )
+                                    loginSharedPreferencesEditor.putString(
+                                        EMAIL_SHARED_PREFERENCES,
+                                        loginBinding.textInputEditTextLoginEmail.text.toString()
+                                    )
+                                    loginSharedPreferencesEditor.putString(
+                                        PASSWORD_SHARED_PREFERENCES,
+                                        loginBinding.textInputEditTextLoginPassword.text.toString()
+                                    )
+                                    loginSharedPreferencesEditor.commit()
+                                    loginSharedPreferencesEditor.apply()
+                                    navController.navigate(
+                                        LoginFragmentDirections.actionLoginFragmentToUserFragment(
+                                            it.value[0].id
+                                        )
+                                    )
 
-                                Toast.makeText(requireContext(), "وارد شد", Toast.LENGTH_SHORT)
-                                    .show()
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "وارد شد",
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
+                                } else {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "رمز عبور اشتباه هست",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
 
-                            } else {
+                            }
+                            is ResultWrapper.Error -> {
+                                loginBinding.cardViewLoginCheckingLogin.visibility =
+                                    View.GONE
+                                loginBinding.textInputLayoutLoginEmail.visibility = View.VISIBLE
+                                loginBinding.textInputLayoutLoginPassword.visibility = View.VISIBLE
+                                loginBinding.materialButtonLoginSubmit.visibility = View.VISIBLE
+                                loginBinding.imageViewLoginLogo.visibility = View.VISIBLE
                                 Toast.makeText(
                                     requireContext(),
-                                    "رمز عبور اشتباه هست",
+                                    "ایمیل و رمز عبور اشتباه هست",
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
                         }
-
                     }
                 }
             }
