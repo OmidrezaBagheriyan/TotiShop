@@ -25,11 +25,8 @@ class MainViewModel @Inject constructor(private val shopRepository: ShopReposito
     private val _customer = MutableStateFlow<ResultWrapper<Customer>>(ResultWrapper.Loading)
     val customer: StateFlow<ResultWrapper<Customer>> = _customer.asStateFlow()
 
-    private val _setProductBagList = MutableSharedFlow<Order>()
-    val setProductBagList: SharedFlow<Order> = _setProductBagList
-
-    private val _customerError = MutableStateFlow(false)
-    val customerError: StateFlow<Boolean> = _customerError
+    private val _setProductBagList = MutableStateFlow<ResultWrapper<Order>>(ResultWrapper.Loading)
+    val setProductBagList: StateFlow<ResultWrapper<Order>> = _setProductBagList
 
     init {
         viewModelScope.launch {
@@ -42,12 +39,8 @@ class MainViewModel @Inject constructor(private val shopRepository: ShopReposito
     fun setOrders(createOrder: CreateOrder) {
         viewModelScope.launch {
             val responseProductBagList = shopRepository.setOrders(createOrder)
-            withContext(Dispatchers.Main) {
-                if (responseProductBagList.isSuccessful) {
-                    _setProductBagList.emit(responseProductBagList.body()!!)
-                } else {
-                    _customerError.emit(true)
-                }
+            responseProductBagList.collect {
+                _setProductBagList.emit(it)
             }
         }
     }

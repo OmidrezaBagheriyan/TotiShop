@@ -21,8 +21,8 @@ class DetailViewModel @Inject constructor(private val shopRepository: ShopReposi
     private val _productValues = MutableStateFlow<ResultWrapper<Product>>(ResultWrapper.Loading)
     val productValues: StateFlow<ResultWrapper<Product>> = _productValues.asStateFlow()
 
-    private val _getProductBagList = MutableSharedFlow<Order>()
-    val getProductBagList: SharedFlow<Order> = _getProductBagList
+    private val _getProductBagList = MutableStateFlow<ResultWrapper<Order>>(ResultWrapper.Loading)
+    val getProductBagList: StateFlow<ResultWrapper<Order>> = _getProductBagList.asStateFlow()
 
     private val _putProductBagList = MutableSharedFlow<Order>()
     val putProductBagList: SharedFlow<Order> = _putProductBagList
@@ -44,12 +44,8 @@ class DetailViewModel @Inject constructor(private val shopRepository: ShopReposi
     fun getOrders(id: Int) {
         viewModelScope.launch {
             val responseProductBagList = shopRepository.getOrders(id)
-            withContext(Dispatchers.Main) {
-                if (responseProductBagList.isSuccessful) {
-                    _getProductBagList.emit(responseProductBagList.body()!!)
-                } else {
-                    _productError.emit(true)
-                }
+            responseProductBagList.collect {
+                _getProductBagList.emit(it)
             }
         }
     }
@@ -57,11 +53,12 @@ class DetailViewModel @Inject constructor(private val shopRepository: ShopReposi
     fun putOrders(id: Int, createOrder: CreateOrder) {
         viewModelScope.launch {
             val responseProductBagList = shopRepository.addProductToOrders(id, createOrder)
-            if (responseProductBagList.isSuccessful) {
+            //Todo درسنش کن
+            /*if (responseProductBagList.isSuccessful) {
                 _getProductBagList.emit(responseProductBagList.body()!!)
             } else {
                 _productError.emit(true)
-            }
+            }*/
         }
     }
 }

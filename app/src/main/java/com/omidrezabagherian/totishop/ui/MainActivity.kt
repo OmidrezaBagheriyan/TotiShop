@@ -16,6 +16,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.omidrezabagherian.totishop.R
+import com.omidrezabagherian.totishop.core.ResultWrapper
 import com.omidrezabagherian.totishop.core.Values
 import com.omidrezabagherian.totishop.databinding.ActivityMainBinding
 import com.omidrezabagherian.totishop.domain.model.createorder.Billing
@@ -91,12 +92,30 @@ class MainActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     mainViewModel.setProductBagList.collect {
-                        mainSharedPreferencesEditor.putInt(
-                            Values.ID_ORDER_SHARED_PREFERENCES,
-                            it.id
-                        )
-                        mainSharedPreferencesEditor.commit()
-                        mainSharedPreferencesEditor.apply()
+                        when (it) {
+                            is ResultWrapper.Loading -> {
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    "درحال ساخت سبد خرید",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            is ResultWrapper.Success -> {
+                                mainSharedPreferencesEditor.putInt(
+                                    Values.ID_ORDER_SHARED_PREFERENCES,
+                                    it.value.id
+                                )
+                                mainSharedPreferencesEditor.commit()
+                                mainSharedPreferencesEditor.apply()
+                            }
+                            is ResultWrapper.Error -> {
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    "مشکل ساخت سبد خرید",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
                     }
                 }
             }

@@ -2,16 +2,14 @@ package com.omidrezabagherian.totishop.ui.bag
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.omidrezabagherian.totishop.core.ResultWrapper
 import com.omidrezabagherian.totishop.data.ShopRepository
 import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
 import com.omidrezabagherian.totishop.domain.model.order.Order
 import com.omidrezabagherian.totishop.domain.model.updateorder.UpdateOrder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -20,8 +18,8 @@ import javax.inject.Inject
 class BagViewModel @Inject constructor(private val shopRepository: ShopRepository) :
     ViewModel() {
 
-    private val _getProductBagList = MutableSharedFlow<Order>()
-    val getProductBagList: SharedFlow<Order> = _getProductBagList
+    private val _getProductBagList = MutableStateFlow<ResultWrapper<Order>>(ResultWrapper.Loading)
+    val getProductBagList: StateFlow<ResultWrapper<Order>> = _getProductBagList.asStateFlow()
 
     private val _putProductBagList = MutableSharedFlow<Order>()
     val putProductBagList: SharedFlow<Order> = _putProductBagList
@@ -32,12 +30,8 @@ class BagViewModel @Inject constructor(private val shopRepository: ShopRepositor
     fun getOrders(id: Int) {
         viewModelScope.launch {
             val responseProductBagList = shopRepository.getOrders(id)
-            withContext(Dispatchers.Main) {
-                if (responseProductBagList.isSuccessful) {
-                    _getProductBagList.emit(responseProductBagList.body()!!)
-                } else {
-                    _orderError.emit(true)
-                }
+            responseProductBagList.collect {
+                _getProductBagList.emit(it)
             }
         }
     }

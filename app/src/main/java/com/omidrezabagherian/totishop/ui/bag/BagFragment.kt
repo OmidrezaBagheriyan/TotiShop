@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -15,6 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.core.NetworkManager
+import com.omidrezabagherian.totishop.core.ResultWrapper
 import com.omidrezabagherian.totishop.core.Values
 import com.omidrezabagherian.totishop.databinding.FragmentBagBinding
 import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
@@ -126,12 +128,30 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
                 viewLifecycleOwner.lifecycleScope.launch {
                     viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                         mainViewModel.setProductBagList.collect {
-                            bagSharedPreferencesEditor.putInt(
-                                Values.ID_ORDER_SHARED_PREFERENCES,
-                                it.id
-                            )
-                            bagSharedPreferencesEditor.commit()
-                            bagSharedPreferencesEditor.apply()
+                            when (it) {
+                                is ResultWrapper.Loading -> {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "درحال ساخت سبد خرید",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                                is ResultWrapper.Success -> {
+                                    bagSharedPreferencesEditor.putInt(
+                                        Values.ID_ORDER_SHARED_PREFERENCES,
+                                        it.value.id
+                                    )
+                                    bagSharedPreferencesEditor.commit()
+                                    bagSharedPreferencesEditor.apply()
+                                }
+                                is ResultWrapper.Error -> {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "مشکل ساخت سبد خرید",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
                         }
                     }
                 }
@@ -141,8 +161,6 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
     }
 
     private fun showBag() {
-        mainViewModel.getCustomer(bagSharedPreferences.getInt(Values.ID_SHARED_PREFERENCES, 0))
-
         bagViewModel.getOrders(
             bagSharedPreferences.getInt(
                 Values.ID_ORDER_SHARED_PREFERENCES,
@@ -254,11 +272,44 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                bagViewModel.getProductBagList.collect { order ->
-                    showPayInformation(order.line_items)
-                    bagAdapter.submitList(order.line_items)
+                bagViewModel.getProductBagList.collect {
+                    when (it) {
+                        is ResultWrapper.Loading -> {
+                            bagBinding.recyclerViewBagShop.visibility = View.GONE
+                            bagBinding.cardViewBagPrice.visibility = View.GONE
+                            bagBinding.lottieAnimationViewErrorBag.visibility =
+                                View.INVISIBLE
+                            bagBinding.lottieAnimationViewLoadingBag.visibility =
+                                View.VISIBLE
+                            bagBinding.textViewErrorLoadingBag.text =
+                                "در حال بارگذاری"
+                            bagBinding.cardViewBagCheckingBag.visibility = View.VISIBLE
+                        }
+                        is ResultWrapper.Success -> {
+                            bagBinding.cardViewBagCheckingBag.visibility = View.GONE
+
+                            bagBinding.recyclerViewBagShop.visibility = View.VISIBLE
+                            bagBinding.cardViewBagPrice.visibility = View.VISIBLE
+
+                            showPayInformation(it.value.line_items)
+                            bagAdapter.submitList(it.value.line_items)
+                        }
+                        is ResultWrapper.Error -> {
+                            bagBinding.recyclerViewBagShop.visibility = View.GONE
+                            bagBinding.cardViewBagPrice.visibility = View.GONE
+                            bagBinding.lottieAnimationViewErrorBag.visibility =
+                                View.INVISIBLE
+                            bagBinding.lottieAnimationViewLoadingBag.visibility =
+                                View.VISIBLE
+                            bagBinding.textViewErrorLoadingBag.text =
+                                "خطا در بارگذاری"
+                            bagBinding.cardViewBagCheckingBag.visibility = View.VISIBLE
+                        }
+                    }
                 }
             }
         }
     }
 }
+/*
+)*/

@@ -185,11 +185,19 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 detailViewModel.getProductBagList.collect {
-                    value.addAll(it.line_items)
+                    when (it) {
+                        is ResultWrapper.Loading -> { }
+                        is ResultWrapper.Success -> {
+                            value.addAll(it.value.line_items)
 
-                    for (i in it.line_items) {
-                        if (i.product_id == detailArgs.id) {
-                            detailsBinding.buttonDetailAddToBag.visibility = View.GONE
+                            for (i in it.value.line_items) {
+                                if (i.product_id == detailArgs.id) {
+                                    detailsBinding.buttonDetailAddToBag.visibility = View.GONE
+                                }
+                            }
+                        }
+                        is ResultWrapper.Error -> {
+                            Toast.makeText(requireContext(), "مشکل در دریافت لیست سبد خرید", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
