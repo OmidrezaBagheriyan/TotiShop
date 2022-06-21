@@ -8,6 +8,7 @@ import com.omidrezabagherian.totishop.domain.model.createorder.LineItem
 import com.omidrezabagherian.totishop.domain.model.customer.Customer
 import com.omidrezabagherian.totishop.domain.model.order.Order
 import com.omidrezabagherian.totishop.domain.model.product.Product
+import com.omidrezabagherian.totishop.domain.model.review.Review
 import com.omidrezabagherian.totishop.domain.model.subcategory.SubCategory
 import com.omidrezabagherian.totishop.domain.model.updateorder.UpdateOrder
 import retrofit2.Response
@@ -121,4 +122,13 @@ interface ShopService {
         @Query("consumer_secret") consumerSecret: String,
         @Query("search") search: String
     ): Response<List<Coupon>>
+
+    @GET("products/reviews")
+    suspend fun getReviews(
+        @Query("consumer_key") consumerKey: String,
+        @Query("consumer_secret") consumerSecret: String,
+        @Query("product") product: Int,
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int
+    ): Response<List<Review>>
 }

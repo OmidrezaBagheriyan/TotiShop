@@ -113,5 +113,12 @@ class RemoteDataSource @Inject constructor(private val shopService: ShopService)
             search
         )
 
-
+    suspend fun getReviews(product: Int, page: Int, perPage: Int) =
+        shopService.getReviews(
+            Values.CUSTOMER_KEY,
+            Values.CUSTOMER_SECRET,
+            product,
+            page,
+            perPage
+        )
 }

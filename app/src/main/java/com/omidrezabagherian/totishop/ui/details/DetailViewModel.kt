@@ -7,6 +7,7 @@ import com.omidrezabagherian.totishop.data.ShopRepository
 import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
 import com.omidrezabagherian.totishop.domain.model.order.Order
 import com.omidrezabagherian.totishop.domain.model.product.Product
+import com.omidrezabagherian.totishop.domain.model.review.Review
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -27,8 +28,8 @@ class DetailViewModel @Inject constructor(private val shopRepository: ShopReposi
     private val _putProductBagList = MutableStateFlow<ResultWrapper<Order>>(ResultWrapper.Loading)
     val putProductBagList: StateFlow<ResultWrapper<Order>> = _putProductBagList.asStateFlow()
 
-    private val _productError = MutableStateFlow(false)
-    val productError: StateFlow<Boolean> = _productError
+    private val _getReviews = MutableStateFlow<ResultWrapper<List<Review>>>(ResultWrapper.Loading)
+    val getReviews: StateFlow<ResultWrapper<List<Review>>> = _getReviews.asStateFlow()
 
     fun getProduct(id: Int) {
         viewModelScope.launch {
@@ -55,6 +56,15 @@ class DetailViewModel @Inject constructor(private val shopRepository: ShopReposi
             val responseProductBagList = shopRepository.addProductToOrders(id, createOrder)
             responseProductBagList.collect {
                 _putProductBagList.emit(it)
+            }
+        }
+    }
+
+    fun getReviews(product: Int) {
+        viewModelScope.launch {
+            val responseReviewList = shopRepository.getReviews(product, 1, 3)
+            responseReviewList.collect {
+                _getReviews.emit(it)
             }
         }
     }

@@ -167,6 +167,42 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
                 }
             }
         }
+
+        getReviewList()
+    }
+
+    private fun getReviewList() {
+        val reviewDetailAdapter = ReviewDetailAdapter(details = {
+
+        })
+
+        detailsBinding.recyclerViewDetailReview.layoutManager =
+            LinearLayoutManager(requireContext())
+
+
+        detailViewModel.getReviews(detailArgs.id)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                detailViewModel.getReviews.collect {
+                    when (it) {
+                        is ResultWrapper.Loading -> {
+                        }
+                        is ResultWrapper.Success -> {
+                            Log.i("tag-review", it.value.toString())
+                            reviewDetailAdapter.submitList(it.value)
+                            detailsBinding.recyclerViewDetailReview.adapter = reviewDetailAdapter
+                        }
+                        is ResultWrapper.Error -> {
+                            Toast.makeText(
+                                requireContext(),
+                                "خطا در دریافت نظرات",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun getListItems() {
@@ -289,7 +325,11 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
                                 }
                                 is ResultWrapper.Error -> {
                                     detailsBinding.buttonDetailAddToBag.isEnabled = true
-                                    Toast.makeText(requireContext(), "خطا در انتقال به سبد خرید", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "خطا در انتقال به سبد خرید",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                             }
                             Log.i("logLineItem", it.toString())
