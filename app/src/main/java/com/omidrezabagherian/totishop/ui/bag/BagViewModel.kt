@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.omidrezabagherian.totishop.core.ResultWrapper
 import com.omidrezabagherian.totishop.data.ShopRepository
+import com.omidrezabagherian.totishop.domain.model.coupons.Coupon
 import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
 import com.omidrezabagherian.totishop.domain.model.order.Order
 import com.omidrezabagherian.totishop.domain.model.updateorder.UpdateOrder
@@ -20,6 +21,9 @@ class BagViewModel @Inject constructor(private val shopRepository: ShopRepositor
 
     private val _getProductBagList = MutableStateFlow<ResultWrapper<Order>>(ResultWrapper.Loading)
     val getProductBagList: StateFlow<ResultWrapper<Order>> = _getProductBagList.asStateFlow()
+
+    private val _getCouponsList = MutableStateFlow<ResultWrapper<List<Coupon>>>(ResultWrapper.Loading)
+    val getCouponsList: StateFlow<ResultWrapper<List<Coupon>>> = _getCouponsList.asStateFlow()
 
     private val _putProductBagList =  MutableStateFlow<ResultWrapper<Order>>(ResultWrapper.Loading)
     val putProductBagList: StateFlow<ResultWrapper<Order>> = _putProductBagList.asStateFlow()
@@ -41,5 +45,16 @@ class BagViewModel @Inject constructor(private val shopRepository: ShopRepositor
             }
         }
     }
+
+    fun getCoupons(search:String) {
+        viewModelScope.launch {
+            val responseGetCoupons = shopRepository.getCoupons(search)
+            responseGetCoupons.collect{
+                _getCouponsList.emit(it)
+            }
+        }
+    }
+
+
 
 }

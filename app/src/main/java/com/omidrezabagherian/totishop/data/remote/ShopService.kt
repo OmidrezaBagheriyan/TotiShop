@@ -1,6 +1,7 @@
 package com.omidrezabagherian.totishop.data.remote
 
 import com.omidrezabagherian.totishop.domain.model.category.Category
+import com.omidrezabagherian.totishop.domain.model.coupons.Coupon
 import com.omidrezabagherian.totishop.domain.model.createcustomer.CreateCustomer
 import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
 import com.omidrezabagherian.totishop.domain.model.createorder.LineItem
@@ -114,10 +115,10 @@ interface ShopService {
         @Body updateOrder: UpdateOrder
     ): Response<Order>
 
-    @PUT("coupons")
+    @GET("coupons")
     suspend fun getCoupons(
         @Query("consumer_key") consumerKey: String,
         @Query("consumer_secret") consumerSecret: String,
-        @Query("code") code: String
-    ): Response<Order>
+        @Query("search") search: String
+    ): Response<List<Coupon>>
 }

@@ -106,11 +106,11 @@ class RemoteDataSource @Inject constructor(private val shopService: ShopService)
             updateOrder
         )
 
-    suspend fun getCoupons(code: String) =
+    suspend fun getCoupons(search: String) =
         shopService.getCoupons(
             Values.CUSTOMER_KEY,
             Values.CUSTOMER_SECRET,
-            code
+            search
         )
 
 

@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
@@ -20,10 +21,8 @@ import com.omidrezabagherian.totishop.core.ResultWrapper
 import com.omidrezabagherian.totishop.core.Values
 import com.omidrezabagherian.totishop.databinding.FragmentBagBinding
 import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
-import com.omidrezabagherian.totishop.domain.model.updateorder.Billing
-import com.omidrezabagherian.totishop.domain.model.updateorder.LineItem
-import com.omidrezabagherian.totishop.domain.model.updateorder.Shipping
-import com.omidrezabagherian.totishop.domain.model.updateorder.UpdateOrder
+import com.omidrezabagherian.totishop.domain.model.order.CouponLine
+import com.omidrezabagherian.totishop.domain.model.updateorder.*
 import com.omidrezabagherian.totishop.ui.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -36,6 +35,8 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
     private val mainViewModel: MainViewModel by activityViewModels()
     private lateinit var bagSharedPreferences: SharedPreferences
     private lateinit var bagAdapter: BagAdapter
+    private val listCoupon =
+        mutableListOf<com.omidrezabagherian.totishop.domain.model.updateorder.CouponLine>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -69,19 +70,170 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
         networkConnection.observe(viewLifecycleOwner) { isConnect ->
             if (isConnect) {
                 showBag()
+                buttonCheckOfferCode()
             } else {
                 dialogCheckInternet()
             }
         }
     }
 
-    private fun totalPricePayInformation(lineItemList: List<com.omidrezabagherian.totishop.domain.model.order.LineItem>) {
+    private fun buttonCheckOfferCode() {
+        bagBinding.materialButtonConfirmCodeOffer.setOnClickListener {
+            val code = bagBinding.textInputEditTextLoginCodeOffer.text.toString()
+            if (code.isNotEmpty()) {
+                checkOfferCode(code)
+            } else {
+                Toast.makeText(requireContext(), "لطفا کد تخفیف را وارد کنید", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+    }
+
+    private fun confirmOfferCode(listCoupon: MutableList<com.omidrezabagherian.totishop.domain.model.updateorder.CouponLine>) {
+        val updateOrder = UpdateOrder(
+            billing = Billing(
+                address_1 = bagSharedPreferences.getString(
+                    Values.Address_SHARED_PREFERENCES,
+                    ""
+                )
+                    .toString(),
+                email = bagSharedPreferences.getString(Values.EMAIL_SHARED_PREFERENCES, "")
+                    .toString(),
+                first_name = bagSharedPreferences.getString(Values.NAME_SHARED_PREFERENCES, "")
+                    .toString(),
+                last_name = bagSharedPreferences.getString(Values.FAMILY_SHARED_PREFERENCES, "")
+                    .toString(),
+                phone = bagSharedPreferences.getString(Values.PASSWORD_SHARED_PREFERENCES, "")
+                    .toString()
+            ),
+            shipping = Shipping(
+                address_1 = bagSharedPreferences.getString(
+                    Values.Address_SHARED_PREFERENCES,
+                    ""
+                )
+                    .toString(),
+                first_name = bagSharedPreferences.getString(Values.NAME_SHARED_PREFERENCES, "")
+                    .toString(),
+                last_name = bagSharedPreferences.getString(Values.FAMILY_SHARED_PREFERENCES, "")
+                    .toString(),
+            ),
+            line_items = emptyList(),
+            shipping_lines = emptyList(),
+            coupon_lines = listCoupon
+        )
+
+        bagViewModel.editQuantityToOrders(
+            bagSharedPreferences.getInt(
+                Values.ID_ORDER_SHARED_PREFERENCES,
+                0
+            ), updateOrder
+        )
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                bagViewModel.putProductBagList.collect { order ->
+                    when (order) {
+                        is ResultWrapper.Loading -> {
+                            Toast.makeText(
+                                requireContext(),
+                                "در حال اعمال تخفیف",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        is ResultWrapper.Success -> {
+                            Toast.makeText(
+                                requireContext(),
+                                "تخفیف اعمال شد",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            totalPricePayInformation(
+                                order.value.line_items,
+                                order.value.coupon_lines
+                            )
+                            Log.i("tag-value", order.value.coupon_lines.toString())
+                            bagAdapter.submitList(order.value.line_items)
+                        }
+                        is ResultWrapper.Error -> {
+                            Toast.makeText(
+                                requireContext(),
+                                "خطای در اعمال تعداد تخفیف",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun checkOfferCode(codeOffer: String) {
+        bagViewModel.getCoupons(codeOffer)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                bagViewModel.getCouponsList.collect {
+                    when (it) {
+                        is ResultWrapper.Loading -> {
+                            Toast.makeText(
+                                requireContext(),
+                                "در حال تست کد",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        is ResultWrapper.Success -> {
+                            if (it.value.isNotEmpty()) {
+                                confirmOfferCode(
+                                    mutableListOf(
+                                        CouponLine(
+                                            it.value[0].amount,
+                                            it.value[0].code
+                                        )
+                                    )
+                                )
+                                listCoupon.clear()
+                                listCoupon.add(
+                                    CouponLine(
+                                        it.value[0].amount,
+                                        it.value[0].code
+                                    )
+                                )
+                            } else {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "کد تخفیف وجود ندارد",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                        is ResultWrapper.Error -> {
+                            Toast.makeText(
+                                requireContext(),
+                                "کد تخفیف مشکل دارد",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun totalPricePayInformation(
+        lineItemList: List<com.omidrezabagherian.totishop.domain.model.order.LineItem>,
+        couponLineList: List<CouponLine>
+    ) {
         var price = 0.0
         for (i in lineItemList) {
             price += i.price
         }
 
-        bagBinding.textViewBagPriceAll.text = "${price.toInt()} تومان"
+        val offer = if (couponLineList.isNotEmpty()) {
+            couponLineList[0].discount.toInt()
+        } else {
+            0
+        }
+
+        bagBinding.textViewBagPriceAll.text =
+            "${price.toInt() - offer} تومان"
     }
 
     private fun showPayInformation() {
@@ -217,7 +369,7 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
                 ),
                 line_items = mutableListOf(LineItem(it.id, it.product_id, (it.quantity + 1))),
                 shipping_lines = emptyList(),
-                coupon_lines = emptyList()
+                coupon_lines = listCoupon
             )
 
             bagViewModel.editQuantityToOrders(
@@ -244,7 +396,10 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
                                     "به تعداد محصول اضافه شد",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                totalPricePayInformation(order.value.line_items)
+                                totalPricePayInformation(
+                                    order.value.line_items,
+                                    order.value.coupon_lines
+                                )
                                 bagAdapter.submitList(order.value.line_items)
                             }
                             is ResultWrapper.Error -> {
@@ -288,7 +443,7 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
                 ),
                 line_items = mutableListOf(LineItem(it.id, it.product_id, (it.quantity - 1))),
                 shipping_lines = emptyList(),
-                coupon_lines = emptyList()
+                coupon_lines = listCoupon
             )
 
             bagViewModel.editQuantityToOrders(
@@ -315,7 +470,10 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
                                     "تعداد محصول کم شد",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                totalPricePayInformation(order.value.line_items)
+                                totalPricePayInformation(
+                                    order.value.line_items,
+                                    order.value.coupon_lines
+                                )
                                 bagAdapter.submitList(order.value.line_items)
                             }
                             is ResultWrapper.Error -> {
@@ -355,7 +513,7 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
                             bagBinding.cardViewBagPrice.visibility = View.VISIBLE
 
                             showPayInformation()
-                            totalPricePayInformation(it.value.line_items)
+                            totalPricePayInformation(it.value.line_items, it.value.coupon_lines)
                             bagAdapter.submitList(it.value.line_items)
                         }
                         is ResultWrapper.Error -> {
