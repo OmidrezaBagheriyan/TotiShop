@@ -216,7 +216,8 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
                         .toString(),
                 ),
                 line_items = mutableListOf(LineItem(it.id, it.product_id, (it.quantity + 1))),
-                shipping_lines = emptyList()
+                shipping_lines = emptyList(),
+                coupon_lines = emptyList()
             )
 
             bagViewModel.editQuantityToOrders(
@@ -286,7 +287,8 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
                         .toString(),
                 ),
                 line_items = mutableListOf(LineItem(it.id, it.product_id, (it.quantity - 1))),
-                shipping_lines = emptyList()
+                shipping_lines = emptyList(),
+                coupon_lines = emptyList()
             )
 
             bagViewModel.editQuantityToOrders(

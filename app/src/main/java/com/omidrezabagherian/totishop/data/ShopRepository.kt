@@ -81,4 +81,7 @@ class ShopRepository(
         remoteDataSource.editQuantityToOrders(id, updateOrder)
     }
 
+    suspend fun getCoupons(code:String) = safeApiCall {
+        remoteDataSource.getCoupons(code)
+    }
 }

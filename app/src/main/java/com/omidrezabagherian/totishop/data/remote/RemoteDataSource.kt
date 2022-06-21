@@ -29,7 +29,7 @@ class RemoteDataSource @Inject constructor(private val shopService: ShopService)
         perPage
     )
 
-    suspend fun getSubCategoryList(parent:Int) = shopService.getSubCategoryList(
+    suspend fun getSubCategoryList(parent: Int) = shopService.getSubCategoryList(
         Values.CUSTOMER_KEY,
         Values.CUSTOMER_SECRET,
         parent
@@ -105,5 +105,13 @@ class RemoteDataSource @Inject constructor(private val shopService: ShopService)
             Values.CUSTOMER_SECRET,
             updateOrder
         )
+
+    suspend fun getCoupons(code: String) =
+        shopService.getCoupons(
+            Values.CUSTOMER_KEY,
+            Values.CUSTOMER_SECRET,
+            code
+        )
+
 
 }

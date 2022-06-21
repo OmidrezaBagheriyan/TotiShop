@@ -113,4 +113,11 @@ interface ShopService {
         @Query("consumer_secret") consumerSecret: String,
         @Body updateOrder: UpdateOrder
     ): Response<Order>
+
+    @PUT("coupons")
+    suspend fun getCoupons(
+        @Query("consumer_key") consumerKey: String,
+        @Query("consumer_secret") consumerSecret: String,
+        @Query("code") code: String
+    ): Response<Order>
 }
