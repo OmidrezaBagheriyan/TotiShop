@@ -15,5 +15,8 @@ object Values {
     const val PASSWORD_SHARED_PREFERENCES = "Password"
     const val ID_ORDER_SHARED_PREFERENCES = "IDOrder"
     const val ID_FILTER_SHARED_PREFERENCES = "IDFilter"
+    const val ID_LAST_PRODUCT_SHARED_PREFERENCES = "IDFilter"
+    const val CHANNEL_ID = "TotiShopNotification"
+    const val NOTIFICATION_ID = 0
 
 }

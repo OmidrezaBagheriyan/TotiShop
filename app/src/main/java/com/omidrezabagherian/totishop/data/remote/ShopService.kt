@@ -1,5 +1,6 @@
 package com.omidrezabagherian.totishop.data.remote
 
+import com.omidrezabagherian.totishop.core.Values
 import com.omidrezabagherian.totishop.domain.model.addreview.AddReview
 import com.omidrezabagherian.totishop.domain.model.category.Category
 import com.omidrezabagherian.totishop.domain.model.coupons.Coupon
@@ -165,4 +166,11 @@ interface ShopService {
         @Query("consumer_secret") consumerSecret: String,
         @Query("force")force:Boolean
     ):Response<DeleteReview>
+
+    @GET("products")
+    suspend fun getNewProductList(
+        @Query("after") after: String,
+        @Query("consumer_key") consumer_key: String = Values.CUSTOMER_KEY,
+        @Query("consumer_secret") consumer_secret: String = Values.CUSTOMER_SECRET,
+    ): Response<List<Product>>
 }

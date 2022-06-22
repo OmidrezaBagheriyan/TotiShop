@@ -1,8 +1,8 @@
 package com.omidrezabagherian.totishop.ui
 
 import android.content.SharedPreferences
+import android.os.Build.ID
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -14,17 +14,21 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequest
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.core.ResultWrapper
+import com.omidrezabagherian.totishop.core.TotiShopWorker
 import com.omidrezabagherian.totishop.core.Values
 import com.omidrezabagherian.totishop.databinding.ActivityMainBinding
 import com.omidrezabagherian.totishop.domain.model.createorder.Billing
 import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
 import com.omidrezabagherian.totishop.domain.model.createorder.Shipping
-import com.omidrezabagherian.totishop.ui.bag.BagAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -33,6 +37,8 @@ class MainActivity : AppCompatActivity() {
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var mainSharedPreferences: SharedPreferences
     private lateinit var navController: NavController
+    private lateinit var workManager: WorkManager
+    private lateinit var periodicWorkRequest: PeriodicWorkRequest
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +53,19 @@ class MainActivity : AppCompatActivity() {
 
         setOrder()
 
+        workManagerInit()
+
         setContentView(mainBinding.root)
+    }
+
+    private fun workManagerInit() {
+        periodicWorkRequest = PeriodicWorkRequestBuilder<TotiShopWorker>(15, TimeUnit.MINUTES).build()
+        workManager = WorkManager.getInstance(applicationContext)
+        workManager.enqueueUniquePeriodicWork(
+            ID,
+            ExistingPeriodicWorkPolicy.REPLACE,
+            periodicWorkRequest
+        )
     }
 
     private fun initSplashScreen() {
