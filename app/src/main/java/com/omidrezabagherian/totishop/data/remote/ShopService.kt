@@ -1,5 +1,6 @@
 package com.omidrezabagherian.totishop.data.remote
 
+import com.omidrezabagherian.totishop.domain.model.addreview.AddReview
 import com.omidrezabagherian.totishop.domain.model.category.Category
 import com.omidrezabagherian.totishop.domain.model.coupons.Coupon
 import com.omidrezabagherian.totishop.domain.model.createcustomer.CreateCustomer
@@ -131,4 +132,11 @@ interface ShopService {
         @Query("page") page: Int,
         @Query("per_page") perPage: Int
     ): Response<List<Review>>
+
+    @POST("products/reviews")
+    suspend fun setReviews(
+        @Query("consumer_key") consumerKey: String,
+        @Query("consumer_secret") consumerSecret: String,
+        @Body addReview: AddReview
+    ): Response<Review>
 }

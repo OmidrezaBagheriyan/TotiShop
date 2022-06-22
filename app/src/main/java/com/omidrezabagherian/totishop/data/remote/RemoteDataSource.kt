@@ -2,6 +2,7 @@ package com.omidrezabagherian.totishop.data.remote
 
 import com.omidrezabagherian.totishop.domain.model.createcustomer.CreateCustomer
 import com.omidrezabagherian.totishop.core.Values
+import com.omidrezabagherian.totishop.domain.model.addreview.AddReview
 import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
 import com.omidrezabagherian.totishop.domain.model.updateorder.UpdateOrder
 import javax.inject.Inject
@@ -120,5 +121,12 @@ class RemoteDataSource @Inject constructor(private val shopService: ShopService)
             product,
             page,
             perPage
+        )
+
+    suspend fun setReviews(addReview: AddReview) =
+        shopService.setReviews(
+            Values.CUSTOMER_KEY,
+            Values.CUSTOMER_SECRET,
+            addReview
         )
 }

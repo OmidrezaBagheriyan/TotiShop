@@ -189,7 +189,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragmentAddReview"
-        android:name="com.omidrezabagherian.totishop.ui.addreview.FragmentAddReview"
+        android:name="com.omidrezabagherian.totishop.ui.addreview.AddReviewFragment"
         android:label="FragmentAddReview"
         tools:layout="@layout/fragment_add_review" >
         <argument android:name="id"

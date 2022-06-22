@@ -2,6 +2,7 @@ package com.omidrezabagherian.totishop.data
 
 import com.omidrezabagherian.totishop.core.safeApiCall
 import com.omidrezabagherian.totishop.data.remote.RemoteDataSource
+import com.omidrezabagherian.totishop.domain.model.addreview.AddReview
 import com.omidrezabagherian.totishop.domain.model.createcustomer.CreateCustomer
 import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
 import com.omidrezabagherian.totishop.domain.model.updateorder.UpdateOrder
@@ -90,6 +91,12 @@ class ShopRepository(
             product,
             page,
             perPage
+        )
+    }
+
+    suspend fun setReviews(addReview: AddReview) = safeApiCall {
+        remoteDataSource.setReviews(
+            addReview
         )
     }
 }

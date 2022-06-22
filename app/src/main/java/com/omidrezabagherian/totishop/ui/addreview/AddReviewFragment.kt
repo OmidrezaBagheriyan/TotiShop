@@ -6,17 +6,28 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.core.NetworkManager
+import com.omidrezabagherian.totishop.core.ResultWrapper
 import com.omidrezabagherian.totishop.core.Values
 import com.omidrezabagherian.totishop.databinding.FragmentAddReviewBinding
+import com.omidrezabagherian.totishop.domain.model.addreview.AddReview
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
-class FragmentAddReview : Fragment(R.layout.fragment_add_review) {
+@AndroidEntryPoint
+class AddReviewFragment : Fragment(R.layout.fragment_add_review) {
 
     private lateinit var addReviewBinding: FragmentAddReviewBinding
-    private val addReviewArgs: FragmentAddReviewArgs by navArgs()
+    private val addReviewArgs: AddReviewFragmentArgs by navArgs()
+    private val addReviewViewModel: AddReviewViewModel by viewModels()
     private lateinit var addReviewSharedPreferences: SharedPreferences
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,11 +75,38 @@ class FragmentAddReview : Fragment(R.layout.fragment_add_review) {
         val email = addReviewSharedPreferences.getString(Values.EMAIL_SHARED_PREFERENCES, "")
 
         addReviewBinding.textViewAddReviewName.text = "$name $family"
-        addReviewBinding.textViewAddReviewEmail.text = email
+        addReviewBinding.textViewAddReviewEmail.text = email.toString()
 
+        addReviewBinding.buttonAddReviewSubmit.setOnClickListener {
+            val addReview = AddReview(
+                addReviewArgs.id,
+                addReviewBinding.ratingBarAddReviewStars.numStars.toDouble(),
+                addReviewBinding.textInputEditTextAddReviewText.text.toString(),
+                "$name $family",
+                email.toString()
+            )
 
-
+            addReviewViewModel.setReviews(addReview)
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    addReviewViewModel.setReviews.collect {
+                        when (it) {
+                            is ResultWrapper.Loading -> {
+                                Toast.makeText(requireContext(), "در حال ثبت کردن", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                            is ResultWrapper.Success -> {
+                                Toast.makeText(requireContext(), "با موفقیت ثبت شد", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                            is ResultWrapper.Error -> {
+                                Toast.makeText(requireContext(), "خطا در ثبت", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
-
-
 }
