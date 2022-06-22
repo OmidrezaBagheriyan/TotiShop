@@ -10,24 +10,34 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.omidrezabagherian.totishop.databinding.ItemDetailReviewBinding
-import com.omidrezabagherian.totishop.domain.model.product.Tag
 import com.omidrezabagherian.totishop.domain.model.review.Review
 
-class ReviewAdapter(private val details: (Review) -> Unit, private val email: String) :
+class ReviewAdapter(
+    private val edit: (Review) -> Unit,
+    private val delete: (Review) -> Unit,
+    private val email: String
+) :
     ListAdapter<Review, ReviewAdapter.ReviewViewHolder>(ReviewDetailDiffCall()) {
 
     inner class ReviewViewHolder(
         private val itemDetailReviewBinding: ItemDetailReviewBinding,
-        private val details: (Review) -> Unit
+        private val edit: (Review) -> Unit,
+        private val delete: (Review) -> Unit
     ) : RecyclerView.ViewHolder(itemDetailReviewBinding.root) {
         @RequiresApi(Build.VERSION_CODES.N)
         fun bind(review: Review) {
-            itemDetailReviewBinding.root.setOnClickListener {
-                details(review)
+            itemDetailReviewBinding.buttonReviewEdit.setOnClickListener {
+                edit(review)
+            }
+            itemDetailReviewBinding.buttonReviewDelete.setOnClickListener {
+                delete(review)
             }
             if (email != review.reviewer_email) {
                 itemDetailReviewBinding.buttonReviewEdit.visibility = View.GONE
                 itemDetailReviewBinding.buttonReviewDelete.visibility = View.GONE
+            } else {
+                itemDetailReviewBinding.buttonReviewEdit.visibility = View.VISIBLE
+                itemDetailReviewBinding.buttonReviewDelete.visibility = View.VISIBLE
             }
             itemDetailReviewBinding.ratingReviewNumberRate.rating = review.rating.toFloat()
             itemDetailReviewBinding.textViewReviewNameAccount.text = review.reviewer
@@ -44,7 +54,7 @@ class ReviewAdapter(private val details: (Review) -> Unit, private val email: St
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            ), details
+            ), edit, delete
         )
     }
 

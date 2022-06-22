@@ -172,9 +172,7 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
     }
 
     private fun getReviewList() {
-        val reviewDetailAdapter = ReviewDetailAdapter(details = {
-
-        })
+        val reviewDetailAdapter = ReviewDetailAdapter()
 
         detailsBinding.recyclerViewDetailReview.layoutManager =
             LinearLayoutManager(requireContext())

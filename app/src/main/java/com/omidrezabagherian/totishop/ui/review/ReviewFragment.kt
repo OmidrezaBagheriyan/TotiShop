@@ -13,15 +13,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.core.NetworkManager
 import com.omidrezabagherian.totishop.core.ResultWrapper
 import com.omidrezabagherian.totishop.core.Values
-import com.omidrezabagherian.totishop.databinding.FragmentRegisterBinding
 import com.omidrezabagherian.totishop.databinding.FragmentReviewBinding
-import com.omidrezabagherian.totishop.ui.details.ReviewDetailAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -30,6 +29,9 @@ class ReviewFragment : Fragment(R.layout.fragment_review) {
     private lateinit var reviewBinding: FragmentReviewBinding
     private val reviewViewModel: ReviewViewModel by viewModels()
     private val reviewArgs: ReviewFragmentArgs by navArgs()
+    private val navController by lazy {
+        findNavController()
+    }
     private lateinit var reviewSharedPreferences: SharedPreferences
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,10 +71,21 @@ class ReviewFragment : Fragment(R.layout.fragment_review) {
     }
 
     private fun getReviewList() {
+        reviewBinding.floatingActionButton.setOnClickListener {
+            navController.navigate(
+                ReviewFragmentDirections.actionReviewFragmentToFragmentAddReview(
+                    reviewArgs.id,
+                    "اضافه کردن نظر"
+                )
+            )
+        }
+
         val email =
             reviewSharedPreferences.getString(Values.EMAIL_SHARED_PREFERENCES, "").toString()
         val reviewAdapter = ReviewAdapter(
-            details = {
+            edit = {
+
+            }, delete = {
 
             }, email
         )

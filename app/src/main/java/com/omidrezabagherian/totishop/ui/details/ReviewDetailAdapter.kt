@@ -10,22 +10,16 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.omidrezabagherian.totishop.databinding.ItemDetailReviewBinding
-import com.omidrezabagherian.totishop.domain.model.product.Tag
 import com.omidrezabagherian.totishop.domain.model.review.Review
 
-class ReviewDetailAdapter(private val details: (Review) -> Unit) :
+class ReviewDetailAdapter :
     ListAdapter<Review, ReviewDetailAdapter.ReviewViewHolder>(ReviewDetailDiffCall()) {
 
     class ReviewViewHolder(
-        private val itemDetailReviewBinding: ItemDetailReviewBinding,
-        private val details: (Review) -> Unit
+        private val itemDetailReviewBinding: ItemDetailReviewBinding
     ) : RecyclerView.ViewHolder(itemDetailReviewBinding.root) {
         @RequiresApi(Build.VERSION_CODES.N)
         fun bind(review: Review) {
-            itemDetailReviewBinding.root.setOnClickListener {
-                details(review)
-            }
-
             itemDetailReviewBinding.buttonReviewEdit.visibility = View.GONE
             itemDetailReviewBinding.buttonReviewDelete.visibility = View.GONE
             itemDetailReviewBinding.ratingReviewNumberRate.rating = review.rating.toFloat()
@@ -37,18 +31,18 @@ class ReviewDetailAdapter(private val details: (Review) -> Unit) :
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ReviewDetailAdapter.ReviewViewHolder {
+    ): ReviewViewHolder {
         return ReviewViewHolder(
             ItemDetailReviewBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            ), details
+            )
         )
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
-    override fun onBindViewHolder(holder: ReviewDetailAdapter.ReviewViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ReviewViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 }
