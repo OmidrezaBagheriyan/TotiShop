@@ -111,13 +111,7 @@ class MainActivity : AppCompatActivity() {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     mainViewModel.setProductBagList.collect {
                         when (it) {
-                            is ResultWrapper.Loading -> {
-                                Toast.makeText(
-                                    this@MainActivity,
-                                    "درحال ساخت سبد خرید",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
+                            is ResultWrapper.Loading -> { }
                             is ResultWrapper.Success -> {
                                 mainSharedPreferencesEditor.putInt(
                                     Values.ID_ORDER_SHARED_PREFERENCES,

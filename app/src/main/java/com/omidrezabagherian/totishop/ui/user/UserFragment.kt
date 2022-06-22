@@ -114,13 +114,7 @@ class UserFragment : Fragment(R.layout.fragment_user) {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     mainViewModel.setProductBagList.collect {
                         when (it) {
-                            is ResultWrapper.Loading -> {
-                                Toast.makeText(
-                                    requireContext(),
-                                    "درحال ساخت سبد خرید",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
+                            is ResultWrapper.Loading -> { }
                             is ResultWrapper.Success -> {
                                 userSharedPreferencesEditor.putInt(
                                     Values.ID_ORDER_SHARED_PREFERENCES,
@@ -132,11 +126,6 @@ class UserFragment : Fragment(R.layout.fragment_user) {
                                 )
                                 userSharedPreferencesEditor.commit()
                                 userSharedPreferencesEditor.apply()
-                                Toast.makeText(
-                                    requireContext(),
-                                    "سبد خرید با موفقیت ساخته شد",
-                                    Toast.LENGTH_SHORT
-                                ).show()
                             }
                             is ResultWrapper.Error -> {
                                 Toast.makeText(

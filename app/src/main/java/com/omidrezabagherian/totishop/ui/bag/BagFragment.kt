@@ -141,24 +141,12 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 bagViewModel.putProductBagList.collect { order ->
                     when (order) {
-                        is ResultWrapper.Loading -> {
-                            Toast.makeText(
-                                requireContext(),
-                                "در حال اعمال تخفیف",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
+                        is ResultWrapper.Loading -> { }
                         is ResultWrapper.Success -> {
-                            Toast.makeText(
-                                requireContext(),
-                                "تخفیف اعمال شد",
-                                Toast.LENGTH_SHORT
-                            ).show()
                             totalPricePayInformation(
                                 order.value.line_items,
                                 order.value.coupon_lines
                             )
-                            Log.i("tag-value", order.value.coupon_lines.toString())
                             bagAdapter.submitList(order.value.line_items)
                         }
                         is ResultWrapper.Error -> {
@@ -182,13 +170,7 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 bagViewModel.getCouponsList.collect {
                     when (it) {
-                        is ResultWrapper.Loading -> {
-                            Toast.makeText(
-                                requireContext(),
-                                "در حال تست کد",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
+                        is ResultWrapper.Loading -> { }
                         is ResultWrapper.Success -> {
                             if (it.value.isNotEmpty()) {
                                 confirmOfferCode(
@@ -409,19 +391,8 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     bagViewModel.putProductBagList.collect { order ->
                         when (order) {
-                            is ResultWrapper.Loading -> {
-                                Toast.makeText(
-                                    requireContext(),
-                                    "در حال اضافه شدن تعداد محصول",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
+                            is ResultWrapper.Loading -> { }
                             is ResultWrapper.Success -> {
-                                Toast.makeText(
-                                    requireContext(),
-                                    "به تعداد محصول اضافه شد",
-                                    Toast.LENGTH_SHORT
-                                ).show()
                                 totalPricePayInformation(
                                     order.value.line_items,
                                     order.value.coupon_lines
@@ -483,19 +454,8 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     bagViewModel.putProductBagList.collect { order ->
                         when (order) {
-                            is ResultWrapper.Loading -> {
-                                Toast.makeText(
-                                    requireContext(),
-                                    "در حال کم شدن تعداد محصول",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
+                            is ResultWrapper.Loading -> { }
                             is ResultWrapper.Success -> {
-                                Toast.makeText(
-                                    requireContext(),
-                                    "تعداد محصول کم شد",
-                                    Toast.LENGTH_SHORT
-                                ).show()
                                 totalPricePayInformation(
                                     order.value.line_items,
                                     order.value.coupon_lines
