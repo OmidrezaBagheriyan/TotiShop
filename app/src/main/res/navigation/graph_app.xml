@@ -128,7 +128,7 @@
         android:id="@+id/registerFragment"
         android:name="com.omidrezabagherian.totishop.ui.register.RegisterFragment"
         android:label="RegisterFragment"
-        tools:layout="@layout/fragment_register" >
+        tools:layout="@layout/fragment_register">
         <action
             android:id="@+id/action_registerFragment_to_settingFragment"
             app:destination="@id/settingFragment"
@@ -137,17 +137,17 @@
             android:id="@+id/action_registerFragment_to_userFragment"
             app:destination="@id/userFragment"
             app:popUpTo="@id/registerFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment"
             app:enterAnim="@anim/animation_fragments" />
     </fragment>
     <fragment
-        tools:layout="@layout/fragment_sub_category"
         android:id="@+id/subCategoryFragment"
         android:name="com.omidrezabagherian.totishop.ui.subcategory.SubCategoryFragment"
-        android:label="SubCategoryFragment" >
+        android:label="SubCategoryFragment"
+        tools:layout="@layout/fragment_sub_category">
         <action
             android:id="@+id/action_subCategoryFragment_to_listCategoryFragment"
             app:destination="@id/listCategoryFragment"
@@ -160,10 +160,10 @@
             app:argType="string" />
     </fragment>
     <fragment
-        tools:layout="@layout/fragment_list_product"
         android:id="@+id/listProductFragment"
         android:name="com.omidrezabagherian.totishop.ui.listproduct.ListProductFragment"
-        android:label="ListProductFragment" >
+        android:label="ListProductFragment"
+        tools:layout="@layout/fragment_list_product">
         <argument
             android:name="valueProduct"
             app:argType="string" />
@@ -171,17 +171,26 @@
             android:id="@+id/action_listProductFragment_to_detailFragment"
             app:destination="@id/detailFragment"
             app:enterAnim="@anim/animation_fragments" />
-        <argument android:name="nameProduct"
+        <argument
+            android:name="nameProduct"
             app:argType="string" />
     </fragment>
     <fragment
-        tools:layout="@layout/fragment_review"
         android:id="@+id/reviewFragment"
         android:name="com.omidrezabagherian.totishop.ui.review.ReviewFragment"
-        android:label="ReviewFragment" >
+        android:label="ReviewFragment"
+        tools:layout="@layout/fragment_review">
         <argument
             android:name="id"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_reviewFragment_to_fragmentAddReview"
+            app:destination="@id/fragmentAddReview" />
     </fragment>
+    <fragment
+        android:id="@+id/fragmentAddReview"
+        android:name="com.omidrezabagherian.totishop.ui.addreview.FragmentAddReview"
+        android:label="FragmentAddReview"
+        tools:layout="@layout/fragment_add_review" />
 
 </navigation>
