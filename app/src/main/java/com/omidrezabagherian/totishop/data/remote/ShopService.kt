@@ -5,11 +5,14 @@ import com.omidrezabagherian.totishop.domain.model.category.Category
 import com.omidrezabagherian.totishop.domain.model.coupons.Coupon
 import com.omidrezabagherian.totishop.domain.model.createcustomer.CreateCustomer
 import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
-import com.omidrezabagherian.totishop.domain.model.createorder.LineItem
 import com.omidrezabagherian.totishop.domain.model.customer.Customer
+import com.omidrezabagherian.totishop.domain.model.deletereview.DeleteReview
+import com.omidrezabagherian.totishop.domain.model.editreview.EditReview
 import com.omidrezabagherian.totishop.domain.model.order.Order
 import com.omidrezabagherian.totishop.domain.model.product.Product
 import com.omidrezabagherian.totishop.domain.model.review.Review
+import com.omidrezabagherian.totishop.domain.model.getreview.GetReview
+import com.omidrezabagherian.totishop.domain.model.putreview.PutReview
 import com.omidrezabagherian.totishop.domain.model.subcategory.SubCategory
 import com.omidrezabagherian.totishop.domain.model.updateorder.UpdateOrder
 import retrofit2.Response
@@ -133,10 +136,33 @@ interface ShopService {
         @Query("per_page") perPage: Int
     ): Response<List<Review>>
 
+    @GET("products/reviews/{id}")
+    suspend fun getReview(
+        @Path("id") id: Int,
+        @Query("consumer_key") consumerKey: String,
+        @Query("consumer_secret") consumerSecret: String,
+    ): Response<GetReview>
+
     @POST("products/reviews")
     suspend fun setReviews(
         @Query("consumer_key") consumerKey: String,
         @Query("consumer_secret") consumerSecret: String,
         @Body addReview: AddReview
     ): Response<Review>
+
+    @PUT("products/reviews/{id}")
+    suspend fun putReviews(
+        @Path("id") id: Int,
+        @Query("consumer_key") consumerKey: String,
+        @Query("consumer_secret") consumerSecret: String,
+        @Body addReview: EditReview
+    ): Response<PutReview>
+
+    @DELETE("products/reviews/{id}")
+    suspend fun deleteReviews(
+        @Path("id") id: Int,
+        @Query("consumer_key") consumerKey: String,
+        @Query("consumer_secret") consumerSecret: String,
+        @Query("force")force:Boolean
+    ):Response<DeleteReview>
 }

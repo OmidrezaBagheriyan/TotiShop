@@ -4,6 +4,7 @@ import com.omidrezabagherian.totishop.domain.model.createcustomer.CreateCustomer
 import com.omidrezabagherian.totishop.core.Values
 import com.omidrezabagherian.totishop.domain.model.addreview.AddReview
 import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
+import com.omidrezabagherian.totishop.domain.model.editreview.EditReview
 import com.omidrezabagherian.totishop.domain.model.updateorder.UpdateOrder
 import javax.inject.Inject
 
@@ -123,10 +124,33 @@ class RemoteDataSource @Inject constructor(private val shopService: ShopService)
             perPage
         )
 
+    suspend fun getReview(id: Int) =
+        shopService.getReview(
+            id,
+            Values.CUSTOMER_KEY,
+            Values.CUSTOMER_SECRET
+        )
+
     suspend fun setReviews(addReview: AddReview) =
         shopService.setReviews(
             Values.CUSTOMER_KEY,
             Values.CUSTOMER_SECRET,
             addReview
+        )
+
+    suspend fun putReviews(id: Int, addReview: EditReview) =
+        shopService.putReviews(
+            id,
+            Values.CUSTOMER_KEY,
+            Values.CUSTOMER_SECRET,
+            addReview
+        )
+
+    suspend fun deleteReviews(id: Int, force: Boolean) =
+        shopService.deleteReviews(
+            id,
+            Values.CUSTOMER_KEY,
+            Values.CUSTOMER_SECRET,
+            force
         )
 }

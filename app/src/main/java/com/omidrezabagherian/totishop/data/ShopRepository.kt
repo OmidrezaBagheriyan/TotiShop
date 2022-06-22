@@ -5,6 +5,7 @@ import com.omidrezabagherian.totishop.data.remote.RemoteDataSource
 import com.omidrezabagherian.totishop.domain.model.addreview.AddReview
 import com.omidrezabagherian.totishop.domain.model.createcustomer.CreateCustomer
 import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
+import com.omidrezabagherian.totishop.domain.model.editreview.EditReview
 import com.omidrezabagherian.totishop.domain.model.updateorder.UpdateOrder
 import kotlinx.coroutines.CoroutineDispatcher
 
@@ -94,9 +95,30 @@ class ShopRepository(
         )
     }
 
+    suspend fun getReview(id: Int) = safeApiCall {
+        remoteDataSource.getReview(
+            id
+        )
+    }
+
     suspend fun setReviews(addReview: AddReview) = safeApiCall {
         remoteDataSource.setReviews(
             addReview
         )
     }
+
+    suspend fun putReviews(id: Int, addReview: EditReview) = safeApiCall {
+        remoteDataSource.putReviews(
+            id,
+            addReview
+        )
+    }
+
+    suspend fun deleteReviews(id: Int, force:Boolean) = safeApiCall {
+        remoteDataSource.deleteReviews(
+            id,
+            force
+        )
+    }
+
 }

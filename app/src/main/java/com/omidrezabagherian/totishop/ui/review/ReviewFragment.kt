@@ -32,6 +32,7 @@ class ReviewFragment : Fragment(R.layout.fragment_review) {
     private val navController by lazy {
         findNavController()
     }
+    private lateinit var reviewAdapter: ReviewAdapter
     private lateinit var reviewSharedPreferences: SharedPreferences
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,14 +64,14 @@ class ReviewFragment : Fragment(R.layout.fragment_review) {
         val networkConnection = NetworkManager(requireContext())
         networkConnection.observe(viewLifecycleOwner) { isConnect ->
             if (isConnect) {
-                getReviewList()
+                getReviews()
             } else {
                 dialogCheckInternet()
             }
         }
     }
 
-    private fun getReviewList() {
+    private fun getReviews() {
         reviewBinding.floatingActionButton.setOnClickListener {
             navController.navigate(
                 ReviewFragmentDirections.actionReviewFragmentToFragmentAddReview(
@@ -82,14 +83,57 @@ class ReviewFragment : Fragment(R.layout.fragment_review) {
 
         val email =
             reviewSharedPreferences.getString(Values.EMAIL_SHARED_PREFERENCES, "").toString()
-        val reviewAdapter = ReviewAdapter(
+        reviewAdapter = ReviewAdapter(
             edit = {
-
+                navController.navigate(
+                    ReviewFragmentDirections.actionReviewFragmentToEditReviewFragment(
+                        it.id,
+                        "ویرایش کردن نظر"
+                    )
+                )
             }, delete = {
-
+                reviewViewModel.deleteReviews(it.id, true)
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                        reviewViewModel.deleteReviews.collect {
+                            when (it) {
+                                is ResultWrapper.Loading -> {
+                                    reviewBinding.recyclerViewReviewList.visibility = View.GONE
+                                    reviewBinding.cardViewReviewCheckingReview.visibility =
+                                        View.VISIBLE
+                                    reviewBinding.lottieAnimationViewLoadingReview.visibility =
+                                        View.VISIBLE
+                                    reviewBinding.lottieAnimationViewErrorReview.visibility =
+                                        View.INVISIBLE
+                                    reviewBinding.textViewErrorLoadingReview.text = ""
+                                }
+                                is ResultWrapper.Success -> {
+                                    reviewBinding.recyclerViewReviewList.visibility = View.VISIBLE
+                                    reviewBinding.cardViewReviewCheckingReview.visibility =
+                                        View.GONE
+                                    getReviewList()
+                                }
+                                is ResultWrapper.Error -> {
+                                    reviewBinding.recyclerViewReviewList.visibility = View.GONE
+                                    reviewBinding.cardViewReviewCheckingReview.visibility =
+                                        View.VISIBLE
+                                    reviewBinding.lottieAnimationViewLoadingReview.visibility =
+                                        View.INVISIBLE
+                                    reviewBinding.lottieAnimationViewErrorReview.visibility =
+                                        View.VISIBLE
+                                    reviewBinding.textViewErrorLoadingReview.text = ""
+                                }
+                            }
+                        }
+                    }
+                }
             }, email
         )
 
+        getReviewList()
+    }
+
+    private fun getReviewList(){
         reviewBinding.recyclerViewReviewList.layoutManager =
             LinearLayoutManager(requireContext())
         reviewBinding.recyclerViewReviewList.adapter = reviewAdapter

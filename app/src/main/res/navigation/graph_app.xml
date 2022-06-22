@@ -186,12 +186,25 @@
         <action
             android:id="@+id/action_reviewFragment_to_fragmentAddReview"
             app:destination="@id/fragmentAddReview" />
+        <action
+            android:id="@+id/action_reviewFragment_to_editReviewFragment"
+            app:destination="@id/editReviewFragment" />
     </fragment>
     <fragment
         android:id="@+id/fragmentAddReview"
         android:name="com.omidrezabagherian.totishop.ui.addreview.AddReviewFragment"
         android:label="FragmentAddReview"
         tools:layout="@layout/fragment_add_review" >
+        <argument android:name="id"
+            app:argType="integer" />
+        <argument android:name="title"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        tools:layout="@layout/fragment_edit_review"
+        android:id="@+id/editReviewFragment"
+        android:name="com.omidrezabagherian.totishop.ui.editreview.EditReviewFragment"
+        android:label="EditReviewFragment" >
         <argument android:name="id"
             app:argType="integer" />
         <argument android:name="title"
