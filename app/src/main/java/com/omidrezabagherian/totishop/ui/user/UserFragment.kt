@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -17,6 +18,9 @@ import com.omidrezabagherian.totishop.core.NetworkManager
 import com.omidrezabagherian.totishop.core.ResultWrapper
 import com.omidrezabagherian.totishop.core.Values
 import com.omidrezabagherian.totishop.databinding.FragmentUserBinding
+import com.omidrezabagherian.totishop.domain.model.createorder.Billing
+import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
+import com.omidrezabagherian.totishop.domain.model.createorder.Shipping
 import com.omidrezabagherian.totishop.ui.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -62,9 +66,84 @@ class UserFragment : Fragment(R.layout.fragment_user) {
         networkConnection.observe(viewLifecycleOwner) { isConnect ->
             if (isConnect) {
                 showCustomer()
+                setOrder()
                 clearSharedPreferences()
             } else {
                 dialogCheckInternet()
+            }
+        }
+    }
+
+    private fun setOrder() {
+        val userSharedPreferencesEditor = userSharedPreferences.edit()
+        if (userSharedPreferences.getInt(Values.ID_ORDER_SHARED_PREFERENCES, 0) == 0) {
+            val createOrder = CreateOrder(
+                billing = Billing(
+                    address_1 = userSharedPreferences.getString(
+                        Values.Address_SHARED_PREFERENCES,
+                        ""
+                    )
+                        .toString(),
+                    email = userSharedPreferences.getString(Values.EMAIL_SHARED_PREFERENCES, "")
+                        .toString(),
+                    first_name = userSharedPreferences.getString(Values.NAME_SHARED_PREFERENCES, "")
+                        .toString(),
+                    last_name = userSharedPreferences.getString(Values.FAMILY_SHARED_PREFERENCES, "")
+                        .toString(),
+                    phone = userSharedPreferences.getString(Values.PASSWORD_SHARED_PREFERENCES, "")
+                        .toString()
+                ),
+                shipping = Shipping(
+                    address_1 = userSharedPreferences.getString(
+                        Values.Address_SHARED_PREFERENCES,
+                        ""
+                    )
+                        .toString(),
+                    first_name = userSharedPreferences.getString(Values.NAME_SHARED_PREFERENCES, "")
+                        .toString(),
+                    last_name = userSharedPreferences.getString(Values.FAMILY_SHARED_PREFERENCES, "")
+                        .toString(),
+                ),
+                line_items = emptyList(),
+                shipping_lines = emptyList()
+            )
+
+            mainViewModel.setOrders(createOrder)
+
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    mainViewModel.setProductBagList.collect {
+                        when (it) {
+                            is ResultWrapper.Loading -> {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "درحال ساخت سبد خرید",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            is ResultWrapper.Success -> {
+                                userSharedPreferencesEditor.putInt(
+                                    Values.ID_ORDER_SHARED_PREFERENCES,
+                                    it.value.id
+                                )
+                                userSharedPreferencesEditor.commit()
+                                userSharedPreferencesEditor.apply()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "سبد خرید با موفقیت ساخته شد",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            is ResultWrapper.Error -> {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "مشکل ساخت سبد خرید",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    }
+                }
             }
         }
     }

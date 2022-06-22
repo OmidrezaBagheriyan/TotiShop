@@ -69,8 +69,16 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
         val networkConnection = NetworkManager(requireContext())
         networkConnection.observe(viewLifecycleOwner) { isConnect ->
             if (isConnect) {
-                showBag()
-                buttonCheckOfferCode()
+                if (bagSharedPreferences.getString(Values.EMAIL_SHARED_PREFERENCES, "").toString()
+                        .isEmpty()
+                ) {
+                    bagBinding.recyclerViewBagShop.visibility = View.GONE
+                    bagBinding.cardViewBagPrice.visibility = View.GONE
+                } else {
+                    bagBinding.textViewBagStatusUser.visibility = View.GONE
+                    showBag()
+                    buttonCheckOfferCode()
+                }
             } else {
                 dialogCheckInternet()
             }
