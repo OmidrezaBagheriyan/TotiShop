@@ -46,10 +46,12 @@ class TotiShopWorker(
         val result = TotiShopNetwork.shopService.getNewProductList(date)
         return if (result.isSuccessful) {
             result.body()?.let {
-                collapseView(it[0])
-                navDeepLink(it[0].id)
-                notificationManagerInit()
-                notification()
+                if (it.isNotEmpty()){
+                    collapseView(it[0])
+                    navDeepLink(it[0].id)
+                    notificationManagerInit()
+                    notification()
+                }
             }
             Result.success()
 
@@ -69,14 +71,6 @@ class TotiShopWorker(
 
     }
 
-    private fun navDeepLink(productId: Int) {
-        totiShopPendingIntent = NavDeepLinkBuilder(appContext)
-            .setGraph(R.navigation.graph_app)
-            .setDestination(R.id.detailFragment)
-            .setArguments(DetailFragmentArgs(productId).toBundle())
-            .createPendingIntent()
-    }
-
     private fun getCurrentTime(): String =
         SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ROOT).format(Date())
 
@@ -84,6 +78,14 @@ class TotiShopWorker(
         val temp = getCurrentTime()
         val splitTime = temp.split("T").component2().split(":").component1()
         return temp.replace(splitTime, (splitTime.toInt().minus(input.toInt()).toString()))
+    }
+
+    private fun navDeepLink(productId: Int) {
+        totiShopPendingIntent = NavDeepLinkBuilder(appContext)
+            .setGraph(R.navigation.graph_app)
+            .setDestination(R.id.detailFragment)
+            .setArguments(DetailFragmentArgs(productId).toBundle())
+            .createPendingIntent()
     }
 
     private fun notificationManagerInit() {

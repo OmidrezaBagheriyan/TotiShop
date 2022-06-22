@@ -18,5 +18,6 @@ object Values {
     const val ID_LAST_PRODUCT_SHARED_PREFERENCES = "IDFilter"
     const val CHANNEL_ID = "TotiShopNotification"
     const val NOTIFICATION_ID = 0
+    const val DATA_NAME = "TimeWorkManager"
 
 }

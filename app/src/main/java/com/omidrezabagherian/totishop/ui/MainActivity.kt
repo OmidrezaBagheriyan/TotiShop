@@ -59,11 +59,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun workManagerInit() {
-        periodicWorkRequest = PeriodicWorkRequestBuilder<TotiShopWorker>(15, TimeUnit.MINUTES).build()
+        periodicWorkRequest = PeriodicWorkRequestBuilder<TotiShopWorker>(3, TimeUnit.HOURS).build()
         workManager = WorkManager.getInstance(applicationContext)
         workManager.enqueueUniquePeriodicWork(
             ID,
-            ExistingPeriodicWorkPolicy.REPLACE,
+            ExistingPeriodicWorkPolicy.KEEP,
             periodicWorkRequest
         )
     }
