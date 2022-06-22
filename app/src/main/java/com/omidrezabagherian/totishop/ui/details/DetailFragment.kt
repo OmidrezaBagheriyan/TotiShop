@@ -178,7 +178,11 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
             LinearLayoutManager(requireContext())
 
         detailsBinding.textViewDetailTitleReviewMore.setOnClickListener {
-            navController.navigate(DetailFragmentDirections.actionDetailFragmentToReviewFragment(detailArgs.id))
+            navController.navigate(
+                DetailFragmentDirections.actionDetailFragmentToReviewFragment(
+                    detailArgs.id
+                )
+            )
         }
 
         detailsBinding.recyclerViewDetailReview.adapter = reviewDetailAdapter
@@ -258,7 +262,6 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
                         1
                     )
                 )
-
                 val createOrder = CreateOrder(
                     billing = Billing(
                         address_1 = detailSharedPreferences.getString(
@@ -308,12 +311,20 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
                     shipping_lines = emptyList()
                 )
 
-                detailViewModel.putOrders(
-                    detailSharedPreferences.getInt(
-                        Values.ID_ORDER_SHARED_PREFERENCES,
-                        0
-                    ), createOrder
+                val status = detailSharedPreferences.getBoolean(
+                    Values.IS_ORDER_ENABLE_SHARED_PREFERENCE,
+                    true
                 )
+                if (status) {
+                    detailViewModel.putOrders(
+                        detailSharedPreferences.getInt(
+                            Values.ID_ORDER_SHARED_PREFERENCES,
+                            0
+                        ), createOrder
+                    )
+                } else {
+                    Toast.makeText(requireContext(), "سبد خرید در وضعیت پرداخت میباشد", Toast.LENGTH_SHORT).show()
+                }
 
                 viewLifecycleOwner.lifecycleScope.launch {
                     viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {

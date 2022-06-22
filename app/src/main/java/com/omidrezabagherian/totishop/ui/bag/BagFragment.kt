@@ -175,6 +175,8 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
     }
 
     private fun checkOfferCode(codeOffer: String) {
+        val bagSharedPreferencesEditor = bagSharedPreferences.edit()
+
         bagViewModel.getCoupons(codeOffer)
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -204,6 +206,18 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
                                         it.value[0].code
                                     )
                                 )
+                                bagSharedPreferencesEditor.putBoolean(
+                                    Values.IS_ORDER_ENABLE_SHARED_PREFERENCE,
+                                    false
+                                )
+
+                                bagSharedPreferencesEditor.commit()
+                                bagSharedPreferencesEditor.apply()
+
+                                bagBinding.textViewBagPriceAll.visibility = View.VISIBLE
+                                bagBinding.textViewBagPriceAllTitle.visibility = View.VISIBLE
+                                bagBinding.textInputLayoutLoginCodeOffer.visibility = View.GONE
+                                bagBinding.materialButtonConfirmCodeOffer.visibility = View.GONE
                             } else {
                                 Toast.makeText(
                                     requireContext(),
@@ -311,6 +325,10 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
                                     bagSharedPreferencesEditor.putInt(
                                         Values.ID_ORDER_SHARED_PREFERENCES,
                                         it.value.id
+                                    )
+                                    bagSharedPreferencesEditor.putBoolean(
+                                        Values.IS_ORDER_ENABLE_SHARED_PREFERENCE,
+                                        true
                                     )
                                     bagSharedPreferencesEditor.commit()
                                     bagSharedPreferencesEditor.apply()
@@ -519,6 +537,11 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
 
                             bagBinding.recyclerViewBagShop.visibility = View.VISIBLE
                             bagBinding.cardViewBagPrice.visibility = View.VISIBLE
+
+                            if(it.value.coupon_lines.isNotEmpty()){
+                                bagBinding.textInputLayoutLoginCodeOffer.visibility = View.GONE
+                                bagBinding.materialButtonConfirmCodeOffer.visibility = View.GONE
+                            }
 
                             showPayInformation()
                             totalPricePayInformation(it.value.line_items, it.value.coupon_lines)

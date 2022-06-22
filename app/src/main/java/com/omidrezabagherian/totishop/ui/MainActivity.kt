@@ -123,6 +123,10 @@ class MainActivity : AppCompatActivity() {
                                     Values.ID_ORDER_SHARED_PREFERENCES,
                                     it.value.id
                                 )
+                                mainSharedPreferencesEditor.putBoolean(
+                                    Values.IS_ORDER_ENABLE_SHARED_PREFERENCE,
+                                    true
+                                )
                                 mainSharedPreferencesEditor.commit()
                                 mainSharedPreferencesEditor.apply()
                             }

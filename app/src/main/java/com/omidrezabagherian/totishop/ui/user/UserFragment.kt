@@ -126,6 +126,10 @@ class UserFragment : Fragment(R.layout.fragment_user) {
                                     Values.ID_ORDER_SHARED_PREFERENCES,
                                     it.value.id
                                 )
+                                userSharedPreferencesEditor.putBoolean(
+                                    Values.IS_ORDER_ENABLE_SHARED_PREFERENCE,
+                                    true
+                                )
                                 userSharedPreferencesEditor.commit()
                                 userSharedPreferencesEditor.apply()
                                 Toast.makeText(
