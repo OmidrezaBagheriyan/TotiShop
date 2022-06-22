@@ -53,13 +53,13 @@ class MainActivity : AppCompatActivity() {
 
         setOrder()
 
-        workManagerInit()
+        initWorkManager()
 
         setContentView(mainBinding.root)
     }
 
-    private fun workManagerInit() {
-        periodicWorkRequest = PeriodicWorkRequestBuilder<TotiShopWorker>(3, TimeUnit.HOURS).build()
+    private fun initWorkManager() {
+        periodicWorkRequest = PeriodicWorkRequestBuilder<TotiShopWorker>(1, TimeUnit.HOURS).build()
         workManager = WorkManager.getInstance(applicationContext)
         workManager.enqueueUniquePeriodicWork(
             ID,

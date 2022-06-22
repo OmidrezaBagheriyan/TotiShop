@@ -37,20 +37,29 @@ class TotiShopWorker(
     private lateinit var totiShopPendingIntent: PendingIntent
     private lateinit var totiShopCollapseView: RemoteViews
 
+    private fun getCurrentTime(): String =
+        SimpleDateFormat("yyyy-MM-dd'/'HH:mm:ss", Locale.ROOT).format(Date())
+
+    private fun checkLastTime(input: String): String {
+        val timeTemp = getCurrentTime()
+        val splitTime = timeTemp.split("/").component2().split(":").component1()
+        return timeTemp.replace(splitTime, (splitTime.toInt().minus(input.toInt()).toString()))
+    }
+
     override suspend fun doWork(): Result {
         val workSharedPreferences: SharedPreferences =
             appContext.getSharedPreferences(Values.SHARED_PREFERENCES, Context.MODE_PRIVATE)
         val inputData = workSharedPreferences.getString(Values.ID_LAST_PRODUCT_SHARED_PREFERENCES,"3")
-        val date = lastCheckTime(inputData!!)
+        val date = checkLastTime(inputData!!)
 
         val result = TotiShopNetwork.shopService.getNewProductList(date)
         return if (result.isSuccessful) {
             result.body()?.let {
                 if (it.isNotEmpty()){
-                    collapseView(it[0])
-                    navDeepLink(it[0].id)
-                    notificationManagerInit()
-                    notification()
+                    layoutNotificationManager(it[0])
+                    navigationDeepLink(it[0].id)
+                    initNotificationManager()
+                    setNotification()
                 }
             }
             Result.success()
@@ -58,42 +67,33 @@ class TotiShopWorker(
         } else Result.retry()
     }
 
-    private fun collapseView(product: Product) {
-
-        totiShopCollapseView = RemoteViews(appContext.packageName, R.layout.notification_layout)
-        totiShopCollapseView.setTextViewText(R.id.textViewNotificationTitle, product.name)
-        totiShopCollapseView.setTextViewText(R.id.textViewNotificationDate, product.date_created)
-        if (product.sale_price.isNotBlank())
-            totiShopCollapseView.setTextViewText(R.id.textViewNotificationPrice, product.sale_price)
-        else
-            totiShopCollapseView.setTextViewText(R.id.textViewNotificationPrice, product.regular_price)
+    private fun layoutNotificationManager(product: Product) {
         totiShopCollapseView.setImageViewResource(R.id.imageViewNotificationImage, R.drawable.ic_toti_shop)
+        totiShopCollapseView.setTextViewText(R.id.textViewNotificationTitle, product.name)
+        totiShopCollapseView = RemoteViews(appContext.packageName, R.layout.notification_layout)
+        totiShopCollapseView.setTextViewText(R.id.textViewNotificationDate, product.date_created)
+        if (product.sale_price.isNotBlank()){
+            totiShopCollapseView.setTextViewText(R.id.textViewNotificationPrice, product.sale_price)
+        }else{
+            totiShopCollapseView.setTextViewText(R.id.textViewNotificationPrice, product.regular_price)
+        }
 
     }
 
-    private fun getCurrentTime(): String =
-        SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ROOT).format(Date())
-
-    private fun lastCheckTime(input: String): String {
-        val temp = getCurrentTime()
-        val splitTime = temp.split("T").component2().split(":").component1()
-        return temp.replace(splitTime, (splitTime.toInt().minus(input.toInt()).toString()))
-    }
-
-    private fun navDeepLink(productId: Int) {
+    private fun navigationDeepLink(productId: Int) {
         totiShopPendingIntent = NavDeepLinkBuilder(appContext)
-            .setGraph(R.navigation.graph_app)
             .setDestination(R.id.detailFragment)
+            .setGraph(R.navigation.graph_app)
             .setArguments(DetailFragmentArgs(productId).toBundle())
             .createPendingIntent()
     }
 
-    private fun notificationManagerInit() {
+    private fun initNotificationManager() {
         totiShopNotificationManager =
             appContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     }
 
-    private fun notification() {
+    private fun setNotification() {
         totiShopNotificationChannel =
             NotificationChannel(CHANNEL_ID, DESCRIPTION, NotificationManager.IMPORTANCE_HIGH)
         totiShopNotificationManager.createNotificationChannel(totiShopNotificationChannel)

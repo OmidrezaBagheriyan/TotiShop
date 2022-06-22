@@ -3,7 +3,6 @@ package com.omidrezabagherian.totishop.ui.setting
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -37,22 +36,22 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
                 "3" -> {
                     settingBinding.textInputLayoutSettingNumberNotification.visibility = View.GONE
                     settingViewModel.time = "3"
-                    settingViewModel.setTime()
+                    settingViewModel.setTimeWorkManager()
                 }
                 "5" -> {
                     settingBinding.textInputLayoutSettingNumberNotification.visibility = View.GONE
                     settingViewModel.time = "5"
-                    settingViewModel.setTime()
+                    settingViewModel.setTimeWorkManager()
                 }
                 "8" -> {
                     settingBinding.textInputLayoutSettingNumberNotification.visibility = View.GONE
                     settingViewModel.time = "8"
-                    settingViewModel.setTime()
+                    settingViewModel.setTimeWorkManager()
                 }
                 "12" -> {
                     settingBinding.textInputLayoutSettingNumberNotification.visibility = View.GONE
                     settingViewModel.time = "12"
-                    settingViewModel.setTime()
+                    settingViewModel.setTimeWorkManager()
                 }
                 "تایم دلخواه" -> {
                     settingBinding.textInputLayoutSettingNumberNotification.visibility =
@@ -67,16 +66,16 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
 
         settingBinding.buttonSettingApply.setOnClickListener {
             if (settingViewModel.time.isNotEmpty()) {
-                settingViewModel.setTime()
+                settingViewModel.setTimeWorkManager()
             }
         }
 
         settingBinding.buttonSettingStart.setOnClickListener {
-            settingViewModel.start()
+            settingViewModel.startWorkManager()
         }
 
         settingBinding.buttonSettingStop.setOnClickListener {
-            settingViewModel.stop()
+            settingViewModel.stopWorkManager()
         }
 
     }
