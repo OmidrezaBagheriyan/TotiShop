@@ -179,6 +179,11 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
         detailsBinding.recyclerViewDetailReview.layoutManager =
             LinearLayoutManager(requireContext())
 
+        detailsBinding.textViewDetailTitleReviewMore.setOnClickListener {
+            navController.navigate(DetailFragmentDirections.actionDetailFragmentToReviewFragment(detailArgs.id))
+        }
+
+        detailsBinding.recyclerViewDetailReview.adapter = reviewDetailAdapter
 
         detailViewModel.getReviews(detailArgs.id)
         viewLifecycleOwner.lifecycleScope.launch {
@@ -190,7 +195,6 @@ class DetailFragment : Fragment(R.layout.fragment_details) {
                         is ResultWrapper.Success -> {
                             Log.i("tag-review", it.value.toString())
                             reviewDetailAdapter.submitList(it.value)
-                            detailsBinding.recyclerViewDetailReview.adapter = reviewDetailAdapter
                         }
                         is ResultWrapper.Error -> {
                             Toast.makeText(

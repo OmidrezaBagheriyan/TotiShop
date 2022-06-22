@@ -1,4 +1,4 @@
-package com.omidrezabagherian.totishop.ui.details
+package com.omidrezabagherian.totishop.ui.review
 
 import android.os.Build
 import android.text.Html
@@ -13,10 +13,10 @@ import com.omidrezabagherian.totishop.databinding.ItemDetailReviewBinding
 import com.omidrezabagherian.totishop.domain.model.product.Tag
 import com.omidrezabagherian.totishop.domain.model.review.Review
 
-class ReviewDetailAdapter(private val details: (Review) -> Unit) :
-    ListAdapter<Review, ReviewDetailAdapter.ReviewViewHolder>(ReviewDetailDiffCall()) {
+class ReviewAdapter(private val details: (Review) -> Unit, private val email: String) :
+    ListAdapter<Review, ReviewAdapter.ReviewViewHolder>(ReviewDetailDiffCall()) {
 
-    class ReviewViewHolder(
+    inner class ReviewViewHolder(
         private val itemDetailReviewBinding: ItemDetailReviewBinding,
         private val details: (Review) -> Unit
     ) : RecyclerView.ViewHolder(itemDetailReviewBinding.root) {
@@ -25,9 +25,10 @@ class ReviewDetailAdapter(private val details: (Review) -> Unit) :
             itemDetailReviewBinding.root.setOnClickListener {
                 details(review)
             }
-
-            itemDetailReviewBinding.buttonReviewEdit.visibility = View.GONE
-            itemDetailReviewBinding.buttonReviewDelete.visibility = View.GONE
+            if (email != review.reviewer_email) {
+                itemDetailReviewBinding.buttonReviewEdit.visibility = View.GONE
+                itemDetailReviewBinding.buttonReviewDelete.visibility = View.GONE
+            }
             itemDetailReviewBinding.ratingReviewNumberRate.rating = review.rating.toFloat()
             itemDetailReviewBinding.textViewReviewNameAccount.text = review.reviewer
             itemDetailReviewBinding.textViewReviewDescription.text = Html.fromHtml(review.review, 0)
@@ -37,7 +38,7 @@ class ReviewDetailAdapter(private val details: (Review) -> Unit) :
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ReviewDetailAdapter.ReviewViewHolder {
+    ): ReviewAdapter.ReviewViewHolder {
         return ReviewViewHolder(
             ItemDetailReviewBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -48,7 +49,7 @@ class ReviewDetailAdapter(private val details: (Review) -> Unit) :
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
-    override fun onBindViewHolder(holder: ReviewDetailAdapter.ReviewViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ReviewAdapter.ReviewViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 }

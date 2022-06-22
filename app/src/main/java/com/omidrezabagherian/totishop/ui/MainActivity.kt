@@ -131,7 +131,7 @@ class MainActivity : AppCompatActivity() {
         mainBinding.bottomNavigationViewMain.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destenation, _ ->
-            if (destenation.id == R.id.detailFragment || destenation.id == R.id.searchFragment) {
+            if (destenation.id == R.id.detailFragment || destenation.id == R.id.searchFragment || destenation.id == R.id.reviewFragment) {
                 mainBinding.bottomNavigationViewMain.visibility = View.GONE
             } else {
                 mainBinding.bottomNavigationViewMain.visibility = View.VISIBLE

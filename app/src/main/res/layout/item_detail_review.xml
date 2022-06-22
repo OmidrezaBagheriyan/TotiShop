@@ -3,15 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    app:cardCornerRadius="12dp"
+    android:layout_height="wrap_content"
     android:layout_margin="4dp"
-    android:layout_height="wrap_content">
+    app:cardCornerRadius="12dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="12dp">
-
 
         <RatingBar
             android:id="@+id/ratingReviewNumberRate"
@@ -27,22 +26,40 @@
             style="@style/TextViewBlackCustom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
             android:text="تست"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:text="تست متن"
-            android:layout_marginTop="8dp"
             android:id="@+id/textViewReviewDescription"
             style="@style/TextViewRegularCustom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="تست متن"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewReviewNameAccount" />
+
+        <Button
+            android:id="@+id/buttonReviewEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="ویرایش"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewReviewDescription" />
+
+        <Button
+            android:id="@+id/buttonReviewDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="حذف"
+            app:layout_constraintStart_toEndOf="@+id/buttonReviewEdit"
+            app:layout_constraintTop_toBottomOf="@+id/textViewReviewDescription" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

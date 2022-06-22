@@ -74,6 +74,9 @@
             android:id="@+id/action_detailFragment_to_listCategoryFragment"
             app:destination="@id/listCategoryFragment"
             app:enterAnim="@anim/animation_fragments" />
+        <action
+            android:id="@+id/action_detailFragment_to_reviewFragment"
+            app:destination="@id/reviewFragment" />
     </fragment>
     <fragment
         android:id="@+id/listCategoryFragment"
@@ -170,6 +173,15 @@
             app:enterAnim="@anim/animation_fragments" />
         <argument android:name="nameProduct"
             app:argType="string" />
+    </fragment>
+    <fragment
+        tools:layout="@layout/fragment_review"
+        android:id="@+id/reviewFragment"
+        android:name="com.omidrezabagherian.totishop.ui.review.ReviewFragment"
+        android:label="ReviewFragment" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
     </fragment>
 
 </navigation>
