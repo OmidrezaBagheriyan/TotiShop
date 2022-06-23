@@ -94,17 +94,6 @@
         app:layout_constraintTop_toBottomOf="@+id/textInputLayoutSettingNumberNotification" />
 
     <Button
-        android:id="@+id/buttonSettingStart"
-        style="@style/TextViewMediumCustom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="شروع کردن"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSettingApply" />
-
-    <Button
         android:id="@+id/buttonSettingStop"
         style="@style/TextViewMediumCustom"
         android:layout_width="match_parent"
@@ -113,6 +102,6 @@
         android:text="متوقف شدن"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSettingStart" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonSettingApply" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -43,6 +43,8 @@ fun NotificationManager.sendNotification(
         .setLargeIcon(productImage)
         .setPriority(NotificationCompat.PRIORITY_HIGH)
     notify(NOTIFICATION_ID, builder.build())
+
+
 }
 
 fun NotificationManager.cancelNotification() {

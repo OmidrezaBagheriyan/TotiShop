@@ -1,11 +1,13 @@
 package com.omidrezabagherian.totishop.ui
 
+import android.app.NotificationManager
 import android.os.Build.ID
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -22,6 +24,7 @@ import com.omidrezabagherian.totishop.core.ResultWrapper
 import com.omidrezabagherian.totishop.core.TotiShopWorker
 import com.omidrezabagherian.totishop.core.Values.mainSharedPreferences
 import com.omidrezabagherian.totishop.core.Values
+import com.omidrezabagherian.totishop.core.sendNotification
 import com.omidrezabagherian.totishop.databinding.ActivityMainBinding
 import com.omidrezabagherian.totishop.domain.model.createorder.Billing
 import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
@@ -58,12 +61,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initWorkManager() {
-        val duration = mainSharedPreferences.getInt(Values.ID_TIME_WORK_SHARED_PREFERENCES, 3)
-        val checkRequest=
-            PeriodicWorkRequestBuilder<TotiShopWorker>(duration.toLong(), TimeUnit.HOURS).build()
+        val time = mainSharedPreferences.getInt(Values.ID_TIME_WORK_SHARED_PREFERENCES, 3)
+        periodicWorkRequest =
+            PeriodicWorkRequestBuilder<TotiShopWorker>(time.toLong(), TimeUnit.HOURS).build()
+        workManager = WorkManager.getInstance(applicationContext)
         WorkManager
             .getInstance(this)
-            .enqueueUniquePeriodicWork(ID, ExistingPeriodicWorkPolicy.REPLACE, checkRequest)
+            .enqueueUniquePeriodicWork(ID, ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest)
+
     }
 
     private fun initSplashScreen() {

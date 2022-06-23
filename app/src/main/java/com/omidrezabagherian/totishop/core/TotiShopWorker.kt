@@ -1,5 +1,6 @@
 package com.omidrezabagherian.totishop.core
 
+import android.app.Notification
 import android.app.NotificationManager
 import android.content.Context
 import android.graphics.Bitmap
@@ -8,9 +9,11 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
+import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import com.bumptech.glide.Glide
 import com.omidrezabagherian.totishop.core.Values.ID_LAST_PRODUCT_SHARED_PREFERENCES
+import com.omidrezabagherian.totishop.core.Values.NOTIFICATION_ID
 import com.omidrezabagherian.totishop.core.Values.SHARED_PREFERENCES
 import com.omidrezabagherian.totishop.core.Values.mainSharedPreferences
 import com.omidrezabagherian.totishop.data.ShopRepository
@@ -25,6 +28,16 @@ class TotiShopWorker @AssistedInject constructor(
     private val repository: ShopRepository
 ) : CoroutineWorker(appContext, workerParams) {
 
+    override suspend fun getForegroundInfo(): ForegroundInfo {
+        return ForegroundInfo(
+            NOTIFICATION_ID, createNotification()
+        )
+    }
+
+    private fun createNotification(): Notification {
+        TODO()
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun doWork(): Result {
 
@@ -34,12 +47,11 @@ class TotiShopWorker @AssistedInject constructor(
 
         val lastProductId = mainSharedPreferences.getInt(ID_LAST_PRODUCT_SHARED_PREFERENCES, 0)
 
-        var productName: String
         val data = repository.getProductList(1, 1, productsDateMap)
         data.collect {
             if (it is ResultWrapper.Success) {
-                productName = it.value.first().name
-                if (lastProductId == it.value.first().id) {
+                val productName = it.value.first().name
+                //if (lastProductId != it.value.first().id) {
                     val productImage = getImage(it.value.first().images.first().src)
                     val notificationManager = ContextCompat.getSystemService(
                         applicationContext,
@@ -59,7 +71,7 @@ class TotiShopWorker @AssistedInject constructor(
                     sharedPreferencesEditor.apply()
                     sharedPreferencesEditor.commit()
 
-                }
+                //}
             }
         }
 
