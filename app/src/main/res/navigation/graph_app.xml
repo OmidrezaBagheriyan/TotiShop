@@ -210,11 +210,15 @@
         android:label="EditReviewFragment" >
         <argument android:name="id"
             app:argType="integer" />
+        <argument
+            android:name="productId"
+            app:argType="integer" />
         <argument android:name="title"
             app:argType="string" />
         <action
             android:id="@+id/action_editReviewFragment_to_reviewFragment"
             app:destination="@id/reviewFragment" />
+
     </fragment>
 
 </navigation>

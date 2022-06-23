@@ -56,15 +56,15 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
                 "تایم دلخواه" -> {
                     settingBinding.textInputLayoutSettingNumberNotification.visibility =
                         View.VISIBLE
-                    settingViewModel.time =
-                        settingBinding.textInputEditTextSettingNumberNotification.text.toString()
-                            ?: "1"
+
                 }
             }
         }
 
 
-        settingBinding.buttonSettingApply.setOnClickListener {
+        settingBinding.buttonSettingApply.setOnClickListener {settingViewModel.time =
+            settingBinding.textInputEditTextSettingNumberNotification.text.toString()
+                ?: "3"
             if (settingViewModel.time.isNotEmpty()) {
                 settingViewModel.setTimeWorkManager()
             }

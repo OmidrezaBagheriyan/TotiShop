@@ -1,6 +1,7 @@
 package com.omidrezabagherian.totishop.ui.setting
 
 import android.os.Build.ID
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.work.*
 import com.omidrezabagherian.totishop.core.TotiShopWorker
@@ -15,30 +16,36 @@ class SettingViewModel @Inject constructor() : ViewModel() {
 
     lateinit var workManager: WorkManager
     private lateinit var periodicWork: PeriodicWorkRequest
-    var time = "1"
+    var time = "3"
     val data = Data.Builder().putString(DATA_NAME, time)
 
     fun setTimeWorkManager() {
+        Log.i("tag-worker","setTimeWorkManager")
+        Log.i("tag-worker", time)
+
         periodicWork = PeriodicWorkRequestBuilder<TotiShopWorker>(time.toLong(), TimeUnit.HOURS)
             .setInputData(data.build())
             .build()
-
-        setWorkManager()
     }
 
     fun startWorkManager() {
-        periodicWork = PeriodicWorkRequestBuilder<TotiShopWorker>(3, TimeUnit.HOURS)
-            .setInputData(data.build())
-            .build()
+        Log.i("tag-worker","startWorkManager")
+        Log.i("tag-worker",time.toString())
 
         setWorkManager()
     }
 
     fun stopWorkManager() {
+        Log.i("tag-worker","stopWorkManager")
+        Log.i("tag-worker",time.toString())
+
         workManager.cancelUniqueWork(ID)
     }
 
     private fun setWorkManager() {
+        Log.i("tag-worker","setWorkManager")
+        Log.i("tag-worker",time.toString())
+
         workManager.enqueueUniquePeriodicWork(
             ID,
             ExistingPeriodicWorkPolicy.REPLACE,

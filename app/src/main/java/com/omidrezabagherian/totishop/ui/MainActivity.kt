@@ -1,6 +1,5 @@
 package com.omidrezabagherian.totishop.ui
 
-import android.content.SharedPreferences
 import android.os.Build.ID
 import android.os.Bundle
 import android.view.View
@@ -21,6 +20,7 @@ import androidx.work.WorkManager
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.core.ResultWrapper
 import com.omidrezabagherian.totishop.core.TotiShopWorker
+import com.omidrezabagherian.totishop.core.Values.mainSharedPreferences
 import com.omidrezabagherian.totishop.core.Values
 import com.omidrezabagherian.totishop.databinding.ActivityMainBinding
 import com.omidrezabagherian.totishop.domain.model.createorder.Billing
@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var mainBinding: ActivityMainBinding
     private val mainViewModel: MainViewModel by viewModels()
-    private lateinit var mainSharedPreferences: SharedPreferences
     private lateinit var navController: NavController
     private lateinit var workManager: WorkManager
     private lateinit var periodicWorkRequest: PeriodicWorkRequest
@@ -59,13 +58,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initWorkManager() {
-        periodicWorkRequest = PeriodicWorkRequestBuilder<TotiShopWorker>(1, TimeUnit.HOURS).build()
-        workManager = WorkManager.getInstance(applicationContext)
-        workManager.enqueueUniquePeriodicWork(
-            ID,
-            ExistingPeriodicWorkPolicy.KEEP,
-            periodicWorkRequest
-        )
+        val duration = mainSharedPreferences.getInt(Values.ID_TIME_WORK_SHARED_PREFERENCES, 3)
+        val checkRequest=
+            PeriodicWorkRequestBuilder<TotiShopWorker>(duration.toLong(), TimeUnit.HOURS).build()
+        WorkManager
+            .getInstance(this)
+            .enqueueUniquePeriodicWork(ID, ExistingPeriodicWorkPolicy.REPLACE, checkRequest)
     }
 
     private fun initSplashScreen() {
@@ -111,7 +109,8 @@ class MainActivity : AppCompatActivity() {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     mainViewModel.setProductBagList.collect {
                         when (it) {
-                            is ResultWrapper.Loading -> { }
+                            is ResultWrapper.Loading -> {
+                            }
                             is ResultWrapper.Success -> {
                                 mainSharedPreferencesEditor.putInt(
                                     Values.ID_ORDER_SHARED_PREFERENCES,

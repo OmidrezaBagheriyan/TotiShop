@@ -88,6 +88,7 @@ class ReviewFragment : Fragment(R.layout.fragment_review) {
                 navController.navigate(
                     ReviewFragmentDirections.actionReviewFragmentToEditReviewFragment(
                         it.id,
+                        it.product_id,
                         "ویرایش کردن نظر"
                     )
                 )

@@ -133,7 +133,7 @@ class EditReviewFragment : Fragment(R.layout.fragment_edit_review) {
                             is ResultWrapper.Success -> {
                                 navController.navigate(
                                     EditReviewFragmentDirections.actionEditReviewFragmentToReviewFragment(
-                                        editReviewArgs.id
+                                        editReviewArgs.productId
                                     )
                                 )
                             }
