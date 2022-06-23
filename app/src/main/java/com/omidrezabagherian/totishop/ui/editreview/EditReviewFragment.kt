@@ -16,6 +16,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.core.NetworkManager
@@ -34,6 +35,9 @@ class EditReviewFragment : Fragment(R.layout.fragment_edit_review) {
     private val editReviewArgs: EditReviewFragmentArgs by navArgs()
     private val editReviewViewModel: EditReviewViewModel by viewModels()
     private lateinit var editReviewSharedPreferences: SharedPreferences
+    private val navController by lazy {
+        findNavController()
+    }
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -86,18 +90,9 @@ class EditReviewFragment : Fragment(R.layout.fragment_edit_review) {
                 editReviewViewModel.getReview.collect {
                     when (it) {
                         is ResultWrapper.Loading -> {
-                            Toast.makeText(
-                                requireContext(),
-                                "در حال دریافت اطلاعات",
-                                Toast.LENGTH_SHORT
-                            ).show()
                         }
                         is ResultWrapper.Success -> {
-                            Toast.makeText(
-                                requireContext(),
-                                "اطلاعات دریافت شد",
-                                Toast.LENGTH_SHORT
-                            ).show()
+
                             editReviewBinding.textViewEditReviewName.text = it.value.reviewer
                             editReviewBinding.textViewEditReviewEmail.text = it.value.reviewer_email
                             editReviewBinding.ratingBarEditReviewStars.rating =
@@ -131,18 +126,23 @@ class EditReviewFragment : Fragment(R.layout.fragment_edit_review) {
             editReviewViewModel.putReviews(editReviewArgs.id, editReview)
             viewLifecycleOwner.lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    editReviewViewModel.putReviews.collect{
+                    editReviewViewModel.putReviews.collect {
                         when (it) {
                             is ResultWrapper.Loading -> {
-                                Toast.makeText(requireContext(), "در حال ویرایش کردن", Toast.LENGTH_SHORT)
-                                    .show()
                             }
                             is ResultWrapper.Success -> {
-                                Toast.makeText(requireContext(), "با موفقیت ویرایش شد", Toast.LENGTH_SHORT)
-                                    .show()
+                                navController.navigate(
+                                    EditReviewFragmentDirections.actionEditReviewFragmentToReviewFragment(
+                                        editReviewArgs.id
+                                    )
+                                )
                             }
                             is ResultWrapper.Error -> {
-                                Toast.makeText(requireContext(), "خطا در ویرایش", Toast.LENGTH_SHORT)
+                                Toast.makeText(
+                                    requireContext(),
+                                    "خطا در ویرایش",
+                                    Toast.LENGTH_SHORT
+                                )
                                     .show()
                             }
                         }

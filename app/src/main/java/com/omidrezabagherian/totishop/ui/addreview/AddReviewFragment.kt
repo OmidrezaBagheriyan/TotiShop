@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.core.NetworkManager
@@ -29,6 +30,9 @@ class AddReviewFragment : Fragment(R.layout.fragment_add_review) {
     private val addReviewArgs: AddReviewFragmentArgs by navArgs()
     private val addReviewViewModel: AddReviewViewModel by viewModels()
     private lateinit var addReviewSharedPreferences: SharedPreferences
+    private val navController by lazy {
+        findNavController()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -91,13 +95,13 @@ class AddReviewFragment : Fragment(R.layout.fragment_add_review) {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     addReviewViewModel.setReviews.collect {
                         when (it) {
-                            is ResultWrapper.Loading -> {
-                                Toast.makeText(requireContext(), "در حال ثبت کردن", Toast.LENGTH_SHORT)
-                                    .show()
-                            }
+                            is ResultWrapper.Loading -> { }
                             is ResultWrapper.Success -> {
-                                Toast.makeText(requireContext(), "با موفقیت ثبت شد", Toast.LENGTH_SHORT)
-                                    .show()
+                                navController.navigate(
+                                    AddReviewFragmentDirections.actionFragmentAddReviewToReviewFragment(
+                                        addReviewArgs.id
+                                    )
+                                )
                             }
                             is ResultWrapper.Error -> {
                                 Toast.makeText(requireContext(), "خطا در ثبت", Toast.LENGTH_SHORT)
