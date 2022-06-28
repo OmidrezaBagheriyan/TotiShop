@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.hilt.work.HiltWorker
@@ -28,16 +29,6 @@ class TotiShopWorker @AssistedInject constructor(
     private val repository: ShopRepository
 ) : CoroutineWorker(appContext, workerParams) {
 
-    override suspend fun getForegroundInfo(): ForegroundInfo {
-        return ForegroundInfo(
-            NOTIFICATION_ID, createNotification()
-        )
-    }
-
-    private fun createNotification(): Notification {
-        TODO()
-    }
-
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun doWork(): Result {
 
@@ -45,12 +36,15 @@ class TotiShopWorker @AssistedInject constructor(
             put("orderby", "date")
         }
 
+        mainSharedPreferences =
+            applicationContext.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE)
         val lastProductId = mainSharedPreferences.getInt(ID_LAST_PRODUCT_SHARED_PREFERENCES, 0)
 
         val data = repository.getProductList(1, 1, productsDateMap)
         data.collect {
             if (it is ResultWrapper.Success) {
                 val productName = it.value.first().name
+
                 //if (lastProductId != it.value.first().id) {
                     val productImage = getImage(it.value.first().images.first().src)
                     val notificationManager = ContextCompat.getSystemService(
@@ -70,6 +64,7 @@ class TotiShopWorker @AssistedInject constructor(
                     )
                     sharedPreferencesEditor.apply()
                     sharedPreferencesEditor.commit()
+                    Log.i("Test-MAN",it.value.toString())
 
                 //}
             }

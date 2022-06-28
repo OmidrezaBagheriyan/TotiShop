@@ -30,6 +30,7 @@ fun NotificationManager.sendNotification(
         .bigPicture(productImage)
         .bigLargeIcon(null)
 
+
     val builder = NotificationCompat.Builder(
         applicationContext,
         CHANNEL_ID
@@ -42,6 +43,8 @@ fun NotificationManager.sendNotification(
         .setStyle(bigPicStyle)
         .setLargeIcon(productImage)
         .setPriority(NotificationCompat.PRIORITY_HIGH)
+
+
     notify(NOTIFICATION_ID, builder.build())
 
 

@@ -1,13 +1,16 @@
 package com.omidrezabagherian.totishop.ui
 
+import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.Context
+import android.content.SharedPreferences
+import android.os.Build
 import android.os.Build.ID
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -22,9 +25,7 @@ import androidx.work.WorkManager
 import com.omidrezabagherian.totishop.R
 import com.omidrezabagherian.totishop.core.ResultWrapper
 import com.omidrezabagherian.totishop.core.TotiShopWorker
-import com.omidrezabagherian.totishop.core.Values.mainSharedPreferences
 import com.omidrezabagherian.totishop.core.Values
-import com.omidrezabagherian.totishop.core.sendNotification
 import com.omidrezabagherian.totishop.databinding.ActivityMainBinding
 import com.omidrezabagherian.totishop.domain.model.createorder.Billing
 import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var mainBinding: ActivityMainBinding
     private val mainViewModel: MainViewModel by viewModels()
+    private lateinit var mainSharedPreferences: SharedPreferences
     private lateinit var navController: NavController
     private lateinit var workManager: WorkManager
     private lateinit var periodicWorkRequest: PeriodicWorkRequest
@@ -55,20 +57,32 @@ class MainActivity : AppCompatActivity() {
 
         setOrder()
 
-        initWorkManager()
+        workManagerInit()
 
         setContentView(mainBinding.root)
     }
 
-    private fun initWorkManager() {
-        val time = mainSharedPreferences.getInt(Values.ID_TIME_WORK_SHARED_PREFERENCES, 3)
-        periodicWorkRequest =
-            PeriodicWorkRequestBuilder<TotiShopWorker>(time.toLong(), TimeUnit.HOURS).build()
-        workManager = WorkManager.getInstance(applicationContext)
-        WorkManager
-            .getInstance(this)
-            .enqueueUniquePeriodicWork(ID, ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest)
+    private fun workManagerInit() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel: NotificationChannel = NotificationChannel(
+                Values.CHANNEL_ID,
+                Values.CHANNEL_ID,
+                NotificationManager.IMPORTANCE_HIGH
+            )
 
+            val manager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+            manager.createNotificationChannel(notificationChannel)
+        }
+
+        periodicWorkRequest = PeriodicWorkRequestBuilder<TotiShopWorker>(3, TimeUnit.HOURS).build()
+        workManager = WorkManager.getInstance(applicationContext)
+        workManager.enqueueUniquePeriodicWork(
+            ID,
+            ExistingPeriodicWorkPolicy.REPLACE,
+            periodicWorkRequest
+        )
     }
 
     private fun initSplashScreen() {
@@ -115,15 +129,16 @@ class MainActivity : AppCompatActivity() {
                     mainViewModel.setProductBagList.collect {
                         when (it) {
                             is ResultWrapper.Loading -> {
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    "درحال ساخت سبد خرید",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                             is ResultWrapper.Success -> {
                                 mainSharedPreferencesEditor.putInt(
                                     Values.ID_ORDER_SHARED_PREFERENCES,
                                     it.value.id
-                                )
-                                mainSharedPreferencesEditor.putBoolean(
-                                    Values.IS_ORDER_ENABLE_SHARED_PREFERENCE,
-                                    true
                                 )
                                 mainSharedPreferencesEditor.commit()
                                 mainSharedPreferencesEditor.apply()
