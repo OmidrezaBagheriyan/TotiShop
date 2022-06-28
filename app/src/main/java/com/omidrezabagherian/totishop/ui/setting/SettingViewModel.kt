@@ -20,8 +20,6 @@ class SettingViewModel @Inject constructor() : ViewModel() {
     val data = Data.Builder().putString(DATA_NAME, time)
 
     fun setTimeWorkManager() {
-        Log.i("tag-worker","setTimeWorkManager")
-        Log.i("tag-worker", time)
 
         periodicWork = PeriodicWorkRequestBuilder<TotiShopWorker>(time.toLong(), TimeUnit.HOURS)
             .setInputData(data.build())
@@ -29,23 +27,14 @@ class SettingViewModel @Inject constructor() : ViewModel() {
     }
 
     fun startWorkManager() {
-        Log.i("tag-worker","startWorkManager")
-        Log.i("tag-worker",time.toString())
-
         setWorkManager()
     }
 
     fun stopWorkManager() {
-        Log.i("tag-worker","stopWorkManager")
-        Log.i("tag-worker",time.toString())
-
         workManager.cancelUniqueWork(ID)
     }
 
     private fun setWorkManager() {
-        Log.i("tag-worker","setWorkManager")
-        Log.i("tag-worker",time.toString())
-
         workManager.enqueueUniquePeriodicWork(
             ID,
             ExistingPeriodicWorkPolicy.REPLACE,

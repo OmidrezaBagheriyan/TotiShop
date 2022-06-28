@@ -380,12 +380,21 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
                 coupon_lines = listCoupon
             )
 
-            bagViewModel.editQuantityToOrders(
-                bagSharedPreferences.getInt(
-                    Values.ID_ORDER_SHARED_PREFERENCES,
-                    0
-                ), updateOrder
+            val status = bagSharedPreferences.getBoolean(
+                Values.IS_ORDER_ENABLE_SHARED_PREFERENCE,
+                true
             )
+
+            if (status) {
+                bagViewModel.editQuantityToOrders(
+                    bagSharedPreferences.getInt(
+                        Values.ID_ORDER_SHARED_PREFERENCES,
+                        0
+                    ), updateOrder
+                )
+            } else {
+                Toast.makeText(requireContext(), "سبد خرید در وضعیت پرداخت میباشد", Toast.LENGTH_SHORT).show()
+            }
 
             viewLifecycleOwner.lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -443,12 +452,22 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
                 coupon_lines = listCoupon
             )
 
-            bagViewModel.editQuantityToOrders(
-                bagSharedPreferences.getInt(
-                    Values.ID_ORDER_SHARED_PREFERENCES,
-                    0
-                ), updateOrder
+            val status = bagSharedPreferences.getBoolean(
+                Values.IS_ORDER_ENABLE_SHARED_PREFERENCE,
+                true
             )
+
+            if (status) {
+                bagViewModel.editQuantityToOrders(
+                    bagSharedPreferences.getInt(
+                        Values.ID_ORDER_SHARED_PREFERENCES,
+                        0
+                    ), updateOrder
+                )
+            } else {
+                Toast.makeText(requireContext(), "سبد خرید در وضعیت پرداخت میباشد", Toast.LENGTH_SHORT).show()
+            }
+
 
             viewLifecycleOwner.lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
