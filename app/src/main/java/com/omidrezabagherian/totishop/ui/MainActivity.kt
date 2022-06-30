@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         workManager = WorkManager.getInstance(applicationContext)
         workManager.enqueueUniquePeriodicWork(
             ID,
-            ExistingPeriodicWorkPolicy.REPLACE,
+            ExistingPeriodicWorkPolicy.KEEP,
             periodicWorkRequest
         )
     }

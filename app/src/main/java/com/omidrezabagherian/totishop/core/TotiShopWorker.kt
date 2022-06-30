@@ -43,6 +43,7 @@ class TotiShopWorker @AssistedInject constructor(
         val data = repository.getProductList(1, 1, productsDateMap)
         data.collect {
             if (it is ResultWrapper.Success) {
+                val productId = it.value.first().id
                 val productName = it.value.first().name
 
                 //if (lastProductId != it.value.first().id) {
@@ -52,6 +53,7 @@ class TotiShopWorker @AssistedInject constructor(
                         NotificationManager::class.java,
                     ) as NotificationManager
                     notificationManager.sendNotification(
+                        productId,
                         productName,
                         productImage,
                         applicationContext
