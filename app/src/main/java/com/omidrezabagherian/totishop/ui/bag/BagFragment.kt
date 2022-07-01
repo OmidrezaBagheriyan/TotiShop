@@ -141,13 +141,22 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 bagViewModel.putProductBagList.collect { order ->
                     when (order) {
-                        is ResultWrapper.Loading -> { }
+                        is ResultWrapper.Loading -> {
+                        }
                         is ResultWrapper.Success -> {
-                            totalPricePayInformation(
-                                order.value.line_items,
-                                order.value.coupon_lines
-                            )
-                            bagAdapter.submitList(order.value.line_items)
+                            if (order.value.line_items.isEmpty()) {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "کالایی اضافه نشده و لطفا کالایی اضافه کنید",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                totalPricePayInformation(
+                                    order.value.line_items,
+                                    order.value.coupon_lines
+                                )
+                                bagAdapter.submitList(order.value.line_items)
+                            }
                         }
                         is ResultWrapper.Error -> {
                             Toast.makeText(
@@ -170,7 +179,8 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 bagViewModel.getCouponsList.collect {
                     when (it) {
-                        is ResultWrapper.Loading -> { }
+                        is ResultWrapper.Loading -> {
+                        }
                         is ResultWrapper.Success -> {
                             if (it.value.isNotEmpty()) {
                                 confirmOfferCode(
@@ -393,14 +403,19 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
                     ), updateOrder
                 )
             } else {
-                Toast.makeText(requireContext(), "سبد خرید در وضعیت پرداخت میباشد", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "سبد خرید در وضعیت پرداخت میباشد",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
             viewLifecycleOwner.lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     bagViewModel.putProductBagList.collect { order ->
                         when (order) {
-                            is ResultWrapper.Loading -> { }
+                            is ResultWrapper.Loading -> {
+                            }
                             is ResultWrapper.Success -> {
                                 totalPricePayInformation(
                                     order.value.line_items,
@@ -465,7 +480,11 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
                     ), updateOrder
                 )
             } else {
-                Toast.makeText(requireContext(), "سبد خرید در وضعیت پرداخت میباشد", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "سبد خرید در وضعیت پرداخت میباشد",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
 
@@ -473,7 +492,8 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     bagViewModel.putProductBagList.collect { order ->
                         when (order) {
-                            is ResultWrapper.Loading -> { }
+                            is ResultWrapper.Loading -> {
+                            }
                             is ResultWrapper.Success -> {
                                 totalPricePayInformation(
                                     order.value.line_items,
@@ -517,7 +537,7 @@ class BagFragment : Fragment(R.layout.fragment_bag) {
                             bagBinding.recyclerViewBagShop.visibility = View.VISIBLE
                             bagBinding.cardViewBagPrice.visibility = View.VISIBLE
 
-                            if(it.value.coupon_lines.isNotEmpty()){
+                            if (it.value.coupon_lines.isNotEmpty()) {
                                 bagBinding.textInputLayoutLoginCodeOffer.visibility = View.GONE
                                 bagBinding.materialButtonConfirmCodeOffer.visibility = View.GONE
                             }
