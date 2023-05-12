@@ -2,8 +2,8 @@ package com.omidrezabagherian.totishop.ui.details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.omidrezabagherian.totishop.core.ResultWrapper
-import com.omidrezabagherian.totishop.data.ShopRepository
+import com.omidrezabagherian.totishop.util.ResultWrapper
+import com.omidrezabagherian.totishop.domain.repositories.ShopRepository
 import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
 import com.omidrezabagherian.totishop.domain.model.order.Order
 import com.omidrezabagherian.totishop.domain.model.product.Product

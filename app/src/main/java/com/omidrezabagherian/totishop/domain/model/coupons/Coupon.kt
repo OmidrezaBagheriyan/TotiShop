@@ -30,3 +30,16 @@ data class Coupon(
     val usage_limit_per_user: Any,
     val used_by: List<String>
 )
+
+data class Collection(
+    val href: String
+)
+
+data class Links(
+    val collection: List<Collection>,
+    val self: List<Self>
+)
+
+data class Self(
+    val href: String
+)

@@ -23,9 +23,9 @@ import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.omidrezabagherian.totishop.R
-import com.omidrezabagherian.totishop.core.ResultWrapper
-import com.omidrezabagherian.totishop.core.TotiShopWorker
-import com.omidrezabagherian.totishop.core.Values
+import com.omidrezabagherian.totishop.util.ResultWrapper
+import com.omidrezabagherian.totishop.util.TotiShopWorker
+import com.omidrezabagherian.totishop.util.Values
 import com.omidrezabagherian.totishop.databinding.ActivityMainBinding
 import com.omidrezabagherian.totishop.domain.model.createorder.Billing
 import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder

@@ -2,8 +2,8 @@ package com.omidrezabagherian.totishop.ui.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.omidrezabagherian.totishop.core.ResultWrapper
-import com.omidrezabagherian.totishop.data.ShopRepository
+import com.omidrezabagherian.totishop.util.ResultWrapper
+import com.omidrezabagherian.totishop.domain.repositories.ShopRepository
 import com.omidrezabagherian.totishop.domain.model.createcustomer.CreateCustomer
 import com.omidrezabagherian.totishop.domain.model.customer.Customer
 import dagger.hilt.android.lifecycle.HiltViewModel

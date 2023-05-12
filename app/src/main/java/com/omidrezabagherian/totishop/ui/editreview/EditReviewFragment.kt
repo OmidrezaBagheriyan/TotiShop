@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
@@ -19,11 +18,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.omidrezabagherian.totishop.R
-import com.omidrezabagherian.totishop.core.NetworkManager
-import com.omidrezabagherian.totishop.core.ResultWrapper
-import com.omidrezabagherian.totishop.core.Values
+import com.omidrezabagherian.totishop.util.NetworkManager
+import com.omidrezabagherian.totishop.util.ResultWrapper
+import com.omidrezabagherian.totishop.util.Values
 import com.omidrezabagherian.totishop.databinding.FragmentEditReviewBinding
-import com.omidrezabagherian.totishop.domain.model.addreview.AddReview
 import com.omidrezabagherian.totishop.domain.model.editreview.EditReview
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

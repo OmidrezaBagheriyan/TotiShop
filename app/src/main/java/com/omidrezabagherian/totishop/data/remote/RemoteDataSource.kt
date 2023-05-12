@@ -1,7 +1,7 @@
 package com.omidrezabagherian.totishop.data.remote
 
 import com.omidrezabagherian.totishop.domain.model.createcustomer.CreateCustomer
-import com.omidrezabagherian.totishop.core.Values
+import com.omidrezabagherian.totishop.util.Values
 import com.omidrezabagherian.totishop.domain.model.addreview.AddReview
 import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
 import com.omidrezabagherian.totishop.domain.model.editreview.EditReview

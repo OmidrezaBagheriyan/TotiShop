@@ -1,6 +1,6 @@
-package com.omidrezabagherian.totishop.data
+package com.omidrezabagherian.totishop.domain.repositories
 
-import com.omidrezabagherian.totishop.core.safeApiCall
+import com.omidrezabagherian.totishop.util.safeApiCall
 import com.omidrezabagherian.totishop.data.remote.RemoteDataSource
 import com.omidrezabagherian.totishop.domain.model.addreview.AddReview
 import com.omidrezabagherian.totishop.domain.model.createcustomer.CreateCustomer

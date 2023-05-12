@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
@@ -16,9 +15,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.omidrezabagherian.totishop.R
-import com.omidrezabagherian.totishop.core.NetworkManager
-import com.omidrezabagherian.totishop.core.ResultWrapper
-import com.omidrezabagherian.totishop.core.Values
+import com.omidrezabagherian.totishop.util.NetworkManager
+import com.omidrezabagherian.totishop.util.ResultWrapper
+import com.omidrezabagherian.totishop.util.Values
 import com.omidrezabagherian.totishop.databinding.FragmentBagBinding
 import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder
 import com.omidrezabagherian.totishop.domain.model.order.CouponLine

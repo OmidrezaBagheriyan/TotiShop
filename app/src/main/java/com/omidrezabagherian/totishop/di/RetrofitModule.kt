@@ -1,7 +1,7 @@
 package com.omidrezabagherian.totishop.di
 
 import com.omidrezabagherian.totishop.data.remote.ShopService
-import com.omidrezabagherian.totishop.core.Values
+import com.omidrezabagherian.totishop.util.Values
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

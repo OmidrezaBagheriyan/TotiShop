@@ -6,7 +6,6 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.widget.Button
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -14,13 +13,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.omidrezabagherian.totishop.R
-import com.omidrezabagherian.totishop.core.NetworkManager
-import com.omidrezabagherian.totishop.core.ResultWrapper
+import com.omidrezabagherian.totishop.util.NetworkManager
+import com.omidrezabagherian.totishop.util.ResultWrapper
 import com.omidrezabagherian.totishop.databinding.FragmentHouseBinding
-import com.omidrezabagherian.totishop.core.Values.DELAY_MS
-import com.omidrezabagherian.totishop.core.Values.PERIOD_MS
+import com.omidrezabagherian.totishop.util.Values.DELAY_MS
+import com.omidrezabagherian.totishop.util.Values.PERIOD_MS
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.*

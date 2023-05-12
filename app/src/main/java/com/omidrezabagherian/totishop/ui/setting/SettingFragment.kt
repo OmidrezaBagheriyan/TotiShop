@@ -12,8 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.work.WorkManager
 import com.omidrezabagherian.totishop.R
-import com.omidrezabagherian.totishop.core.NetworkManager
-import com.omidrezabagherian.totishop.core.Values
+import com.omidrezabagherian.totishop.util.NetworkManager
+import com.omidrezabagherian.totishop.util.Values
 import com.omidrezabagherian.totishop.databinding.FragmentSettingBinding
 import dagger.hilt.android.AndroidEntryPoint
 

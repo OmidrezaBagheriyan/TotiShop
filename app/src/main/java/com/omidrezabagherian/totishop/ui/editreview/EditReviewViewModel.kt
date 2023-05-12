@@ -2,13 +2,11 @@ package com.omidrezabagherian.totishop.ui.editreview
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.omidrezabagherian.totishop.core.ResultWrapper
-import com.omidrezabagherian.totishop.data.ShopRepository
-import com.omidrezabagherian.totishop.domain.model.addreview.AddReview
+import com.omidrezabagherian.totishop.util.ResultWrapper
+import com.omidrezabagherian.totishop.domain.repositories.ShopRepository
 import com.omidrezabagherian.totishop.domain.model.editreview.EditReview
 import com.omidrezabagherian.totishop.domain.model.getreview.GetReview
 import com.omidrezabagherian.totishop.domain.model.putreview.PutReview
-import com.omidrezabagherian.totishop.domain.model.review.Review
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

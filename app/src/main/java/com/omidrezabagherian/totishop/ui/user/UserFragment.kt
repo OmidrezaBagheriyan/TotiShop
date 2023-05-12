@@ -14,9 +14,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.omidrezabagherian.totishop.R
-import com.omidrezabagherian.totishop.core.NetworkManager
-import com.omidrezabagherian.totishop.core.ResultWrapper
-import com.omidrezabagherian.totishop.core.Values
+import com.omidrezabagherian.totishop.util.NetworkManager
+import com.omidrezabagherian.totishop.util.ResultWrapper
+import com.omidrezabagherian.totishop.util.Values
 import com.omidrezabagherian.totishop.databinding.FragmentUserBinding
 import com.omidrezabagherian.totishop.domain.model.createorder.Billing
 import com.omidrezabagherian.totishop.domain.model.createorder.CreateOrder

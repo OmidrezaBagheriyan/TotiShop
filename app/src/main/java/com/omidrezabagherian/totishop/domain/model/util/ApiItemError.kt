@@ -1,4 +1,4 @@
-package com.omidrezabagherian.totishop.domain.model
+package com.omidrezabagherian.totishop.domain.model.util
 
 data class ApiItemError(
     val message: String,

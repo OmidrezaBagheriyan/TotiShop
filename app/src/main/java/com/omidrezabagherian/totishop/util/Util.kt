@@ -1,8 +1,8 @@
-package com.omidrezabagherian.totishop.core
+package com.omidrezabagherian.totishop.util
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.omidrezabagherian.totishop.domain.model.ApiItemError
+import com.omidrezabagherian.totishop.domain.model.util.ApiItemError
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import retrofit2.Response

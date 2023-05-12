@@ -1,6 +1,6 @@
 package com.omidrezabagherian.totishop.di
 
-import com.omidrezabagherian.totishop.data.ShopRepository
+import com.omidrezabagherian.totishop.domain.repositories.ShopRepository
 import com.omidrezabagherian.totishop.data.remote.RemoteDataSource
 import dagger.Module
 import dagger.Provides

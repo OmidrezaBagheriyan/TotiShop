@@ -14,3 +14,27 @@ data class Review(
     val status: String,
     val verified: Boolean
 )
+
+data class Collection(
+    val href: String
+)
+
+data class Links(
+    val collection: List<Collection>,
+    val self: List<Self>,
+    val up: List<Up>
+)
+
+data class ReviewerAvatarUrls(
+    val `24`: String,
+    val `48`: String,
+    val `96`: String
+)
+
+data class Self(
+    val href: String
+)
+
+data class Up(
+    val href: String
+)

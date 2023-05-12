@@ -14,15 +14,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.omidrezabagherian.totishop.R
-import com.omidrezabagherian.totishop.core.NetworkManager
-import com.omidrezabagherian.totishop.core.ResultWrapper
-import com.omidrezabagherian.totishop.core.Values
-import com.omidrezabagherian.totishop.core.Values.EMAIL_SHARED_PREFERENCES
-import com.omidrezabagherian.totishop.core.Values.ID_SHARED_PREFERENCES
-import com.omidrezabagherian.totishop.core.Values.PASSWORD_SHARED_PREFERENCES
-import com.omidrezabagherian.totishop.core.Values.SHARED_PREFERENCES
+import com.omidrezabagherian.totishop.util.NetworkManager
+import com.omidrezabagherian.totishop.util.ResultWrapper
+import com.omidrezabagherian.totishop.util.Values.EMAIL_SHARED_PREFERENCES
+import com.omidrezabagherian.totishop.util.Values.ID_SHARED_PREFERENCES
+import com.omidrezabagherian.totishop.util.Values.PASSWORD_SHARED_PREFERENCES
+import com.omidrezabagherian.totishop.util.Values.SHARED_PREFERENCES
 import com.omidrezabagherian.totishop.databinding.FragmentLoginBinding
-import com.omidrezabagherian.totishop.ui.register.RegisterFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

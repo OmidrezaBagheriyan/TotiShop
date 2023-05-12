@@ -1,4 +1,4 @@
-package com.omidrezabagherian.totishop.core
+package com.omidrezabagherian.totishop.util
 
 import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory

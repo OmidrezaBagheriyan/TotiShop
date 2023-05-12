@@ -1,6 +1,5 @@
-package com.omidrezabagherian.totishop.core
+package com.omidrezabagherian.totishop.util
 
-import android.app.Notification
 import android.app.NotificationManager
 import android.content.Context
 import android.graphics.Bitmap
@@ -10,14 +9,12 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
-import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import com.bumptech.glide.Glide
-import com.omidrezabagherian.totishop.core.Values.ID_LAST_PRODUCT_SHARED_PREFERENCES
-import com.omidrezabagherian.totishop.core.Values.NOTIFICATION_ID
-import com.omidrezabagherian.totishop.core.Values.SHARED_PREFERENCES
-import com.omidrezabagherian.totishop.core.Values.mainSharedPreferences
-import com.omidrezabagherian.totishop.data.ShopRepository
+import com.omidrezabagherian.totishop.util.Values.ID_LAST_PRODUCT_SHARED_PREFERENCES
+import com.omidrezabagherian.totishop.util.Values.SHARED_PREFERENCES
+import com.omidrezabagherian.totishop.util.Values.mainSharedPreferences
+import com.omidrezabagherian.totishop.domain.repositories.ShopRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import java.util.*

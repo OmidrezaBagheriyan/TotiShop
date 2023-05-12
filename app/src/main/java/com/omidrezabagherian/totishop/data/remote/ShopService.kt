@@ -1,6 +1,6 @@
 package com.omidrezabagherian.totishop.data.remote
 
-import com.omidrezabagherian.totishop.core.Values
+import com.omidrezabagherian.totishop.util.Values
 import com.omidrezabagherian.totishop.domain.model.addreview.AddReview
 import com.omidrezabagherian.totishop.domain.model.category.Category
 import com.omidrezabagherian.totishop.domain.model.coupons.Coupon

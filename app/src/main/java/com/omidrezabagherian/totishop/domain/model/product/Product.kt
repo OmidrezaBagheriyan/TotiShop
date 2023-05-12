@@ -69,3 +69,45 @@ data class Product(
     val virtual: Boolean,
     val weight: String
 )
+
+data class Category(
+    val id: Int,
+    val name: String,
+    val slug: String
+)
+
+data class Collection(
+    val href: String
+)
+
+data class Dimensions(
+    val height: String,
+    val length: String,
+    val width: String
+)
+
+data class Image(
+    val alt: String,
+    val date_created: String,
+    val date_created_gmt: String,
+    val date_modified: String,
+    val date_modified_gmt: String,
+    val id: Int,
+    val name: String,
+    val src: String
+)
+
+data class Links(
+    val collection: List<Collection>,
+    val self: List<Self>
+)
+
+data class Self(
+    val href: String
+)
+
+data class Tag(
+    val id: Int,
+    val name: String,
+    val slug: String
+)

@@ -45,3 +45,82 @@ data class Order(
     val transaction_id: String,
     val version: String
 )
+
+data class Billing(
+    val address_1: String,
+    val address_2: String,
+    val city: String,
+    val company: String,
+    val country: String,
+    val email: String,
+    val first_name: String,
+    val last_name: String,
+    val phone: String,
+    val postcode: String,
+    val state: String
+)
+
+data class Collection(
+    val href: String
+)
+
+data class CouponLine(
+    val code: String,
+    val discount: String,
+    val discount_tax: String,
+    val id: Int,
+    val meta_data: List<Any>
+)
+
+data class LineItem(
+    val id: Int,
+    val meta_data: List<MetaData>,
+    val name: String,
+    val parent_name: Any,
+    val price: Double,
+    val product_id: Int,
+    val quantity: Int,
+    val sku: String,
+    val subtotal: String,
+    val subtotal_tax: String,
+    val tax_class: String,
+    val taxes: List<Any>,
+    val total: String,
+    val total_tax: String,
+    val variation_id: Int
+)
+
+data class Links(
+    val collection: List<Collection>,
+    val self: List<Self>
+)
+
+data class MetaData(
+    val display_key: String,
+    val display_value: String,
+    val id: Int,
+    val key: String,
+    val value: String
+)
+
+data class MetaDataX(
+    val id: Int,
+    val key: String,
+    val value: String
+)
+
+data class Self(
+    val href: String
+)
+
+data class Shipping(
+    val address_1: String,
+    val address_2: String,
+    val city: String,
+    val company: String,
+    val country: String,
+    val first_name: String,
+    val last_name: String,
+    val postcode: String,
+    val state: String
+)
