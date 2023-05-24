@@ -22,8 +22,6 @@ import retrofit2.http.*
 interface ShopService {
     @GET("products")
     suspend fun getProductList(
-        @Query("consumer_key") consumerKey: String,
-        @Query("consumer_secret") consumerSecret: String,
         @Query("page") page: Int,
         @Query("per_page") perPage: Int,
         @QueryMap filter: Map<String, String>
@@ -31,30 +29,22 @@ interface ShopService {
 
     @GET("products/{id}")
     suspend fun getProduct(
-        @Path("id") id: Int,
-        @Query("consumer_key") consumerKey: String,
-        @Query("consumer_secret") consumerSecret: String
+        @Path("id") id: Int
     ): Response<Product>
 
     @GET("products/categories")
     suspend fun getCategoryList(
-        @Query("consumer_key") consumerKey: String,
-        @Query("consumer_secret") consumerSecret: String,
         @Query("page") page: Int,
         @Query("per_page") perPage: Int
     ): Response<List<Category>>
 
     @GET("products/categories")
     suspend fun getSubCategoryList(
-        @Query("consumer_key") consumerKey: String,
-        @Query("consumer_secret") consumerSecret: String,
         @Query("parent") parent: Int
     ): Response<List<SubCategory>>
 
     @GET("products")
     suspend fun getProductSubCategoryList(
-        @Query("consumer_key") consumerKey: String,
-        @Query("consumer_secret") consumerSecret: String,
         @Query("page") page: Int,
         @Query("per_page") perPage: Int,
         @Query("category") category: Int
@@ -62,8 +52,6 @@ interface ShopService {
 
     @GET("products")
     suspend fun getProductSearchList(
-        @Query("consumer_key") consumerKey: String,
-        @Query("consumer_secret") consumerSecret: String,
         @Query("page") page: Int,
         @Query("per_page") perPage: Int,
         @Query("search") search: String,
@@ -72,66 +60,48 @@ interface ShopService {
 
     @POST("customers")
     suspend fun setCustomer(
-        @Query("consumer_key") consumerKey: String,
-        @Query("consumer_secret") consumerSecret: String,
         @Body createCustomer: CreateCustomer
     ): Response<Customer>
 
     @GET("customers")
     suspend fun getCustomerByEmail(
-        @Query("consumer_key") consumerKey: String,
-        @Query("consumer_secret") consumerSecret: String,
         @Query("email") email: String
     ): Response<List<Customer>>
 
     @GET("customers/{id}")
     suspend fun getCustomer(
-        @Path("id") id: Int,
-        @Query("consumer_key") consumerKey: String,
-        @Query("consumer_secret") consumerSecret: String
+        @Path("id") id: Int
     ): Response<Customer>
 
     @POST("orders")
     suspend fun setOrders(
-        @Query("consumer_key") consumerKey: String,
-        @Query("consumer_secret") consumerSecret: String,
         @Body createOrder: CreateOrder
     ): Response<Order>
 
     @GET("orders/{id}")
     suspend fun getOrders(
-        @Path("id") id: Int,
-        @Query("consumer_key") consumerKey: String,
-        @Query("consumer_secret") consumerSecret: String,
+        @Path("id") id: Int
     ): Response<Order>
 
     @PUT("orders/{id}")
     suspend fun addProductToOrders(
         @Path("id") id: Int,
-        @Query("consumer_key") consumerKey: String,
-        @Query("consumer_secret") consumerSecret: String,
         @Body createOrder: CreateOrder
     ): Response<Order>
 
     @PUT("orders/{id}")
     suspend fun editQuantityToOrders(
         @Path("id") id: Int,
-        @Query("consumer_key") consumerKey: String,
-        @Query("consumer_secret") consumerSecret: String,
         @Body updateOrder: UpdateOrder
     ): Response<Order>
 
     @GET("coupons")
     suspend fun getCoupons(
-        @Query("consumer_key") consumerKey: String,
-        @Query("consumer_secret") consumerSecret: String,
         @Query("search") search: String
     ): Response<List<Coupon>>
 
     @GET("products/reviews")
     suspend fun getReviews(
-        @Query("consumer_key") consumerKey: String,
-        @Query("consumer_secret") consumerSecret: String,
         @Query("product") product: Int,
         @Query("page") page: Int,
         @Query("per_page") perPage: Int
@@ -139,38 +109,28 @@ interface ShopService {
 
     @GET("products/reviews/{id}")
     suspend fun getReview(
-        @Path("id") id: Int,
-        @Query("consumer_key") consumerKey: String,
-        @Query("consumer_secret") consumerSecret: String,
+        @Path("id") id: Int
     ): Response<GetReview>
 
     @POST("products/reviews")
     suspend fun setReviews(
-        @Query("consumer_key") consumerKey: String,
-        @Query("consumer_secret") consumerSecret: String,
         @Body addReview: AddReview
     ): Response<Review>
 
     @PUT("products/reviews/{id}")
     suspend fun putReviews(
         @Path("id") id: Int,
-        @Query("consumer_key") consumerKey: String,
-        @Query("consumer_secret") consumerSecret: String,
         @Body addReview: EditReview
     ): Response<PutReview>
 
     @DELETE("products/reviews/{id}")
     suspend fun deleteReviews(
         @Path("id") id: Int,
-        @Query("consumer_key") consumerKey: String,
-        @Query("consumer_secret") consumerSecret: String,
         @Query("force")force:Boolean
     ):Response<DeleteReview>
 
     @GET("products")
     suspend fun getNewProductList(
-        @Query("after") after: String,
-        @Query("consumer_key") consumer_key: String = Values.CUSTOMER_KEY,
-        @Query("consumer_secret") consumer_secret: String = Values.CUSTOMER_SECRET,
+        @Query("after") after: String
     ): Response<List<Product>>
 }

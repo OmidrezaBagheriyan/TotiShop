@@ -1,7 +1,6 @@
 package com.omidrezabagherian.totishop.di
 
 import com.omidrezabagherian.totishop.data.remote.ShopService
-import com.omidrezabagherian.totishop.util.Values
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,6 +17,10 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
 
+    private const val BASE_URL = "https://woocommerce.maktabsharif.ir/wp-json/wc/v3/"
+    private const val CUSTOMER_KEY = "ck_63f4c52da932ddad1570283b31f3c96c4bd9fd6f"
+    private const val CUSTOMER_SECRET = "cs_294e7de35430398f323b43c21dd1b29f67b5370b"
+
     @Singleton
     @Provides
     fun provideJsonConvertorFactory(): GsonConverterFactory = GsonConverterFactory.create()
@@ -32,15 +35,23 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-    fun provideClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
+    fun provideInterceptor(): Interceptor = Interceptor { chain ->
+        val url = chain.request().url.newBuilder()
+            .addQueryParameter("consumer_key", CUSTOMER_KEY)
+            .addQueryParameter("consumer_secret", CUSTOMER_SECRET).build()
+        val request = chain.request().newBuilder().url(url).build()
+        val response = chain.proceed(request)
+        response
+    }
+
+    @Singleton
+    @Provides
+    fun provideClient(
+        interceptor: Interceptor,
+        httpLoggingInterceptor: HttpLoggingInterceptor
+    ): OkHttpClient =
         OkHttpClient.Builder()
-            .addInterceptor(
-                Interceptor { chain ->
-                    val request = chain.request().newBuilder().build()
-                    val response = chain.proceed(request)
-                    response
-                }
-            )
+            .addInterceptor(interceptor)
             .addNetworkInterceptor(httpLoggingInterceptor)
             .callTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
@@ -52,7 +63,7 @@ object RetrofitModule {
         gsonConverterFactory: GsonConverterFactory,
         okHttpClient: OkHttpClient
     ): Retrofit = Retrofit.Builder()
-        .baseUrl(Values.BASE_URL)
+        .baseUrl(BASE_URL)
         .addConverterFactory(gsonConverterFactory)
         .client(okHttpClient)
         .build()
