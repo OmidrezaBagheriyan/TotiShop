@@ -18,8 +18,8 @@ import javax.inject.Singleton
 object RetrofitModule {
 
     private const val BASE_URL = "https://woocommerce.maktabsharif.ir/wp-json/wc/v3/"
-    private const val CUSTOMER_KEY = "ck_63f4c52da932ddad1570283b31f3c96c4bd9fd6f"
-    private const val CUSTOMER_SECRET = "cs_294e7de35430398f323b43c21dd1b29f67b5370b"
+    private const val CUSTOMER_KEY = "ck_b35229d5a3505c215d7f95718d8191b18ab842a4"
+    private const val CUSTOMER_SECRET = "cs_5e76acc0c4c11afa9b5ecd994918a409616ab826"
 
     @Singleton
     @Provides
